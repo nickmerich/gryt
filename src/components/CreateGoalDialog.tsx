@@ -7,25 +7,20 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { GoalInput } from '@/hooks/useGoals';
 
 interface CreateGoalDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateGoal: (goal: {
-    title: string;
-    description: string;
-    category: string;
-    targetDate: string;
-    milestones: string[];
-  }) => void;
+  onCreateGoal: (goal: GoalInput) => void;
 }
 
 const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialogProps) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<GoalInput>({
     title: '',
     description: '',
     category: '',
-    targetDate: '',
+    target_date: '',
   });
   
   const [milestones, setMilestones] = useState<string[]>(['']);
@@ -41,23 +36,18 @@ const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialog
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.category || !formData.targetDate) {
+    if (!formData.title || !formData.category || !formData.target_date) {
       return;
     }
-
-    const filteredMilestones = milestones.filter(m => m.trim() !== '');
     
-    onCreateGoal({
-      ...formData,
-      milestones: filteredMilestones,
-    });
+    onCreateGoal(formData);
 
     // Reset form
     setFormData({
       title: '',
       description: '',
       category: '',
-      targetDate: '',
+      target_date: '',
     });
     setMilestones(['']);
   };
@@ -135,21 +125,21 @@ const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialog
 
           {/* Target Date */}
           <div className="space-y-2">
-            <Label htmlFor="targetDate">Target Date</Label>
+            <Label htmlFor="target_date">Target Date</Label>
             <div className="relative">
               <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
-                id="targetDate"
+                id="target_date"
                 type="date"
                 className="pl-10"
-                value={formData.targetDate}
-                onChange={(e) => setFormData({ ...formData, targetDate: e.target.value })}
+                value={formData.target_date}
+                onChange={(e) => setFormData({ ...formData, target_date: e.target.value })}
                 required
               />
             </div>
           </div>
 
-          {/* Milestones */}
+          {/* Milestones - We'll handle these separately after goal creation */}
           <div className="space-y-2">
             <Label>Milestones</Label>
             <div className="space-y-2">

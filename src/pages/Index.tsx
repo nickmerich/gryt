@@ -11,156 +11,37 @@ import AIInsights from '@/components/AIInsights';
 import ChatModal from '@/components/GrytGPT/ChatModal';
 import MainNav from '@/components/MainNav';
 import { Link } from 'react-router-dom';
-
-interface Goal {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  targetDate: string;
-  progress: number;
-  milestones: string[];
-  completedMilestones: number;
-  streaks?: number;
-  lastCheckin?: string;
-}
+import { useGoals, GoalInput } from '@/hooks/useGoals';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
-  const [goals, setGoals] = useState<Goal[]>([
-    {
-      id: '1',
-      title: 'Run a Marathon',
-      description: 'Complete a full 26.2 mile marathon by the end of the year',
-      category: 'Health & Fitness',
-      targetDate: '2024-12-31',
-      progress: 65,
-      milestones: ['Run 5K', 'Run 10K', 'Run Half Marathon', 'Complete Training Plan'],
-      completedMilestones: 2,
-      streaks: 12,
-      lastCheckin: new Date().toISOString().split('T')[0]
-    },
-    {
-      id: '2',
-      title: 'Learn Spanish',
-      description: 'Achieve conversational fluency in Spanish',
-      category: 'Education',
-      targetDate: '2024-08-15',
-      progress: 40,
-      milestones: ['Complete Basics', 'Hold 5-min Conversation', 'Read Spanish Book'],
-      completedMilestones: 1,
-      streaks: 8,
-      lastCheckin: new Date().toISOString().split('T')[0]
-    }
-  ]);
-
+  const { user } = useAuth();
+  const { goals, isLoading, createGoal, updateGoalProgress } = useGoals();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [streakUpdated, setStreakUpdated] = useState(false);
 
-  // Check if we need to update streaks on first load
-  useEffect(() => {
-    if (!streakUpdated) {
-      checkAndUpdateStreaks();
-      setStreakUpdated(true);
-    }
-  }, [streakUpdated]);
-
-  const addGoal = (newGoal: Omit<Goal, 'id' | 'progress' | 'completedMilestones' | 'streaks' | 'lastCheckin'>) => {
-    const goal: Goal = {
-      ...newGoal,
-      id: Date.now().toString(),
-      progress: 0,
-      completedMilestones: 0,
-      streaks: 0,
-      lastCheckin: new Date().toISOString().split('T')[0]
-    };
-    setGoals([...goals, goal]);
-    setIsCreateDialogOpen(false);
-    toast.success("New goal created successfully!");
-  };
-
-  const updateGoalProgress = (goalId: string, newProgress: number) => {
-    setGoals(goals.map(goal => {
-      if (goal.id === goalId) {
-        const updatedGoal = { ...goal, progress: newProgress };
-        
-        // If progress is significantly higher, increment completed milestones
-        const oldMilestonesCompleted = goal.completedMilestones;
-        const milestoneCount = goal.milestones.length;
-        const expectedCompletedMilestones = Math.floor((newProgress / 100) * milestoneCount);
-        
-        if (expectedCompletedMilestones > oldMilestonesCompleted) {
-          updatedGoal.completedMilestones = expectedCompletedMilestones;
-          const milestoneName = goal.milestones[oldMilestonesCompleted];
-          setTimeout(() => {
-            toast.success(`🎉 Milestone completed: ${milestoneName}!`, {
-              duration: 4000,
-            });
-          }, 500);
-        }
-        
-        return updatedGoal;
+  const addGoal = (newGoal: GoalInput) => {
+    createGoal.mutate(newGoal, {
+      onSuccess: () => {
+        setIsCreateDialogOpen(false);
       }
-      return goal;
-    }));
-    
-    // Increment streak for the goal
-    incrementStreak(goalId);
+    });
   };
 
-  const incrementStreak = (goalId: string) => {
-    const today = new Date().toISOString().split('T')[0];
-    
-    setGoals(goals.map(goal => {
-      if (goal.id === goalId) {
-        if (goal.lastCheckin !== today) {
-          const updatedGoal = {
-            ...goal,
-            streaks: (goal.streaks || 0) + 1,
-            lastCheckin: today
-          };
-          
-          // Show streak notification for significant streaks
-          if (updatedGoal.streaks && updatedGoal.streaks % 5 === 0) {
-            setTimeout(() => {
-              toast.success(`🔥 ${updatedGoal.streaks} day streak on "${goal.title}"! Keep it up!`, {
-                duration: 5000,
-              });
-            }, 1000);
-          }
-          
-          return updatedGoal;
-        }
-      }
-      return goal;
-    }));
+  const handleUpdateProgress = (goalId: string, newProgress: number) => {
+    updateGoalProgress.mutate({ goalId, newProgress });
   };
 
-  const checkAndUpdateStreaks = () => {
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    
-    setGoals(goals.map(goal => {
-      // If last check-in was more than 1 day ago, reset streak
-      if (goal.lastCheckin && goal.lastCheckin < yesterday) {
-        return {
-          ...goal,
-          streaks: 0
-        };
-      }
-      return goal;
-    }));
-  };
-
-  const totalGoals = goals.length;
-  const completedGoals = goals.filter(goal => goal.progress >= 100).length;
-  const averageProgress = goals.length > 0 
-    ? Math.round(goals.reduce((sum, goal) => sum + goal.progress, 0) / goals.length)
-    : 0;
+  const totalGoals = goals?.length || 0;
+  const completedGoals = goals?.filter(goal => goal.progress >= 100).length || 0;
+  const averageProgress = goals?.length ? 
+    Math.round(goals.reduce((sum, goal) => sum + goal.progress, 0) / goals.length) : 0;
   
-  // Calculate total active streaks across all goals
-  const totalActiveStreaks = goals.reduce((sum, goal) => {
-    return sum + (goal.streaks || 0 > 0 ? 1 : 0);
-  }, 0);
+  // Calculate total active streaks (goals updated in the last 24 hours)
+  const today = new Date().toISOString().split('T')[0];
+  const totalActiveStreaks = goals?.filter(goal => {
+    const updatedAt = new Date(goal.updated_at).toISOString().split('T')[0];
+    return updatedAt === today;
+  }).length || 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -168,13 +49,20 @@ const Index = () => {
         {/* Header with Navigation */}
         <div className="flex items-center justify-between mb-8">
           <MainNav />
-          <Button 
-            onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Goal
-          </Button>
+          <div className="flex items-center gap-2">
+            {user && (
+              <div className="text-sm text-gray-600 mr-2">
+                {user.email}
+              </div>
+            )}
+            <Button 
+              onClick={() => setIsCreateDialogOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Goal
+            </Button>
+          </div>
         </div>
 
         {/* Header */}
@@ -253,7 +141,7 @@ const Index = () => {
         </Card>
 
         {/* AI Insights */}
-        <AIInsights goals={goals} />
+        {goals && goals.length > 0 && <AIInsights goals={goals} />}
 
         {/* Weekly Review Section */}
         <div className="mb-8">
@@ -272,21 +160,23 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-4">
-                {goals.filter(goal => {
+                {isLoading ? (
+                  <div className="text-center py-4">Loading...</div>
+                ) : goals?.filter(goal => {
                   const daysLeft = Math.ceil(
-                    (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                    (new Date(goal.target_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                   );
                   return daysLeft <= 14 && daysLeft > 0;
                 }).length > 0 ? (
                   <ul className="space-y-3">
-                    {goals.filter(goal => {
+                    {goals?.filter(goal => {
                       const daysLeft = Math.ceil(
-                        (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                        (new Date(goal.target_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                       );
                       return daysLeft <= 14 && daysLeft > 0;
                     }).slice(0, 3).map(goal => {
                       const daysLeft = Math.ceil(
-                        (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                        (new Date(goal.target_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                       );
                       return (
                         <li key={goal.id} className="flex justify-between">
@@ -314,10 +204,12 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-4">
-                {goals.filter(goal => goal.progress > 0).length > 0 ? (
+                {isLoading ? (
+                  <div className="text-center py-4">Loading...</div>
+                ) : goals?.filter(goal => goal.progress > 0).length > 0 ? (
                   <ul className="space-y-3">
                     {goals
-                      .filter(goal => goal.progress > 0)
+                      ?.filter(goal => goal.progress > 0)
                       .sort((a, b) => b.progress - a.progress)
                       .slice(0, 3)
                       .map(goal => (
@@ -352,13 +244,29 @@ const Index = () => {
         </div>
 
         {/* Goals Grid */}
-        {goals.length > 0 ? (
+        {isLoading ? (
+          <div className="text-center py-10">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700 mb-4"></div>
+            <p className="text-gray-600">Loading your goals...</p>
+          </div>
+        ) : goals?.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {goals.map((goal) => (
               <GoalCard 
                 key={goal.id} 
-                goal={goal} 
-                onUpdateProgress={updateGoalProgress}
+                goal={{
+                  id: goal.id,
+                  title: goal.title,
+                  description: goal.description || '',
+                  category: goal.category,
+                  targetDate: goal.target_date,
+                  progress: goal.progress,
+                  milestones: [], // Will be fetched in the GoalCard component
+                  completedMilestones: 0, // Will be calculated in the GoalCard component
+                  streaks: 0, // Will be calculated in the GoalCard component
+                  lastCheckin: new Date(goal.updated_at).toISOString().split('T')[0]
+                }}
+                onUpdateProgress={handleUpdateProgress}
               />
             ))}
           </div>
@@ -386,7 +294,7 @@ const Index = () => {
         />
         
         {/* GrytGPT Chat Modal */}
-        <ChatModal goals={goals} />
+        <ChatModal goals={goals || []} />
       </div>
     </div>
   );

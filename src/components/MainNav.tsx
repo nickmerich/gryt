@@ -1,117 +1,82 @@
 
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, MessageSquare, BarChart, Menu } from 'lucide-react';
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+import { useState } from 'react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { Menu, Home, Users, BarChart, X } from 'lucide-react';
+import ProfileMenu from './ProfileMenu';
 
 const MainNav = () => {
-  const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    {
+      name: 'Home',
+      href: '/',
+      icon: Home
+    },
+    {
+      name: 'Circles',
+      href: '/circles',
+      icon: Users
+    },
+    {
+      name: 'Dashboard',
+      href: '/dashboard',
+      icon: BarChart
+    }
+  ];
+
+  const NavLinks = () => (
+    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-6">
+      {navItems.map((item) => (
+        <Link
+          key={item.href}
+          to={item.href}
+          className="flex items-center gap-2 py-2 px-3 rounded-md text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+          onClick={() => setIsOpen(false)}
+        >
+          <item.icon className="h-4 w-4" />
+          <span>{item.name}</span>
+        </Link>
+      ))}
+    </div>
+  );
 
   return (
-    <div className="w-full">
-      {/* Mobile Navigation Toggle */}
-      <div className="flex md:hidden items-center justify-between p-4">
-        <div className="flex items-center">
-          <span className="text-xl font-bold text-gryt-red">Gryt</span>
-        </div>
-        <Button 
-          variant="ghost" 
-          size="icon"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-gryt-dark dark:text-gryt-gray"
-        >
-          <Menu className="h-6 w-6" />
-        </Button>
+    <div className="flex items-center">
+      <Link to="/" className="flex items-center mr-6">
+        <span className="text-xl font-bold text-blue-600">Gryt</span>
+      </Link>
+      
+      <div className="hidden md:flex">
+        <NavLinks />
       </div>
-
-      {/* Mobile Navigation Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gryt-dark p-4 space-y-2 shadow-lg slide-animation">
-          <Link 
-            to="/" 
-            className={cn(
-              "flex items-center p-3 rounded-md transition-all",
-              isActive('/') ? "bg-gryt-red text-white" : "hover:bg-gryt-gray dark:hover:bg-gryt-dark/50"
-            )}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Home className="w-5 h-5 mr-3" />
-            Home
-          </Link>
-          
-          <Link 
-            to="/circles" 
-            className={cn(
-              "flex items-center p-3 rounded-md transition-all",
-              isActive('/circles') ? "bg-gryt-red text-white" : "hover:bg-gryt-gray dark:hover:bg-gryt-dark/50"
-            )}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Users className="w-5 h-5 mr-3" />
-            Dream Circles
-          </Link>
-          
-          <Link 
-            to="/dashboard" 
-            className={cn(
-              "flex items-center p-3 rounded-md transition-all",
-              isActive('/dashboard') ? "bg-gryt-red text-white" : "hover:bg-gryt-gray dark:hover:bg-gryt-dark/50"
-            )}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <BarChart className="w-5 h-5 mr-3" />
-            Dashboard
-          </Link>
-        </div>
-      )}
-
-      {/* Desktop Navigation */}
-      <NavigationMenu className="max-w-none justify-start hidden md:block">
-        <NavigationMenuList className="flex flex-row gap-2 p-2">
-          <NavigationMenuItem>
-            <Link to="/" className={cn(
-              "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-all",
-              isActive('/') 
-                ? "bg-gryt-red text-white"
-                : "hover:bg-gryt-gray dark:hover:bg-gryt-dark/50"
-            )}>
-              <Home className="w-4 h-4 mr-2" />
-              Home
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/circles" className={cn(
-              "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-all",
-              isActive('/circles') 
-                ? "bg-gryt-red text-white"
-                : "hover:bg-gryt-gray dark:hover:bg-gryt-dark/50"
-            )}>
-              <Users className="w-4 h-4 mr-2" />
-              Dream Circles
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/dashboard" className={cn(
-              "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-all",
-              isActive('/dashboard') 
-                ? "bg-gryt-red text-white"
-                : "hover:bg-gryt-gray dark:hover:bg-gryt-dark/50"
-            )}>
-              <BarChart className="w-4 h-4 mr-2" />
-              Dashboard
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
+      
+      <div className="ml-auto flex items-center gap-4">
+        <ProfileMenu />
+        
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button size="icon" variant="outline" className="md:hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <div className="flex items-center justify-between mb-6">
+              <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+                <span className="text-xl font-bold text-blue-600">Gryt</span>
+              </Link>
+              <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)}>
+                <X className="h-5 w-5" />
+                <span className="sr-only">Close</span>
+              </Button>
+            </div>
+            <NavLinks />
+          </SheetContent>
+        </Sheet>
+      </div>
     </div>
   );
 };

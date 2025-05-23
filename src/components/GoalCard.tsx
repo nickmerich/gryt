@@ -1,10 +1,13 @@
 
+import { useState, useEffect } from 'react';
 import { Calendar, CheckCircle, Target, Flame, Trophy } from 'lucide-react';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import GhibliCard from './GhibliCard';
 import GhibliButton from './GhibliButton';
+import { useMilestones } from '@/hooks/useMilestones';
+import { useStreaks } from '@/hooks/useStreaks';
 
 interface Goal {
   id: string;
@@ -25,6 +28,20 @@ interface GoalCardProps {
 }
 
 const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
+  const { milestones, isLoading: loadingMilestones } = useMilestones(goal.id);
+  const { streaks, getCurrentStreak } = useStreaks(goal.id);
+  
+  const [streakCount, setStreakCount] = useState(0);
+  
+  useEffect(() => {
+    if (streaks) {
+      const count = getCurrentStreak();
+      setStreakCount(count);
+    }
+  }, [streaks, getCurrentStreak]);
+  
+  const completedMilestonesCount = milestones?.filter(m => m.is_completed).length || 0;
+
   const isCompleted = goal.progress >= 100;
   const daysUntilTarget = Math.ceil(
     (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
@@ -62,10 +79,10 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
             {goal.category}
           </Badge>
           {isCompleted && <Trophy className="w-5 h-5 text-yellow-500" />}
-          {!isCompleted && goal.streaks && goal.streaks >= 5 && 
+          {!isCompleted && streakCount >= 5 && 
             <Badge variant="outline" className="flex items-center gap-1 border-gryt-red/30 text-gryt-red">
               <Flame className="w-3 h-3" />
-              {goal.streaks}
+              {streakCount}
             </Badge>
           }
         </div>
@@ -85,11 +102,11 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
         </div>
 
         {/* Streaks */}
-        {!isCompleted && goal.streaks !== undefined && (
+        {!isCompleted && (
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-1 text-gryt-red">
               <Flame className="w-4 h-4" />
-              <span>{getStreakDescription(goal.streaks)}</span>
+              <span>{getStreakDescription(streakCount)}</span>
             </div>
             {goal.lastCheckin && <span className="text-xs text-gryt-blue/60 dark:text-gryt-light/60">
               Last update: {new Date(goal.lastCheckin).toLocaleDateString()}
@@ -102,29 +119,35 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
           <div className="flex items-center gap-2 mb-2">
             <Target className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
             <span className="text-sm font-medium text-gryt-dark/80 dark:text-gryt-gray/80">
-              Milestones ({goal.completedMilestones}/{goal.milestones.length})
+              Milestones ({completedMilestonesCount}/{milestones?.length || 0})
             </span>
           </div>
-          <div className="space-y-1">
-            {goal.milestones.slice(0, 3).map((milestone, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm">
-                <div className={`w-2 h-2 rounded-full ${
-                  index < goal.completedMilestones ? 'bg-gryt-blue dark:bg-gryt-light' : 'bg-gryt-gray dark:bg-gryt-dark/50'
-                }`} />
-                <span className={index < goal.completedMilestones ? 'text-gryt-blue dark:text-gryt-light line-through' : 'text-gryt-dark/70 dark:text-gryt-gray/70'}>
-                  {milestone}
-                </span>
-                {index < goal.completedMilestones && (
-                  <CheckCircle className="w-3 h-3 text-gryt-blue dark:text-gryt-light ml-auto" />
-                )}
-              </div>
-            ))}
-            {goal.milestones.length > 3 && (
-              <div className="text-xs text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red mt-1 pl-4 cursor-pointer hover:underline transition-colors">
-                +{goal.milestones.length - 3} more milestones
-              </div>
-            )}
-          </div>
+          {loadingMilestones ? (
+            <div className="text-sm text-gray-500">Loading milestones...</div>
+          ) : milestones && milestones.length > 0 ? (
+            <div className="space-y-1">
+              {milestones.slice(0, 3).map((milestone) => (
+                <div key={milestone.id} className="flex items-center gap-2 text-sm">
+                  <div className={`w-2 h-2 rounded-full ${
+                    milestone.is_completed ? 'bg-gryt-blue dark:bg-gryt-light' : 'bg-gryt-gray dark:bg-gryt-dark/50'
+                  }`} />
+                  <span className={milestone.is_completed ? 'text-gryt-blue dark:text-gryt-light line-through' : 'text-gryt-dark/70 dark:text-gryt-gray/70'}>
+                    {milestone.title}
+                  </span>
+                  {milestone.is_completed && (
+                    <CheckCircle className="w-3 h-3 text-gryt-blue dark:text-gryt-light ml-auto" />
+                  )}
+                </div>
+              ))}
+              {milestones.length > 3 && (
+                <div className="text-xs text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red mt-1 pl-4 cursor-pointer hover:underline transition-colors">
+                  +{milestones.length - 3} more milestones
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-sm text-gray-500">No milestones added yet</div>
+          )}
         </div>
 
         {/* Target Date */}
