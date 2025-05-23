@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from "sonner";
 import CreateGoalDialog from '@/components/CreateGoalDialog';
@@ -69,7 +68,7 @@ const Index = () => {
   };
 
   return (
-    <GhibliLayout illustrationType="mountains">
+    <GhibliLayout>
       <div className="container mx-auto px-4 py-8">
         {/* Header with Navigation and Welcome Message */}
         <WelcomeHeader onOpenCreateDialog={() => setIsCreateDialogOpen(true)} />

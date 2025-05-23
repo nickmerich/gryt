@@ -2,7 +2,6 @@
 import React from 'react';
 import MainNav from './MainNav';
 import { cn } from '@/lib/utils';
-import GhibliIllustration from './GhibliIllustration';
 import { Link } from 'react-router-dom';
 
 interface GhibliLayoutProps {
@@ -14,9 +13,7 @@ interface GhibliLayoutProps {
 
 const GhibliLayout: React.FC<GhibliLayoutProps> = ({ 
   children, 
-  illustrationType = 'landscape',
   className,
-  hideIllustration = false
 }) => {
   return (
     <div className="min-h-screen bg-gryt-gray">
@@ -55,15 +52,6 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
       </header>
       
       <main className="flex-1 relative">
-        {!hideIllustration && (
-          <div className="fixed inset-0 z-0 pointer-events-none">
-            <GhibliIllustration 
-              type={illustrationType} 
-              className="opacity-10 w-full h-full"
-            />
-          </div>
-        )}
-        
         <div className={cn(
           "relative z-10 container mx-auto py-8 px-4",
           className
@@ -72,10 +60,7 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
         </div>
       </main>
       
-      <footer className="py-4 px-4 border-t bg-white text-center text-sm text-gryt-blue relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <GhibliIllustration type="sunset" className="w-full h-full object-cover" />
-        </div>
+      <footer className="py-4 px-4 border-t bg-white text-center text-sm text-gryt-blue relative">
         <div className="container mx-auto relative z-10">
           <p>© {new Date().getFullYear()} Gryt. Journey together, achieve together.</p>
         </div>
