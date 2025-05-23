@@ -84,11 +84,12 @@ const Index = () => {
         {/* Stats Overview */}
         <StatsOverview goals={goals} />
 
-        {/* AI Goal Suggestions */}
+        {/* AI Goal Suggestions with Tracker */}
         {goals && goals.length > 0 && (
           <AISuggestions 
             goals={goals} 
             onAddGoal={addGoal}
+            onUpdateGoalProgress={handleUpdateProgress}
           />
         )}
 

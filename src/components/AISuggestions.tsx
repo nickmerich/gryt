@@ -3,25 +3,34 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GoalSuggestion from './GoalSuggestion';
+import GoalTrackerCard from './GoalTrackerCard';
 import { Goal, GoalInput } from '@/hooks/useGoals';
 import { analyzeAndSuggestGoals } from '@/utils/goalSuggestions';
 
 interface AISuggestionsProps {
   goals?: Goal[];
   onAddGoal?: (goal: GoalInput) => void;
+  onUpdateGoalProgress?: (goalId: string, newProgress: number) => void;
 }
 
-const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [], onAddGoal }) => {
+const AISuggestions: React.FC<AISuggestionsProps> = ({ 
+  goals = [], 
+  onAddGoal,
+  onUpdateGoalProgress
+}) => {
   const [suggestions, setSuggestions] = useState<ReturnType<typeof analyzeAndSuggestGoals>>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadingNewSuggestion, setLoadingNewSuggestion] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showTrackerCard, setShowTrackerCard] = useState(true);
+  const [activeGoal, setActiveGoal] = useState<Goal | undefined>(goals?.[0]);
   
   // Generate suggestions when goals change
   useEffect(() => {
     if (goals.length > 0) {
       const newSuggestions = analyzeAndSuggestGoals(goals);
       setSuggestions(newSuggestions);
+      setActiveGoal(goals[0]); // Set the first goal as active
     } else {
       setSuggestions(analyzeAndSuggestGoals([])); // Generate starter suggestions
     }
@@ -63,6 +72,15 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [], onAddGoal }) 
     // Remove the adopted suggestion and show next one
     handleSkip();
   };
+
+  const handleSwitchGoal = () => {
+    // Switch to the next goal in the list
+    if (goals && goals.length > 0) {
+      const currentIndex = goals.findIndex(g => g.id === activeGoal?.id);
+      const nextIndex = (currentIndex + 1) % goals.length;
+      setActiveGoal(goals[nextIndex]);
+    }
+  };
   
   const handleRegenerateOptions = () => {
     setLoadingNewSuggestion(true);
@@ -91,32 +109,16 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [], onAddGoal }) 
       </div>
     );
   }
-  
-  if (suggestions.length === 0) {
-    return (
-      <div className="py-4 text-center">
-        <Button 
-          variant="outline" 
-          className="bg-gryt-blue/5 hover:bg-gryt-blue/10"
-          onClick={handleRegenerateOptions}
-          disabled={loadingNewSuggestion}
-        >
-          <Sparkles className="h-4 w-4 mr-2" />
-          {loadingNewSuggestion ? 'Generating Ideas...' : 'Generate Goal Suggestions'}
-        </Button>
-      </div>
-    );
-  }
-  
+
   return (
     <div className="mb-8 space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="ghibli-subtitle flex items-center">
           <Sparkles className="h-4 w-4 mr-2 text-gryt-blue" /> 
-          Personalized Goal Suggestions
+          {showTrackerCard ? "Today's Focus" : "Personalized Goal Suggestions"}
         </h2>
         <div className="flex space-x-2">
-          {suggestions.length > 1 && (
+          {suggestions.length > 1 && !showTrackerCard && (
             <>
               <Button 
                 variant="ghost" 
@@ -144,26 +146,51 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [], onAddGoal }) 
             variant="ghost" 
             size="sm"
             className="text-sm"
-            onClick={() => setShowSuggestions(false)}
+            onClick={() => {
+              if (showTrackerCard) {
+                setShowTrackerCard(false);
+              } else {
+                setShowSuggestions(false);
+              }
+            }}
           >
-            Hide
+            {showTrackerCard ? "View Suggestions" : "Hide"}
           </Button>
         </div>
       </div>
       
       <div className="relative">
-        <div className="grid grid-cols-1 gap-4">
-          {suggestions.length > 0 && currentIndex < suggestions.length && (
-            <GoalSuggestion 
-              suggestion={suggestions[currentIndex]} 
-              onAdopt={handleAdopt} 
-              onSkip={handleSkip}
-              onAddGoal={onAddGoal}
-            />
-          )}
-        </div>
+        {showTrackerCard ? (
+          <GoalTrackerCard 
+            goal={activeGoal} 
+            onUpdateProgress={onUpdateGoalProgress}
+            onEditGoal={() => {}} // You can implement this functionality later
+            onSwitchGoal={handleSwitchGoal}
+          />
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {suggestions.length > 0 && currentIndex < suggestions.length && (
+              <GoalSuggestion 
+                suggestion={suggestions[currentIndex]} 
+                onAdopt={handleAdopt} 
+                onSkip={handleSkip}
+                onAddGoal={onAddGoal}
+              />
+            )}
+          </div>
+        )}
         
         <div className="mt-4 text-center">
+          {!showTrackerCard && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="text-xs bg-white dark:bg-gray-900 mr-2"
+              onClick={() => setShowTrackerCard(true)}
+            >
+              Back to Goal Tracker
+            </Button>
+          )}
           <Button 
             variant="outline" 
             size="sm"
