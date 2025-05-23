@@ -6,6 +6,15 @@ import type { Database } from './types';
 const SUPABASE_URL = "https://ndfuleuvpkbjdijkviaq.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZnVsZXV2cGtiamRpamt2aWFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc5NjY5NTUsImV4cCI6MjA2MzU0Mjk1NX0.c9nmS-T-xtLUqftvo3NkFiv4bFI6niC14Ni3Z5RtBA4";
 
+// Validate that required environment variables are present
+if (!SUPABASE_URL) {
+  console.error('Missing SUPABASE_URL');
+}
+
+if (!SUPABASE_PUBLISHABLE_KEY) {
+  console.error('Missing SUPABASE_PUBLISHABLE_KEY');
+}
+
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
@@ -20,3 +29,25 @@ export const supabase = createClient<Database>(
     }
   }
 );
+
+// Debug helper to check auth status
+export const checkAuthStatus = async () => {
+  try {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error('Auth status check failed:', error);
+      return { status: 'error', error };
+    }
+    
+    if (data && data.session) {
+      console.log('Auth status: Authenticated as', data.session.user.email);
+      return { status: 'authenticated', session: data.session };
+    } else {
+      console.log('Auth status: Not authenticated');
+      return { status: 'unauthenticated' };
+    }
+  } catch (err) {
+    console.error('Unexpected error checking auth status:', err);
+    return { status: 'error', error: err };
+  }
+};

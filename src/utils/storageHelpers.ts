@@ -16,6 +16,7 @@ export const ensureStorageBucket = async (bucketName: string): Promise<boolean> 
     
     // If the bucket doesn't exist, create it
     if (!bucketExists) {
+      console.log(`Creating storage bucket: ${bucketName}`);
       const { error } = await supabase
         .storage
         .createBucket(bucketName, {
@@ -24,11 +25,19 @@ export const ensureStorageBucket = async (bucketName: string): Promise<boolean> 
         });
       
       if (error) {
+        // Check if error is due to bucket already existing
+        if (error.message.includes('already exists')) {
+          console.log(`Bucket ${bucketName} already exists (race condition)`);
+          return true;
+        }
+        
         console.error(`Error creating ${bucketName} bucket:`, error);
         return false;
       }
       
       console.log(`Created storage bucket: ${bucketName}`);
+    } else {
+      console.log(`Bucket ${bucketName} already exists`);
     }
     
     return true;
