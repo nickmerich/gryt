@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Goal } from '@/hooks/useGoals'; // Use type import
+import type { Goal } from '@/hooks/useGoals'; 
 import { toast } from 'sonner';
 import { 
   ArrowLeft, 
@@ -42,7 +43,7 @@ const GoalDetail = () => {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        imageUrl: data.image_url as string | undefined, // Use type assertion for now
+        imageUrl: data.image_url || undefined, // Correctly map image_url to imageUrl with fallback
         milestones: [],
         completedMilestones: 0,
       };

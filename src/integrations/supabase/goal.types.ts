@@ -31,7 +31,7 @@ export const parseGoalRow = (goal: GoalRow): Goal => ({
   targetDate: goal.target_date || '',
   lastCheckin: goal.updated_at,
   updated_at: goal.updated_at,
-  imageUrl: goal.image_url as string | undefined, // Type assertion to handle potential missing field
+  imageUrl: goal.image_url || undefined, // Properly handle potentially undefined image_url
   milestones: [],
   completedMilestones: 0
 });
