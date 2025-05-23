@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, MessageSquare } from 'lucide-react';
+import { Home, Users, MessageSquare, BarChart } from 'lucide-react';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +36,18 @@ const MainNav = () => {
           )}>
             <Users className="w-4 h-4 mr-2" />
             Dream Circles
+          </Link>
+        </NavigationMenuItem>
+        
+        <NavigationMenuItem>
+          <Link to="/dashboard" className={cn(
+            "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors",
+            isActive('/dashboard') 
+              ? "bg-accent/50 text-accent-foreground"
+              : "hover:bg-accent hover:text-accent-foreground"
+          )}>
+            <BarChart className="w-4 h-4 mr-2" />
+            Dashboard
           </Link>
         </NavigationMenuItem>
       </NavigationMenuList>
