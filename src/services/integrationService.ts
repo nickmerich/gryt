@@ -145,54 +145,61 @@ export const getIntegrationsByCategory = () => {
   }));
 };
 
+// Mock user integrations data for development
+const mockUserIntegrations: UserIntegration[] = [
+  {
+    id: '1',
+    user_id: '123',
+    provider_id: 'strava',
+    access_token: 'mock-token',
+    created_at: new Date().toISOString(),
+    status: 'active'
+  },
+  {
+    id: '2',
+    user_id: '123',
+    provider_id: 'github',
+    access_token: 'mock-token',
+    created_at: new Date().toISOString(),
+    status: 'active'
+  }
+];
+
 // Function to get user's connected integrations
 export const getUserIntegrations = async (userId: string) => {
-  const { data, error } = await supabase
-    .from('user_integrations')
-    .select('*')
-    .eq('user_id', userId);
-    
-  if (error) {
-    console.error('Error fetching user integrations:', error);
-    throw error;
-  }
-  
-  return data as UserIntegration[];
+  // For now, return mock data until we set up the database table
+  console.log('Getting integrations for user:', userId);
+  return mockUserIntegrations.filter(integration => integration.user_id === userId);
 };
 
 // Function to connect an integration
 export const connectIntegration = async (providerId: string, token: string, userId: string) => {
-  const { data, error } = await supabase
-    .from('user_integrations')
-    .insert([
-      {
-        provider_id: providerId,
-        user_id: userId,
-        access_token: token,
-        status: 'active'
-      }
-    ])
-    .select()
-    .single();
-    
-  if (error) {
-    console.error('Error connecting integration:', error);
-    throw error;
-  }
+  console.log('Connecting integration:', providerId, 'for user:', userId);
   
-  return data;
+  // Create a new mock integration
+  const newIntegration: UserIntegration = {
+    id: Math.random().toString(36).substring(7),
+    provider_id: providerId,
+    user_id: userId,
+    access_token: token,
+    created_at: new Date().toISOString(),
+    status: 'active'
+  };
+  
+  // Add to mock data
+  mockUserIntegrations.push(newIntegration);
+  
+  return newIntegration;
 };
 
 // Function to disconnect an integration
 export const disconnectIntegration = async (integrationId: string) => {
-  const { error } = await supabase
-    .from('user_integrations')
-    .delete()
-    .eq('id', integrationId);
-    
-  if (error) {
-    console.error('Error disconnecting integration:', error);
-    throw error;
+  console.log('Disconnecting integration:', integrationId);
+  
+  // Remove from mock data
+  const index = mockUserIntegrations.findIndex(i => i.id === integrationId);
+  if (index !== -1) {
+    mockUserIntegrations.splice(index, 1);
   }
   
   return true;
