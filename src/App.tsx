@@ -14,6 +14,7 @@ import Integrations from '@/pages/Integrations';
 import IntegrationCallback from '@/pages/IntegrationCallback';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import GoalDetail from '@/pages/GoalDetail';
+import Playground from '@/pages/Playground';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -73,6 +74,11 @@ function App() {
           <Route path="/integration-callback" element={
             <ProtectedRoute>
               <IntegrationCallback />
+            </ProtectedRoute>
+          } />
+          <Route path="/playground" element={
+            <ProtectedRoute>
+              <Playground />
             </ProtectedRoute>
           } />
           <Route path="*" element={<NotFound />} />
