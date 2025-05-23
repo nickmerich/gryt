@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { IntegrationProvider } from '@/services/integrationService';
+import { IntegrationProvider } from '@/services/integration/types';
 
 interface IntegrationCardProps {
   integration: IntegrationProvider & { connected?: boolean };

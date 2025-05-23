@@ -1,7 +1,6 @@
-
 import React from 'react';
 import IntegrationCard from './IntegrationCard';
-import { IntegrationProvider } from '@/services/integrationService';
+import { IntegrationProvider } from '@/services/integration/types';
 
 interface IntegrationsGridProps {
   integrations: (IntegrationProvider & { connected?: boolean })[];

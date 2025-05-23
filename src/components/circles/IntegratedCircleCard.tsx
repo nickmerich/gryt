@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Link2, CheckCircle } from 'lucide-react';
-import { IntegrationProvider } from '@/services/integrationService';
+import { IntegrationProvider } from '@/services/integration/types';
 import { toast } from 'sonner';
 
 interface IntegratedCircleCardProps {

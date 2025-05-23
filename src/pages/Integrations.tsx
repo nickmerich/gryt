@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,7 +8,7 @@ import GhibliLayout from '@/components/GhibliLayout';
 import IntegrationsGrid from '@/components/integrations/IntegrationsGrid';
 import ConnectIntegrationDialog from '@/components/integrations/ConnectIntegrationDialog';
 import { useIntegrations } from '@/hooks/useIntegrations';
-import { IntegrationProvider, getIntegrationsByCategory } from '@/services/integrationService';
+import { IntegrationProvider, getIntegrationsByCategory } from '@/services/integration';
 
 const Integrations = () => {
   const navigate = useNavigate();

@@ -11,7 +11,7 @@ import {
   connectIntegration,
   disconnectIntegration,
   handleOAuthCallback
-} from '@/services/integrationService';
+} from '@/services/integration';
 
 export const useIntegrations = () => {
   const { user } = useAuth();
