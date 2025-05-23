@@ -84,7 +84,12 @@ const Index = () => {
         <StatsOverview goals={goals} />
 
         {/* AI Goal Suggestions */}
-        {goals && goals.length > 0 && <AISuggestions goals={goals} />}
+        {goals && goals.length > 0 && (
+          <AISuggestions 
+            goals={goals} 
+            onAddGoal={addGoal}
+          />
+        )}
 
         {/* Dream Circles Callout */}
         <DreamCirclesCallout />

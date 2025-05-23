@@ -1,10 +1,9 @@
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from "sonner";
 
-// Update the Goal interface to include imageUrl property
+// Update the Goal interface to include the missing properties
 export interface Goal {
   id: string;
   title: string;
@@ -15,6 +14,8 @@ export interface Goal {
   lastCheckin?: string;
   imageUrl?: string;  // Add this property
   updated_at?: string; // Add this for StatsOverview component
+  milestones?: any[]; // Add the missing properties
+  completedMilestones?: number; // Add the missing properties
 }
 
 export interface GoalInput {
@@ -183,7 +184,7 @@ const useGoals = () => {
     },
   });
 
-  // Make sure the parseGoal function maps image_url to imageUrl
+  // Update the parseGoal function to include the missing properties
   const parseGoal = (goal: any): Goal => ({
     id: goal.id,
     title: goal.title,
@@ -193,7 +194,9 @@ const useGoals = () => {
     targetDate: goal.target_date,
     lastCheckin: goal.updated_at,
     updated_at: goal.updated_at,
-    imageUrl: goal.image_url // Map the database column to the interface property
+    imageUrl: goal.image_url,
+    milestones: [], // Add default value for milestones
+    completedMilestones: 0 // Add default value for completedMilestones
   });
 
   return {

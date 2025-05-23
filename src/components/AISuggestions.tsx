@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GoalSuggestion from './GoalSuggestion';
-import { Goal } from '@/hooks/useGoals';
+import { Goal, GoalInput } from '@/hooks/useGoals';
 import { analyzeAndSuggestGoals } from '@/utils/goalSuggestions';
 
 interface AISuggestionsProps {
   goals?: Goal[];
+  onAddGoal?: (goal: GoalInput) => void;
 }
 
-const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [] }) => {
+const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [], onAddGoal }) => {
   const [suggestions, setSuggestions] = useState<ReturnType<typeof analyzeAndSuggestGoals>>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loadingNewSuggestion, setLoadingNewSuggestion] = useState(false);
@@ -157,6 +158,7 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ goals = [] }) => {
               suggestion={suggestions[currentIndex]} 
               onAdopt={handleAdopt} 
               onSkip={handleSkip}
+              onAddGoal={onAddGoal}
             />
           )}
         </div>
