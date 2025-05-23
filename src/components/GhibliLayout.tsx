@@ -3,6 +3,7 @@ import React from 'react';
 import MainNav from './MainNav';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import GrytLogo from './GrytLogo';
 
 interface GhibliLayoutProps {
   children: React.ReactNode;
@@ -21,9 +22,7 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
         <div className="container mx-auto flex justify-between items-center p-4">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <div className="w-8 h-8 bg-gryt-blue rounded-lg flex items-center justify-center text-white mr-2">
-                <span className="font-bold">G</span>
-              </div>
+              <GrytLogo size="sm" className="mr-2" />
               <span className="font-bold text-lg text-gryt-blue">Gryt</span>
             </Link>
             <nav className="ml-8 hidden md:flex space-x-6">
