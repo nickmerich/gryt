@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -38,11 +39,13 @@ const GoalDetail = () => {
       if (error) throw error;
       
       // Parse date fields and convert progress
+      // Use type assertion to handle the image_url property which exists in the database
+      // but isn't included in the TypeScript type definition
       return {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        imageUrl: data.image_url || undefined, // Using type from Goal interface
+        imageUrl: (data as any).image_url || undefined, // Use type assertion to safely access image_url
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };
