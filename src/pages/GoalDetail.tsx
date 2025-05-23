@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -43,8 +42,7 @@ const GoalDetail = () => {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        // Handle image_url safely with type assertion since it might be added later to the database
-        imageUrl: (data as any).image_url || undefined,
+        imageUrl: data.image_url || undefined, // Using type from Goal interface
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };
