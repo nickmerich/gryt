@@ -16,6 +16,8 @@ interface OnboardingSandboxProps {
 // Define a custom type for our demo goal that extends Goal but includes todos
 interface DemoGoal extends Goal {
   todos: { id: string; title: string; isCompleted: boolean }[];
+  // Adding userId as an additional property specific to our DemoGoal
+  userId: string;
 }
 
 const OnboardingSandbox = ({ mode }: OnboardingSandboxProps) => {
