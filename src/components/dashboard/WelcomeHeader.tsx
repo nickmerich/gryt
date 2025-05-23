@@ -14,9 +14,9 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
   // Get the time of day to display an appropriate greeting
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
   };
   
   const userName = user?.email?.split('@')[0] || 'there';
@@ -47,7 +47,7 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
             Welcome to Gryt — Where Goals Get Done
           </h1>
           <p className="text-gray-600">
-            {getGreeting()} {userName}! Your journey to achievement continues.
+            {getGreeting()}, {userName}. Let's build momentum today.
           </p>
         </div>
         <div className="md:w-1/3">
