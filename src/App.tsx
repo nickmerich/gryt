@@ -12,6 +12,7 @@ import Circles from "./pages/Circles";
 import CircleDetail from "./pages/CircleDetail";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
+import Community from "./pages/Community";
 import GhibliLayout from "./components/GhibliLayout";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
               <Route path="/circles" element={<Circles />} />
               <Route path="/circles/:circleId" element={<CircleDetail />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/community" element={<Community />} />
             </Route>
             
             {/* 404 route */}
