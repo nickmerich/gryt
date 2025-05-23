@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
@@ -16,6 +17,7 @@ import { LogOut, Settings, User } from "lucide-react";
 const ProfileMenu = () => {
   const { user, signOut } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     setIsLoading(true);
@@ -24,6 +26,14 @@ const ProfileMenu = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleNavigateToProfile = () => {
+    navigate("/profile");
+  };
+
+  const handleNavigateToSettings = () => {
+    navigate("/settings");
   };
 
   if (!user) return null;
@@ -54,11 +64,11 @@ const ProfileMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem className="cursor-pointer" onClick={handleNavigateToProfile}>
           <User className="mr-2 h-4 w-4" />
           <span>Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem className="cursor-pointer" onClick={handleNavigateToSettings}>
           <Settings className="mr-2 h-4 w-4" />
           <span>Settings</span>
         </DropdownMenuItem>
