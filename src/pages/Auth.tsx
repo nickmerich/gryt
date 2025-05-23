@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +8,9 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import GhibliButton from '@/components/GhibliButton';
 import { Eye, EyeOff, Target, Puzzle, TrendingUp, Link, Users } from 'lucide-react';
-import { Navigate, Link as RouterLink } from 'react-router-dom';
+import { Navigate, Link as RouterLink, useSearchParams } from 'react-router-dom';
+import PasswordResetForm from '@/components/PasswordResetForm';
+import UpdatePasswordForm from '@/components/UpdatePasswordForm';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -18,10 +19,27 @@ const Auth = () => {
   const { signIn, signUp, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [searchParams] = useSearchParams();
 
-  // Redirect if user is already authenticated
-  if (user) {
+  // Check if this is a password reset mode
+  const mode = searchParams.get('mode');
+  const isPasswordReset = mode === 'reset';
+
+  // Redirect if user is already authenticated (except for password reset)
+  if (user && !isPasswordReset) {
     return <Navigate to="/" />;
+  }
+
+  // Show password update form if in reset mode
+  if (isPasswordReset) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background to-gryt-gray/20">
+        <div className="w-full max-w-md">
+          <UpdatePasswordForm />
+        </div>
+      </div>
+    );
   }
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -109,10 +127,22 @@ const Auth = () => {
     setShowPassword(!showPassword);
   };
 
+  // Show password reset form
+  if (showPasswordReset) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background to-gryt-gray/20">
+        <div className="w-full max-w-md">
+          <PasswordResetForm onBack={() => setShowPasswordReset(false)} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left side - How Gryt Works */}
       <div className="md:w-1/2 bg-gradient-to-br from-gryt-dark/95 to-gryt-blue/70 text-white p-8 flex items-center justify-center">
+        {/* ... keep existing code (left side content) */}
         <div className="max-w-md space-y-8 slide-animation">
           <div>
             <h1 className="ghibli-title text-4xl mb-4 text-white">🌱 How <span className="text-gryt-red">Gryt</span> Works</h1>
@@ -252,9 +282,13 @@ const Auth = () => {
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <Label htmlFor="password-signin">Password</Label>
-                            <a href="#" className="text-sm text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red">
+                            <button 
+                              type="button"
+                              onClick={() => setShowPasswordReset(true)}
+                              className="text-sm text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red"
+                            >
                               Forgot password?
-                            </a>
+                            </button>
                           </div>
                           <div className="relative">
                             <Input
