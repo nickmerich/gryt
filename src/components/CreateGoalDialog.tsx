@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Calendar, Plus, Target } from 'lucide-react';
+import { Calendar, Plus, Target, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,6 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { GoalInput } from '@/hooks/useGoals';
+import { generateMilestonesForGoal, GeneratedMilestone } from '@/utils/milestoneGenerator';
+import { toast } from 'sonner';
 
 interface CreateGoalDialogProps {
   open: boolean;
@@ -23,6 +25,7 @@ const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialog
     target_date: '',
   });
   
+  const [generatedMilestones, setGeneratedMilestones] = useState<GeneratedMilestone[]>([]);
   const [milestones, setMilestones] = useState<string[]>(['']);
 
   const categories = [
@@ -50,6 +53,7 @@ const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialog
       target_date: '',
     });
     setMilestones(['']);
+    setGeneratedMilestones([]);
   };
 
   const addMilestone = () => {
@@ -66,6 +70,26 @@ const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialog
     if (milestones.length > 1) {
       setMilestones(milestones.filter((_, i) => i !== index));
     }
+  };
+
+  const generateMilestones = () => {
+    if (!formData.title || !formData.category) {
+      toast.error("Please provide at least a title and category to generate milestones");
+      return;
+    }
+
+    // Generate milestones using our utility
+    const result = generateMilestonesForGoal(formData);
+    setGeneratedMilestones(result.milestones);
+
+    // Also update the milestones array with the generated milestone names
+    setMilestones(result.milestones.map(m => m.name));
+    
+    toast.success("Generated milestones and tasks for your goal!");
+  };
+
+  const useSuggestedMilestones = () => {
+    setMilestones(generatedMilestones.map(m => m.name));
   };
 
   return (
@@ -138,6 +162,53 @@ const CreateGoalDialog = ({ open, onOpenChange, onCreateGoal }: CreateGoalDialog
               />
             </div>
           </div>
+
+          {/* Generate Milestones Button */}
+          <div>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={generateMilestones}
+              className="w-full border-blue-300 text-blue-600 hover:bg-blue-50"
+            >
+              <Target className="w-4 h-4 mr-2" />
+              Generate Milestones & Tasks
+            </Button>
+          </div>
+
+          {/* Generated Milestones Preview */}
+          {generatedMilestones.length > 0 && (
+            <div className="space-y-4 border rounded-md p-4 bg-blue-50/50">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-blue-700">Suggested Milestones</h3>
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={useSuggestedMilestones}
+                  className="text-xs text-blue-600 hover:text-blue-800"
+                >
+                  <Check className="w-3 h-3 mr-1" />
+                  Use These
+                </Button>
+              </div>
+              <div className="space-y-2 max-h-40 overflow-y-auto text-sm">
+                {generatedMilestones.map((milestone, i) => (
+                  <div key={i} className="pb-2">
+                    <p className="font-medium text-gray-800">{milestone.name}</p>
+                    <ul className="list-disc pl-5 text-xs text-gray-600 mt-1">
+                      {milestone.tasks.slice(0, 3).map((task, j) => (
+                        <li key={j}>{task.title}</li>
+                      ))}
+                      {milestone.tasks.length > 3 && (
+                        <li className="text-gray-500 italic">+{milestone.tasks.length - 3} more tasks</li>
+                      )}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Milestones - We'll handle these separately after goal creation */}
           <div className="space-y-2">
