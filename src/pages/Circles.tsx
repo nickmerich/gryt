@@ -8,7 +8,7 @@ import CircleCard, { Circle, CircleMember } from '@/components/circles/CircleCar
 import { toast } from "sonner";
 import GhibliButton from '@/components/GhibliButton';
 
-// Sample data for the Dream Circles
+// Sample data for the Goal Circles
 const sampleMembers: CircleMember[] = [
   { id: '1', name: 'Alex Johnson', avatar: 'https://i.pravatar.cc/150?img=1' },
   { id: '2', name: 'Sam Taylor', avatar: 'https://i.pravatar.cc/150?img=2' },
@@ -116,7 +116,7 @@ const Circles = () => {
         
         {/* Hero section */}
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gryt-dark mb-2">Dream Circles</h1>
+          <h1 className="text-3xl font-bold text-gryt-dark mb-2">Goal Circles</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Join micro-communities centered around specific goals. Share progress, overcome challenges, 
             and celebrate wins with people on similar journeys.

@@ -10,7 +10,7 @@ const DreamCirclesCallout = () => {
       <div>
         <div className="flex items-center mb-3">
           <Users className="h-6 w-6 text-gryt-blue mr-2" />
-          <h3 className="text-2xl font-semibold text-gryt-blue">Dream Circles</h3>
+          <h3 className="text-2xl font-semibold text-gryt-blue">Goal Circles</h3>
         </div>
         
         <p className="mb-5 text-gryt-dark dark:text-gryt-gray text-base leading-relaxed max-w-2xl">
