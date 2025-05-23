@@ -18,10 +18,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       console.log('Auth state: Loading');
     } else if (session) {
       console.log('Auth state: Authenticated', session.user.id);
+      console.log('Current path:', location.pathname);
     } else {
       console.log('Auth state: Not authenticated, redirecting to auth page');
+      console.log('Current path:', location.pathname);
+      console.log('Redirecting from:', location);
     }
-  }, [loading, session]);
+  }, [loading, session, location]);
 
   if (loading) {
     return (
@@ -33,6 +36,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!session || !user) {
+    // Save the current path to redirect back after login
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 

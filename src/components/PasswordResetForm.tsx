@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { ArrowLeft, Mail } from 'lucide-react';
+import { ArrowLeft, Mail, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface PasswordResetFormProps {
@@ -16,34 +16,45 @@ const PasswordResetForm: React.FC<PasswordResetFormProps> = ({ onBack }) => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [formError, setFormError] = useState('');
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
     
     if (!email.trim()) {
+      setFormError('Please enter your email address');
       toast.error('Please enter your email address');
       return;
     }
     
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
+      setFormError('Please enter a valid email address');
       toast.error('Please enter a valid email address');
       return;
     }
     
     setIsLoading(true);
     try {
+      console.log('Sending password reset email to:', email);
+      
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth?mode=reset`,
       });
       
       if (error) {
+        console.error('Password reset error:', error);
+        setFormError(error.message);
         toast.error(`Error: ${error.message}`);
       } else {
+        console.log('Password reset email sent successfully');
         setIsEmailSent(true);
         toast.success('Password reset email sent! Check your inbox.');
       }
     } catch (error: any) {
+      console.error('Unexpected error during password reset:', error);
+      setFormError(error.message || 'An unexpected error occurred');
       toast.error(error.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
@@ -101,6 +112,12 @@ const PasswordResetForm: React.FC<PasswordResetFormProps> = ({ onBack }) => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handlePasswordReset} className="space-y-4">
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-sm text-red-600">
+              <AlertTriangle size={16} />
+              {formError}
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="reset-email">Email</Label>
             <Input

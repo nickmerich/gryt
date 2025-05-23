@@ -34,10 +34,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setSession(currentSession);
           setUser(currentSession?.user ?? null);
           console.log('User signed in:', currentSession?.user?.email);
+          
+          // Don't navigate immediately in the auth state change handler
+          // This prevents potential issues with React state updates
+          setTimeout(() => {
+            if (window.location.pathname === '/auth') {
+              navigate('/');
+            }
+          }, 0);
         } else if (event === 'SIGNED_OUT') {
           setSession(null);
           setUser(null);
           console.log('User signed out');
+          
+          // Use setTimeout to avoid state update issues
+          setTimeout(() => {
+            navigate('/auth');
+          }, 0);
+        } else if (event === 'PASSWORD_RECOVERY') {
+          console.log('Password recovery email clicked');
+        } else if (event === 'USER_UPDATED') {
+          console.log('User updated:', currentSession?.user?.email);
+          // Refresh the session
+          setSession(currentSession);
+          setUser(currentSession?.user ?? null);
         }
         
         setLoading(false);
@@ -47,6 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Then check for existing session
     const initializeAuth = async () => {
       try {
+        console.log('Checking for existing session...');
         const { data: { session: initialSession } } = await supabase.auth.getSession();
         setSession(initialSession);
         setUser(initialSession?.user ?? null);
@@ -68,10 +89,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   const signIn = async (email: string, password: string) => {
     try {
+      console.log('Signing in user:', email);
       setLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -84,8 +106,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       
       if (data.user) {
+        console.log('Sign in successful:', data.user.email);
         toast.success('Signed in successfully!');
-        navigate('/');
+        // We don't need to navigate here as the onAuthStateChange listener will do it
       }
       
       return { error: null };
@@ -99,6 +122,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUp = async (email: string, password: string) => {
     try {
+      console.log('Creating new user account:', email);
       setLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -114,11 +138,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const emailConfirmationRequired = data?.user && !data.user?.confirmed_at;
       
       if (data.user && !emailConfirmationRequired) {
+        console.log('Account created successfully (no confirmation required):', data.user.email);
         toast.success('Account created successfully!');
-        navigate('/');
+        // We don't need to navigate here as the onAuthStateChange listener will do it
         return { error: null };
       }
       
+      console.log('Account created, email confirmation required:', email);
       toast.success('Account created! Please check your email to confirm your account.');
       return { error: null, emailConfirmationRequired: true };
     } catch (error: any) {
@@ -131,14 +157,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     try {
+      console.log('Signing out user');
       setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('Sign out error:', error.message);
         toast.error('Failed to sign out: ' + error.message);
       } else {
+        console.log('User signed out successfully');
         toast.success('Signed out successfully');
-        navigate('/auth');
+        // We don't need to navigate here as the onAuthStateChange listener will do it
       }
     } catch (error: any) {
       console.error('Unexpected sign out error:', error);

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, CheckCircle, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const UpdatePasswordForm: React.FC = () => {
@@ -16,14 +16,34 @@ const UpdatePasswordForm: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [formError, setFormError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check if this is a password reset session
     const checkSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error || !session) {
-        toast.error('Invalid or expired reset link');
+      try {
+        console.log('Checking session for password reset...');
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Session check error:', error);
+          toast.error('Invalid or expired reset link');
+          navigate('/auth');
+          return;
+        }
+        
+        if (!session) {
+          console.warn('No active session found for password reset');
+          toast.error('Invalid or expired reset link. Please request a new one.');
+          navigate('/auth');
+          return;
+        }
+        
+        console.log('Valid session found for password reset');
+      } catch (error: any) {
+        console.error('Unexpected error checking session:', error);
+        toast.error('An unexpected error occurred');
         navigate('/auth');
       }
     };
@@ -31,37 +51,55 @@ const UpdatePasswordForm: React.FC = () => {
     checkSession();
   }, [navigate]);
 
+  const validatePassword = (pass: string): boolean => {
+    if (pass.length < 6) {
+      setFormError('Password must be at least 6 characters long');
+      return false;
+    }
+    return true;
+  };
+
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
     
     if (!password.trim() || !confirmPassword.trim()) {
+      setFormError('Please fill in all fields');
       toast.error('Please fill in all fields');
       return;
     }
     
-    if (password.length < 6) {
+    if (!validatePassword(password)) {
       toast.error('Password should be at least 6 characters long');
       return;
     }
     
     if (password !== confirmPassword) {
+      setFormError('Passwords do not match');
       toast.error('Passwords do not match');
       return;
     }
     
     setIsLoading(true);
     try {
+      console.log('Updating password...');
+      
       const { error } = await supabase.auth.updateUser({
         password: password
       });
       
       if (error) {
+        console.error('Password update error:', error);
+        setFormError(`Error updating password: ${error.message}`);
         toast.error(`Error updating password: ${error.message}`);
       } else {
+        console.log('Password updated successfully');
         setIsUpdated(true);
         toast.success('Password updated successfully!');
       }
     } catch (error: any) {
+      console.error('Unexpected error updating password:', error);
+      setFormError(error.message || 'An unexpected error occurred');
       toast.error(error.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
@@ -102,6 +140,12 @@ const UpdatePasswordForm: React.FC = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleUpdatePassword} className="space-y-4">
+          {formError && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-sm text-red-600">
+              <AlertTriangle size={16} />
+              {formError}
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="new-password">New Password</Label>
             <div className="relative">
