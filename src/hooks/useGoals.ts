@@ -15,6 +15,10 @@ export interface Goal {
   user_id: string;
   created_at: string;
   updated_at: string;
+  milestones: any[];  // Adding required properties
+  completedMilestones: number;  // Adding required properties
+  streaks?: number;  // Optional property used in some components
+  lastCheckin?: string;  // Optional property used in some components
 }
 
 export interface GoalInput {
@@ -45,6 +49,7 @@ export const useGoals = () => {
       }
       
       // Transform snake_case to camelCase for the expected Goal interface
+      // and include all required properties
       return (data || []).map(goal => ({
         id: goal.id,
         title: goal.title,
@@ -54,7 +59,11 @@ export const useGoals = () => {
         progress: goal.progress,
         user_id: goal.user_id,
         created_at: goal.created_at,
-        updated_at: goal.updated_at
+        updated_at: goal.updated_at,
+        milestones: [],  // Initialize with empty array
+        completedMilestones: 0,  // Initialize with zero
+        streaks: 0,  // Initialize optional properties
+        lastCheckin: new Date(goal.updated_at).toISOString().split('T')[0]
       }));
     },
     enabled: !!user,

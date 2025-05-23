@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Plus, Calendar, ChevronRight, BarChart, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -254,18 +253,7 @@ const Index = () => {
             {goals.map((goal) => (
               <GoalCard 
                 key={goal.id} 
-                goal={{
-                  id: goal.id,
-                  title: goal.title,
-                  description: goal.description,
-                  category: goal.category,
-                  targetDate: goal.targetDate,
-                  progress: goal.progress,
-                  milestones: [], // Will be fetched in the GoalCard component
-                  completedMilestones: 0, // Will be calculated in the GoalCard component
-                  streaks: 0, // Will be calculated in the GoalCard component
-                  lastCheckin: new Date(goal.updated_at).toISOString().split('T')[0]
-                }}
+                goal={goal}
                 onUpdateProgress={handleUpdateProgress}
               />
             ))}
