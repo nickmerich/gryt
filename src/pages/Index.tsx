@@ -72,10 +72,10 @@ const Index = () => {
   return (
     <GhibliLayout illustrationType="mountains">
       <div className="container mx-auto px-4 py-8">
-        {/* Header with Navigation */}
+        {/* Header with Navigation and Welcome Message */}
         <WelcomeHeader onOpenCreateDialog={() => setIsCreateDialogOpen(true)} />
 
-        {/* Progress Visualization Gallery - MOVED TO TOP */}
+        {/* Progress Visualization Gallery */}
         <div className="mb-8">
           <h2 className="ghibli-subtitle mb-4">Your Growth Visualization</h2>
           {goals && <ProgressGallery goals={goals} />}
@@ -95,7 +95,7 @@ const Index = () => {
         {/* Dream Circles Callout */}
         <DreamCirclesCallout />
 
-        {/* NEW: Integrations Feature */}
+        {/* Integrations Feature */}
         <IntegrationsFeature />
 
         {/* AI Insights */}
@@ -104,7 +104,7 @@ const Index = () => {
         {/* Weekly Review Section */}
         <WeeklyReview goals={goals} isLoading={isLoading} />
 
-        {/* Goals Section - MOVED TO BOTTOM */}
+        {/* Goals Section */}
         <GoalsList 
           goals={goals}
           isLoading={isLoading}

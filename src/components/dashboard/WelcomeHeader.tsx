@@ -41,16 +41,19 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
         </div>
       </div>
 
-      <div className="bg-gryt-light rounded-lg p-6 mb-8 slide-animation flex items-center justify-between">
-        <div className="text-left">
-          <h1 className="text-2xl font-bold text-gryt-blue mb-1">
-            {getGreeting()} {userName}!
+      <div className="bg-gryt-light rounded-lg p-6 mb-8 slide-animation flex flex-col md:flex-row items-center justify-between">
+        <div className="text-left mb-4 md:mb-0 md:w-2/3">
+          <h1 className="text-2xl font-bold text-gryt-blue mb-2">
+            Welcome to Gryt: The All-in-One Goal Achievement Platform
           </h1>
-          <p className="text-gray-600 italic">
-            "Journey together, achieve together."
+          <p className="text-gray-600 italic mb-2">
+            In a world full of motivation noise, Gryt gives you structure, strategy, and support.
+          </p>
+          <p className="text-gray-600">
+            {getGreeting()} {userName}! Your journey to achievement continues.
           </p>
         </div>
-        <div className="hidden md:block w-1/3">
+        <div className="md:w-1/3">
           <GhibliIllustration 
             type="sunset" 
             className="h-32 w-full rounded-lg opacity-80"
