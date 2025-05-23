@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import MainNav from '@/components/MainNav';
@@ -9,6 +8,8 @@ import { Circle, CircleMember } from '@/components/circles/CircleCard';
 import { toast } from "sonner";
 import GhibliIllustration from '@/components/GhibliIllustration';
 import { useIntegrations } from '@/hooks/useIntegrations';
+import { Link } from 'react-router-dom';
+import GhibliButton from '@/components/GhibliButton';
 
 // Sample data for the Goal Circles
 const sampleMembers: CircleMember[] = [
@@ -110,20 +111,26 @@ const Circles = () => {
 
   return (
     <div className="min-h-screen bg-gryt-gray">
-      <div className="container mx-auto px-4 py-8">
-        {/* Simple header with just profile menu */}
-        <div className="flex justify-end mb-8">
+      <div className="container mx-auto px-4 py-4">
+        {/* Header with profile menu and back button */}
+        <div className="flex justify-between items-center mb-6">
+          <Link to="/">
+            <GhibliButton variant="ghost" size="sm" className="gap-1">
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </GhibliButton>
+          </Link>
           <MainNav />
         </div>
         
-        {/* Hero section - Elevated and styled as main focus */}
-        <div className="min-h-[25vh] flex flex-col items-center justify-center py-12 mb-10 relative">
+        {/* Hero section - Moved up with less padding */}
+        <div className="min-h-[20vh] flex flex-col items-center justify-center py-6 mb-8 relative">
           <div className="absolute inset-0 z-0 opacity-10">
             <GhibliIllustration type="mountains" className="w-full h-full" />
           </div>
           <div className="text-center relative z-10 max-w-3xl mx-auto">
-            <h1 className="text-4xl font-bold text-gryt-dark mb-4">Goal Circles</h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <h1 className="text-4xl font-bold text-gryt-dark mb-3">Goal Circles</h1>
+            <p className="text-xl text-gray-600 mb-6">
               Join micro-communities centered around specific goals. Share progress, overcome challenges, 
               and celebrate wins with people on similar journeys.
             </p>
