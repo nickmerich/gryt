@@ -12,12 +12,19 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { Comment } from './Comment';
 
 interface CircleFeedProps {
   posts: Post[];
   onCreatePost: (content: string, category: string, goalId?: string) => void;
   onLikePost: (postId: string) => void;
+  onCommentPost: (postId: string, content: string) => void;
   goals: { id: string, title: string }[];
+  currentUser?: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
 }
 
 type CategoryFilter = 'all' | 'celebration' | 'progress' | 'challenge' | 'general';
@@ -33,7 +40,9 @@ const CircleFeed: React.FC<CircleFeedProps> = ({
   posts, 
   onCreatePost, 
   onLikePost,
-  goals
+  onCommentPost,
+  goals,
+  currentUser
 }) => {
   const [activeFilter, setActiveFilter] = useState<CategoryFilter>('all');
 
@@ -84,7 +93,13 @@ const CircleFeed: React.FC<CircleFeedProps> = ({
       <div className="space-y-4">
         {filteredPosts.length > 0 ? (
           filteredPosts.map(post => (
-            <CirclePost key={post.id} post={post} onLike={onLikePost} />
+            <CirclePost 
+              key={post.id} 
+              post={post} 
+              onLike={onLikePost}
+              onComment={onCommentPost}
+              currentUser={currentUser}
+            />
           ))
         ) : (
           <div className="text-center py-8 bg-muted/40 rounded-lg">

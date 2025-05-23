@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Users } from 'lucide-react';
@@ -8,6 +7,7 @@ import MainNav from '@/components/MainNav';
 import GhibliButton from '@/components/GhibliButton';
 import { Circle, CircleMember } from '@/components/circles/CircleCard';
 import { Post } from '@/components/circles/CirclePost';
+import { Comment } from '@/components/circles/Comment';
 import CircleDetailHeader from '@/components/circles/CircleDetailHeader';
 import CircleOverviewTab from '@/components/circles/CircleOverviewTab';
 import CircleMembersTab from '@/components/circles/CircleMembersTab';
@@ -100,6 +100,13 @@ const CircleDetail = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [leaderboardSort, setLeaderboardSort] = useState<'streak' | 'progress'>('streak');
   
+  // Current user information
+  const currentUser = {
+    id: 'current-user',
+    name: 'You',
+    avatar: 'https://i.pravatar.cc/150?img=8'
+  };
+  
   useEffect(() => {
     // In a real app, fetch circle data from API
     const foundCircle = circlesData.find(c => c.id === circleId);
@@ -107,7 +114,11 @@ const CircleDetail = () => {
       setCircle(foundCircle);
       
       // In a real app, fetch posts for this circle from API
-      setPosts(samplePosts);
+      // Add empty commentsList to each post
+      setPosts(samplePosts.map(post => ({
+        ...post,
+        commentsList: []
+      })));
     }
   }, [circleId]);
 
@@ -141,6 +152,31 @@ const CircleDetail = () => {
       }
       return post;
     }));
+  };
+  
+  const handleCommentPost = (postId: string, content: string) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        const newComment: Comment = {
+          id: Date.now().toString(),
+          author: currentUser,
+          content,
+          timestamp: 'Just now',
+          createdAt: new Date()
+        };
+        
+        const commentsList = post.commentsList || [];
+        
+        return {
+          ...post,
+          comments: post.comments + 1,
+          commentsList: [newComment, ...commentsList]
+        };
+      }
+      return post;
+    }));
+    
+    toast.success('Comment added!');
   };
   
   const handleShare = () => {
@@ -196,6 +232,8 @@ const CircleDetail = () => {
               onSortChange={setLeaderboardSort}
               onCreatePost={handleCreatePost}
               onLikePost={handleLikePost}
+              onCommentPost={handleCommentPost}
+              currentUser={currentUser}
             />
           </TabsContent>
           

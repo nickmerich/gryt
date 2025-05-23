@@ -5,6 +5,7 @@ import CircleLeaderboard from './CircleLeaderboard';
 import CircleFeed from './CircleFeed';
 import { CircleMember } from '@/components/circles/CircleCard';
 import { Post } from '@/components/circles/CirclePost';
+import { Comment } from './Comment';
 
 interface CircleOverviewTabProps {
   weeklyPrompt: {
@@ -19,6 +20,12 @@ interface CircleOverviewTabProps {
   onSortChange: (sort: 'streak' | 'progress') => void;
   onCreatePost: (content: string, category: string, goalId?: string) => void;
   onLikePost: (postId: string) => void;
+  onCommentPost: (postId: string, content: string) => void;
+  currentUser?: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
 }
 
 const CircleOverviewTab: React.FC<CircleOverviewTabProps> = ({
@@ -29,7 +36,9 @@ const CircleOverviewTab: React.FC<CircleOverviewTabProps> = ({
   leaderboardSort,
   onSortChange,
   onCreatePost,
-  onLikePost
+  onLikePost,
+  onCommentPost,
+  currentUser
 }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -52,7 +61,9 @@ const CircleOverviewTab: React.FC<CircleOverviewTabProps> = ({
           posts={posts} 
           onCreatePost={onCreatePost} 
           onLikePost={onLikePost}
-          goals={goals} 
+          onCommentPost={onCommentPost}
+          goals={goals}
+          currentUser={currentUser}
         />
       </div>
     </div>
