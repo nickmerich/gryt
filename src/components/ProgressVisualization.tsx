@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { Goal } from '@/hooks/useGoals';
 import { cn } from '@/lib/utils';
-import { Tree, Leaf } from 'lucide-react';
+import { Trees, Leaf } from 'lucide-react';
 import { useMilestones } from '@/hooks/useMilestones';
 
 interface ProgressVisualizationProps {
@@ -76,7 +76,7 @@ const ProgressVisualization: React.FC<ProgressVisualizationProps> = ({
           {currentStage.element === 'seed' ? (
             <div className="w-4 h-4 rounded-full bg-brown-600" />
           ) : (
-            <Tree 
+            <Trees 
               className={cn(
                 "transition-all duration-700", 
                 currentStage.color

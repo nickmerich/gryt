@@ -8,19 +8,7 @@ import GhibliButton from './GhibliButton';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
 import ProgressVisualization from './ProgressVisualization';
-
-interface Goal {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  targetDate: string;
-  progress: number;
-  milestones: string[];
-  completedMilestones: number;
-  streaks?: number;
-  lastCheckin?: string;
-}
+import { Goal } from '@/hooks/useGoals';
 
 interface GoalCardProps {
   goal: Goal;
