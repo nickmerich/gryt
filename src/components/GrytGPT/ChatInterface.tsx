@@ -180,7 +180,7 @@ const ChatInterface = ({ goals }: ChatInterfaceProps) => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1 min-h-[60px] resize-none border-gray-300 focus:border-blue-500"
-            maxRows={4}
+            rows={2}
           />
           <Button 
             className="self-end bg-blue-600 hover:bg-blue-700 min-w-[40px]"
