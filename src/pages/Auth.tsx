@@ -7,10 +7,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import GhibliIllustration from '@/components/GhibliIllustration';
 import GhibliButton from '@/components/GhibliButton';
-import { Eye, EyeOff } from 'lucide-react';
-import { Navigate } from 'react-router-dom';
+import { Eye, EyeOff, Target, Puzzle, TrendingUp, Link, Users } from 'lucide-react';
+import { Navigate, Link as RouterLink } from 'react-router-dom';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -112,22 +111,73 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - Illustration */}
-      <div className="hidden md:flex md:w-1/2 relative">
-        <GhibliIllustration 
-          type="foggy" 
-          className="absolute inset-0 w-full h-full"
-          animate={true}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-gryt-dark/40 to-transparent flex items-center justify-center">
-          <div className="text-white max-w-md p-8">
-            <h1 className="ghibli-title text-4xl mb-4 text-white">Journey with <span className="text-gryt-red">Gryt</span></h1>
-            <p className="ghibli-subtitle mb-6 text-gryt-gray">
-              "The most beautiful things in the world cannot be seen or touched, they are felt with the heart."
-            </p>
-            <p className="text-gryt-gray/80 text-sm">
-              Gryt is your companion on the path of personal growth and achievement, inspired by the perseverance and wonder found in life's journey.
-            </p>
+      {/* Left side - How Gryt Works */}
+      <div className="md:w-1/2 bg-gradient-to-br from-gryt-dark/95 to-gryt-blue/70 text-white p-8 flex items-center justify-center">
+        <div className="max-w-md space-y-8 slide-animation">
+          <div>
+            <h1 className="ghibli-title text-4xl mb-4 text-white">🌱 How <span className="text-gryt-red">Gryt</span> Works</h1>
+            <p className="text-gryt-gray/80 mb-8">Your companion on the path of personal growth and achievement</p>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="flex gap-4 items-start">
+              <div className="mt-1">
+                <Target className="h-6 w-6 text-gryt-red" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg">1. Set a Goal That Matters</h3>
+                <p className="text-gryt-gray/80">Big or small. Marathon or mindfulness. Choose what moves you.</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-4 items-start">
+              <div className="mt-1">
+                <Puzzle className="h-6 w-6 text-gryt-red" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg">2. Break It Into Daily Focus</h3>
+                <p className="text-gryt-gray/80">We help you turn that goal into small, trackable steps — no fluff, no overwhelm.</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-4 items-start">
+              <div className="mt-1">
+                <TrendingUp className="h-6 w-6 text-gryt-red" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg">3. Track Progress, Build Streaks</h3>
+                <p className="text-gryt-gray/80">Each day you show up, Gryt tracks it. Progress is progress.</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-4 items-start">
+              <div className="mt-1">
+                <Link className="h-6 w-6 text-gryt-red" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg">4. Connect Tools You Already Use</h3>
+                <p className="text-gryt-gray/80">Sync Strava, Duolingo, Chess.com, and more — progress updates automatically.</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-4 items-start">
+              <div className="mt-1">
+                <Users className="h-6 w-6 text-gryt-red" />
+              </div>
+              <div>
+                <h3 className="font-medium text-lg">5. Join a Circle, Grow Together</h3>
+                <p className="text-gryt-gray/80">Find your crew. Share wins. Stay accountable.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="pt-4">
+            <RouterLink to="/how-gryt-works" className="inline-flex items-center text-gryt-red hover:text-gryt-red/80 font-medium">
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </RouterLink>
           </div>
         </div>
       </div>

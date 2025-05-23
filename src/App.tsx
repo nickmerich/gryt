@@ -29,6 +29,11 @@ function App() {
           } />
           <Route path="/login" element={<Auth />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/how-gryt-works" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
