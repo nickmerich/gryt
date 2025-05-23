@@ -5,14 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIntegrations } from '@/hooks/useIntegrations';
 import { ArrowRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const IntegrationsModule = () => {
   const { availableIntegrations, userIntegrations, isLoading } = useIntegrations();
+  const isMobile = useIsMobile();
   
   // Get only the popular integrations that are available (not coming soon)
   const popularIntegrations = availableIntegrations
     .filter(integration => integration.status === 'available')
-    .slice(0, 3);
+    .slice(0, isMobile ? 2 : 3); // Show fewer on mobile
   
   const hasConnectedIntegrations = userIntegrations.length > 0;
   
@@ -91,7 +93,7 @@ const IntegrationsModule = () => {
                         {integration.name.substring(0, 1)}
                       </span>
                     </div>
-                    Connect {integration.name}
+                    <span className="truncate">Connect {integration.name}</span>
                   </Button>
                 </Link>
               ))}

@@ -8,6 +8,7 @@ import { useGoals, GoalInput, EditGoalInput } from '@/hooks/useGoals';
 import { useAuth } from '@/contexts/AuthContext';
 import GhibliLayout from '@/components/GhibliLayout';
 import AISuggestions from '@/components/AISuggestions';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Import refactored components
 import StatsOverview from '@/components/dashboard/StatsOverview';
@@ -28,6 +29,7 @@ const Index = () => {
     updateGoalProgress 
   } = useGoals();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const addGoal = (newGoal: GoalInput) => {
     createGoal.mutate(newGoal);
@@ -77,6 +79,11 @@ const Index = () => {
         {/* Stats Overview */}
         <StatsOverview goals={goals} />
 
+        {/* Integrations Module - Higher placement on mobile */}
+        {isMobile && (
+          <IntegrationsModule />
+        )}
+
         {/* AI Goal Suggestions with Tracker */}
         {goals && goals.length > 0 && (
           <AISuggestions 
@@ -86,8 +93,10 @@ const Index = () => {
           />
         )}
 
-        {/* Integrations Module */}
-        <IntegrationsModule />
+        {/* Integrations Module - Standard placement on desktop */}
+        {!isMobile && (
+          <IntegrationsModule />
+        )}
 
         {/* Dream Circles Callout */}
         <DreamCirclesCallout />
