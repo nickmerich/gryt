@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Calendar, CheckCircle, Target, Flame, Trophy } from 'lucide-react';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +7,7 @@ import GhibliCard from './GhibliCard';
 import GhibliButton from './GhibliButton';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
+import ProgressVisualization from './ProgressVisualization';
 
 interface Goal {
   id: string;
@@ -91,6 +91,15 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
       </CardHeader>
       
       <CardContent className="space-y-4">
+        {/* Mini progress visualization */}
+        <div className="h-16">
+          <ProgressVisualization 
+            goal={goal} 
+            type={goal.category === 'Health & Fitness' ? 'mountain' : 'tree'} 
+            size="sm"
+          />
+        </div>
+      
         {/* Progress */}
         <div>
           <div className="flex justify-between items-center mb-2">

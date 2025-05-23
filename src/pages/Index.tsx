@@ -15,6 +15,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import GhibliLayout from '@/components/GhibliLayout';
 import GhibliButton from '@/components/GhibliButton';
 import GhibliCard from '@/components/GhibliCard';
+import ProgressGallery from '@/components/ProgressGallery';
 
 const Index = () => {
   const { user } = useAuth();
@@ -113,6 +114,12 @@ const Index = () => {
               <Progress value={averageProgress} className="mt-2" indicatorClassName="bg-gryt-red" />
             </CardContent>
           </GhibliCard>
+        </div>
+
+        {/* Progress Visualization Gallery - New Section */}
+        <div className="mb-8">
+          <h2 className="ghibli-subtitle mb-4">Your Growth Visualization</h2>
+          <ProgressGallery goals={goals} />
         </div>
 
         {/* Dream Circles Callout */}

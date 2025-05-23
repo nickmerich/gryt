@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -62,6 +61,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				brown: {
+					200: '#d2b48c',
+					600: '#8b4513',
+					800: '#5d4037'
 				},
 				// Gryt App custom colors
 				gryt: {
