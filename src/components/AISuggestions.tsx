@@ -180,28 +180,7 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({
           </div>
         )}
         
-        <div className="mt-4 text-center">
-          {!showTrackerCard && (
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="text-xs bg-white dark:bg-gray-900 mr-2"
-              onClick={() => setShowTrackerCard(true)}
-            >
-              Back to Goal Tracker
-            </Button>
-          )}
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="text-xs bg-white dark:bg-gray-900"
-            onClick={handleRegenerateOptions}
-            disabled={loadingNewSuggestion}
-          >
-            <Sparkles className="h-3 w-3 mr-1" />
-            {loadingNewSuggestion ? 'Analyzing your goals...' : 'Generate More Ideas'}
-          </Button>
-        </div>
+        {/* Removed the Generate More Ideas button here */}
       </div>
     </div>
   );
