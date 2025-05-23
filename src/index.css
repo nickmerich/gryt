@@ -33,7 +33,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* Updated for more rounded corners */
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -95,7 +95,7 @@
 
   /* Ghibli-inspired styles */
   .ghibli-container {
-    @apply relative overflow-hidden rounded-lg shadow-md transition-all duration-300;
+    @apply relative overflow-hidden rounded-xl shadow-md transition-all duration-300;
   }
 
   .ghibli-illustration {
@@ -103,11 +103,11 @@
   }
   
   .ghibli-card {
-    @apply rounded-lg border border-transparent bg-white/90 shadow-md backdrop-blur-sm transition-all hover:border-gryt-light hover:bg-white/95 hover:shadow-lg dark:bg-gryt-dark/80 dark:hover:bg-gryt-dark/90 dark:hover:border-gryt-blue/30;
+    @apply rounded-xl border border-transparent bg-white/90 shadow-md backdrop-blur-sm transition-all hover:border-gryt-light hover:bg-white/95 hover:shadow-lg dark:bg-gryt-dark/80 dark:hover:bg-gryt-dark/90 dark:hover:border-gryt-blue/30;
   }
   
   .ghibli-button {
-    @apply relative overflow-hidden rounded-md transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:opacity-0 before:transition-opacity hover:before:opacity-100;
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-r before:opacity-0 before:transition-opacity hover:before:opacity-100 hover:shadow-md hover:-translate-y-0.5;
   }
   
   .ghibli-title {
@@ -129,4 +129,28 @@
   .slide-animation {
     @apply animate-slide-up;
   }
+
+  /* New animations based on design system */
+  .streak-pulse {
+    @apply animate-[pulse_2s_ease-in-out_infinite];
+  }
+  
+  .completion-spark {
+    @apply after:absolute after:inset-0 after:bg-gradient-to-r after:from-yellow-400/30 after:to-orange-500/20 after:animate-pulse;
+  }
+  
+  .focus-fade {
+    @apply animate-slide-up;
+  }
+}
+
+/* Keyframes for completion animations */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes bounce-small {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
