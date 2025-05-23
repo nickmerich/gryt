@@ -2,7 +2,9 @@
 import { Database } from './types';
 
 // Define a Goals table row type from our auto-generated Database type
-export type GoalRow = Database['public']['Tables']['goals']['Row'];
+export type GoalRow = Database['public']['Tables']['goals']['Row'] & {
+  image_url?: string; // Add image_url as an optional property
+};
 
 // Define a type for our frontend Goal model
 export interface Goal {

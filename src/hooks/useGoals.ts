@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Goal, parseGoalRow } from "@/integrations/supabase/goal.types";
 
 // Re-export the Goal interface so existing imports continue to work
-export { Goal } from "@/integrations/supabase/goal.types";
+export type { Goal } from "@/integrations/supabase/goal.types";
 
 export interface GoalInput {
   title: string;

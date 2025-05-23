@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Goal } from '@/integrations/supabase/goal.types';
+import type { Goal } from '@/hooks/useGoals'; // Use type import
 import { toast } from 'sonner';
 import { 
   ArrowLeft, 
