@@ -120,8 +120,8 @@ const SocialPlayground = ({ mode }: SocialPlaygroundProps) => {
               'How is everyone doing today?',
               'Just completed my morning workout!',
               'Anyone want to join me for a virtual run?',
-              'Let's motivate each other this week!',
-              'I'm struggling with consistency, any tips?'
+              'Let\'s motivate each other this week!',
+              'I\'m struggling with consistency, any tips?'
             ];
             content = messages[Math.floor(Math.random() * messages.length)];
           } else if (type === 'update') {
@@ -282,7 +282,7 @@ const SocialPlayground = ({ mode }: SocialPlaygroundProps) => {
   const toggleBuddyMode = () => {
     setBuddyMode(!buddyMode);
     if (!buddyMode) {
-      toast.info('Live Buddy Mode activated! See your friends' cursors in real-time.');
+      toast.info('Live Buddy Mode activated! See your friends\' cursors in real-time.');
     }
   };
 
