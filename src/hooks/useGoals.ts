@@ -19,6 +19,7 @@ export interface Goal {
   completedMilestones: number;  // Adding required properties
   streaks?: number;  // Optional property used in some components
   lastCheckin?: string;  // Optional property used in some components
+  imageUrl?: string;  // Added property for goal image
 }
 
 export interface GoalInput {
@@ -26,6 +27,16 @@ export interface GoalInput {
   description?: string;
   category: string;
   target_date: string;
+  image_url?: string;  // Added field for image URL
+}
+
+export interface EditGoalInput {
+  id: string;
+  title?: string;
+  description?: string;
+  category?: string;
+  target_date?: string;
+  image_url?: string;
 }
 
 export const useGoals = () => {
@@ -60,6 +71,7 @@ export const useGoals = () => {
         user_id: goal.user_id,
         created_at: goal.created_at,
         updated_at: goal.updated_at,
+        imageUrl: goal.image_url,  // Include image URL
         milestones: [],  // Initialize with empty array
         completedMilestones: 0,  // Initialize with zero
         streaks: 0,  // Initialize optional properties
@@ -90,6 +102,63 @@ export const useGoals = () => {
       toast.error(`Failed to create goal: ${error.message}`);
     }
   });
+
+  const editGoal = useMutation({
+    mutationFn: async ({ id, ...goalData }: EditGoalInput) => {
+      if (!user) throw new Error('User not authenticated');
+
+      const updateData: any = { ...goalData, updated_at: new Date().toISOString() };
+      
+      // Convert camelCase to snake_case for the database
+      if (goalData.target_date) {
+        updateData.target_date = goalData.target_date;
+      }
+      if (goalData.image_url) {
+        updateData.image_url = goalData.image_url;
+      }
+      
+      const { data, error } = await supabase
+        .from('goals')
+        .update(updateData)
+        .eq('id', id)
+        .eq('user_id', user.id)  // Ensure user can only update their own goals
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['goals'] });
+      toast.success('Goal updated successfully!');
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update goal: ${error.message}`);
+    }
+  });
+  
+  const uploadGoalImage = async (file: File, goalId: string): Promise<string> => {
+    if (!user) throw new Error('User not authenticated');
+    
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${goalId}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const filePath = `${user.id}/${fileName}`;
+    
+    const { data, error } = await supabase
+      .storage
+      .from('goal-images')
+      .upload(filePath, file);
+    
+    if (error) throw error;
+    
+    // Get public URL for the uploaded image
+    const { data: publicUrlData } = supabase
+      .storage
+      .from('goal-images')
+      .getPublicUrl(filePath);
+    
+    return publicUrlData.publicUrl;
+  };
 
   const updateGoalProgress = useMutation({
     mutationFn: async ({ goalId, newProgress }: { goalId: string, newProgress: number }) => {
@@ -179,6 +248,8 @@ export const useGoals = () => {
     isLoading,
     error,
     createGoal,
+    editGoal,
+    uploadGoalImage,
     updateGoalProgress,
     deleteGoal
   };

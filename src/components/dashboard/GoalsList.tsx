@@ -11,14 +11,29 @@ interface GoalsListProps {
   isLoading: boolean;
   onOpenCreateDialog: () => void;
   onUpdateGoalProgress: (goalId: string, newProgress: number) => void;
+  onEditGoal?: (goalId: string, title: string, description: string, category: string, targetDate: string, imageFile?: File | null) => Promise<void>;
 }
 
 const GoalsList = ({ 
   goals = [], 
   isLoading, 
   onOpenCreateDialog, 
-  onUpdateGoalProgress 
+  onUpdateGoalProgress,
+  onEditGoal
 }: GoalsListProps) => {
+  const handleEditGoal = async (
+    goalId: string, 
+    title: string, 
+    description: string, 
+    category: string, 
+    targetDate: string,
+    imageFile?: File | null
+  ) => {
+    if (onEditGoal) {
+      await onEditGoal(goalId, title, description, category, targetDate, imageFile);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between items-center mb-6">
@@ -45,6 +60,7 @@ const GoalsList = ({
               key={goal.id} 
               goal={goal}
               onUpdateProgress={onUpdateGoalProgress}
+              onEditGoal={handleEditGoal}
             />
           ))}
         </div>

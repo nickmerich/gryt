@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import CreateGoalDialog from '@/components/CreateGoalDialog';
 import AIInsights from '@/components/AIInsights';
 import ChatModal from '@/components/GrytGPT/ChatModal';
-import { useGoals, GoalInput } from '@/hooks/useGoals';
+import { useGoals, GoalInput, EditGoalInput } from '@/hooks/useGoals';
 import { useAuth } from '@/contexts/AuthContext';
 import GhibliLayout from '@/components/GhibliLayout';
 import ProgressGallery from '@/components/ProgressGallery';
@@ -19,7 +19,14 @@ import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 
 const Index = () => {
   const { user } = useAuth();
-  const { goals, isLoading, createGoal, updateGoalProgress } = useGoals();
+  const { 
+    goals, 
+    isLoading, 
+    createGoal, 
+    editGoal,
+    uploadGoalImage, 
+    updateGoalProgress 
+  } = useGoals();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const addGoal = (newGoal: GoalInput) => {
@@ -32,6 +39,37 @@ const Index = () => {
 
   const handleUpdateProgress = (goalId: string, newProgress: number) => {
     updateGoalProgress.mutate({ goalId, newProgress });
+  };
+
+  const handleEditGoal = async (
+    goalId: string, 
+    title: string, 
+    description: string, 
+    category: string, 
+    targetDate: string, 
+    imageFile?: File | null
+  ) => {
+    try {
+      const editData: EditGoalInput = {
+        id: goalId,
+        title,
+        description,
+        category,
+        target_date: targetDate
+      };
+
+      // If image file is provided, upload it first
+      if (imageFile) {
+        const imageUrl = await uploadGoalImage(imageFile, goalId);
+        editData.image_url = imageUrl;
+      }
+
+      // Update the goal with all data including image URL if available
+      await editGoal.mutateAsync(editData);
+    } catch (error) {
+      console.error("Error editing goal:", error);
+      toast.error("Failed to edit goal");
+    }
   };
 
   return (
@@ -67,6 +105,7 @@ const Index = () => {
           isLoading={isLoading}
           onOpenCreateDialog={() => setIsCreateDialogOpen(true)}
           onUpdateGoalProgress={handleUpdateProgress}
+          onEditGoal={handleEditGoal}
         />
 
         {/* Create Goal Dialog */}
