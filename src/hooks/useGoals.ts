@@ -1,256 +1,201 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from "sonner";
 
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { useAuth } from '@/contexts/AuthContext';
-
+// Update the Goal interface to include imageUrl property
 export interface Goal {
   id: string;
   title: string;
   description: string;
   category: string;
-  targetDate: string;
   progress: number;
-  user_id: string;
-  created_at: string;
-  updated_at: string;
-  milestones: any[];  // Adding required properties
-  completedMilestones: number;  // Adding required properties
-  streaks?: number;  // Optional property used in some components
-  lastCheckin?: string;  // Optional property used in some components
-  imageUrl?: string;  // Added property for goal image
+  targetDate: string;
+  lastCheckin?: string;
+  imageUrl?: string;  // Add this property
 }
 
 export interface GoalInput {
   title: string;
   description?: string;
   category: string;
-  target_date: string;
-  image_url?: string;  // Added field for image URL
+  target_date?: string;
 }
 
 export interface EditGoalInput {
   id: string;
-  title?: string;
+  title: string;
   description?: string;
-  category?: string;
+  category: string;
   target_date?: string;
-  image_url?: string;
+  image_url?: string;  // Add this property
 }
 
-export const useGoals = () => {
-  const { user } = useAuth();
+const useGoals = () => {
   const queryClient = useQueryClient();
-  const [error, setError] = useState<string | null>(null);
 
-  const { data: goals, isLoading } = useQuery({
-    queryKey: ['goals'],
-    queryFn: async () => {
-      if (!user) return [];
-      
-      const { data, error } = await supabase
-        .from('goals')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) {
-        setError(error.message);
-        throw error;
-      }
-      
-      // Transform snake_case to camelCase for the expected Goal interface
-      // and include all required properties
-      return (data || []).map(goal => ({
-        id: goal.id,
-        title: goal.title,
-        description: goal.description || '',
-        category: goal.category,
-        targetDate: goal.target_date,
-        progress: goal.progress,
-        user_id: goal.user_id,
-        created_at: goal.created_at,
-        updated_at: goal.updated_at,
-        imageUrl: goal.image_url,  // Include image URL
-        milestones: [],  // Initialize with empty array
-        completedMilestones: 0,  // Initialize with zero
-        streaks: 0,  // Initialize optional properties
-        lastCheckin: new Date(goal.updated_at).toISOString().split('T')[0]
-      }));
-    },
-    enabled: !!user,
-  });
+  const getGoals = async (): Promise<Goal[]> => {
+    const { data, error } = await supabase
+      .from('goals')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  const createGoal = useMutation({
-    mutationFn: async (goalData: GoalInput) => {
-      if (!user) throw new Error('User not authenticated');
-      
-      const { data, error } = await supabase
-        .from('goals')
-        .insert([{ ...goalData, user_id: user.id }])
-        .select()
-        .single();
-      
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
-      toast.success('Goal created successfully!');
-    },
-    onError: (error: any) => {
-      toast.error(`Failed to create goal: ${error.message}`);
+    if (error) {
+      console.error("Error fetching goals:", error);
+      throw new Error(error.message);
     }
-  });
 
-  const editGoal = useMutation({
-    mutationFn: async ({ id, ...goalData }: EditGoalInput) => {
-      if (!user) throw new Error('User not authenticated');
+    return data.map(parseGoal);
+  };
 
-      const updateData: any = { ...goalData, updated_at: new Date().toISOString() };
-      
-      // Convert camelCase to snake_case for the database
-      if (goalData.target_date) {
-        updateData.target_date = goalData.target_date;
-      }
-      if (goalData.image_url) {
-        updateData.image_url = goalData.image_url;
-      }
-      
-      const { data, error } = await supabase
-        .from('goals')
-        .update(updateData)
-        .eq('id', id)
-        .eq('user_id', user.id)  // Ensure user can only update their own goals
-        .select()
-        .single();
-      
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
-      toast.success('Goal updated successfully!');
-    },
-    onError: (error: any) => {
-      toast.error(`Failed to update goal: ${error.message}`);
+  const createNewGoal = async (newGoal: GoalInput) => {
+    const goalId = uuidv4();
+    const { data, error } = await supabase
+      .from('goals')
+      .insert([
+        { 
+          id: goalId, 
+          ...newGoal,
+          progress: 0,
+        }
+      ]);
+
+    if (error) {
+      console.error("Error creating goal:", error);
+      toast.error("Failed to create goal");
+      throw new Error(error.message);
     }
-  });
-  
-  const uploadGoalImage = async (file: File, goalId: string): Promise<string> => {
-    if (!user) throw new Error('User not authenticated');
-    
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${goalId}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = `${user.id}/${fileName}`;
+
+    return goalId;
+  };
+
+  const updateExistingGoal = async (editGoal: EditGoalInput) => {
+    const { error } = await supabase
+      .from('goals')
+      .update({ 
+        title: editGoal.title,
+        description: editGoal.description,
+        category: editGoal.category,
+        target_date: editGoal.target_date,
+        image_url: editGoal.image_url
+      })
+      .eq('id', editGoal.id);
+
+    if (error) {
+      console.error("Error editing goal:", error);
+      toast.error("Failed to edit goal");
+      throw new Error(error.message);
+    }
+  };
+
+  const uploadImage = async (imageFile: File, goalId: string): Promise<string> => {
+    const imageName = `${goalId}/${imageFile.name}`;
     
     const { data, error } = await supabase
       .storage
       .from('goal-images')
-      .upload(filePath, file);
-    
-    if (error) throw error;
-    
-    // Get public URL for the uploaded image
-    const { data: publicUrlData } = supabase
-      .storage
-      .from('goal-images')
-      .getPublicUrl(filePath);
-    
-    return publicUrlData.publicUrl;
+      .upload(imageName, imageFile, {
+        cacheControl: '3600',
+        upsert: false
+      });
+  
+    if (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+      throw new Error(error.message);
+    }
+  
+    const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/goal-images/${data.path}`;
+    return imageUrl;
   };
 
-  const updateGoalProgress = useMutation({
-    mutationFn: async ({ goalId, newProgress }: { goalId: string, newProgress: number }) => {
-      if (!user) throw new Error('User not authenticated');
-      
-      // First get the current progress
-      const { data: currentGoal } = await supabase
-        .from('goals')
-        .select('progress')
-        .eq('id', goalId)
-        .single();
-        
-      if (!currentGoal) throw new Error('Goal not found');
-      
-      // Update the goal progress
-      const { data, error } = await supabase
-        .from('goals')
-        .update({ 
-          progress: newProgress,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', goalId)
-        .select()
-        .single();
-      
-      if (error) throw error;
-      
-      // Log the progress update
-      await supabase
-        .from('progress_logs')
-        .insert({
-          goal_id: goalId,
-          previous_progress: currentGoal.progress,
-          new_progress: newProgress
-        });
-        
-      // If progress updated today, update streak or create new streak entry
-      const today = new Date().toISOString().split('T')[0];
-      
-      const { data: existingStreak } = await supabase
-        .from('streaks')
-        .select()
-        .eq('goal_id', goalId)
-        .eq('streak_date', today)
-        .single();
-        
-      if (!existingStreak) {
-        await supabase
-          .from('streaks')
-          .insert({
-            goal_id: goalId,
-            user_id: user.id,
-            streak_date: today
-          });
-      }
-      
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
-    },
-    onError: (error: any) => {
-      toast.error(`Failed to update progress: ${error.message}`);
+  const updateProgress = async ({ goalId, newProgress }: { goalId: string, newProgress: number }) => {
+    const { error } = await supabase
+      .from('goals')
+      .update({ progress: newProgress, updated_at: new Date().toISOString() })
+      .eq('id', goalId);
+
+    if (error) {
+      console.error("Error updating progress:", error);
+      toast.error("Failed to update progress");
+      throw new Error(error.message);
     }
+  };
+
+  const { data: goals, isLoading } = useQuery({
+    queryKey: ['goals'],
+    queryFn: getGoals,
   });
 
-  const deleteGoal = useMutation({
-    mutationFn: async (goalId: string) => {
-      const { error } = await supabase
-        .from('goals')
-        .delete()
-        .eq('id', goalId);
-      
-      if (error) throw error;
-    },
+  const createGoal = useMutation(createNewGoal, {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goals'] });
-      toast.success('Goal deleted successfully');
+      toast.success("Goal created successfully!");
     },
     onError: (error: any) => {
-      toast.error(`Failed to delete goal: ${error.message}`);
+      toast.error(error.message);
+    },
+  });
+
+  const editGoal = useMutation(updateExistingGoal, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['goals'] });
+      toast.success("Goal edited successfully!");
+    },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
+  });
+
+  const uploadGoalImage = async (imageFile: File, goalId: string): Promise<string> => {
+    try {
+      const imageUrl = await uploadImage(imageFile, goalId);
+      // Optimistically update the goal in the cache
+      queryClient.setQueryData(['goals'], (oldGoals: Goal[] | undefined) => {
+        if (!oldGoals) return oldGoals;
+        return oldGoals.map(goal => {
+          if (goal.id === goalId) {
+            return { ...goal, imageUrl: imageUrl };
+          }
+          return goal;
+        });
+      });
+      return imageUrl;
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
     }
+  };
+
+  const updateGoalProgress = useMutation(updateProgress, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['goals'] });
+    },
+    onError: (error: any) => {
+      toast.error(error.message);
+    },
+  });
+
+  // Make sure the parseGoal function maps image_url to imageUrl
+  const parseGoal = (goal: any): Goal => ({
+    id: goal.id,
+    title: goal.title,
+    description: goal.description || '',
+    category: goal.category,
+    progress: goal.progress,
+    targetDate: goal.target_date,
+    lastCheckin: goal.updated_at,
+    imageUrl: goal.image_url // Map the database column to the interface property
   });
 
   return {
     goals,
     isLoading,
-    error,
     createGoal,
     editGoal,
     uploadGoalImage,
-    updateGoalProgress,
-    deleteGoal
+    updateGoalProgress
   };
 };
+
+export { useGoals };

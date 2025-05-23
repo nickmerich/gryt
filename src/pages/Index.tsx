@@ -78,14 +78,14 @@ const Index = () => {
         {/* Header with Navigation */}
         <WelcomeHeader onOpenCreateDialog={() => setIsCreateDialogOpen(true)} />
 
-        {/* Stats Overview */}
-        <StatsOverview goals={goals} />
-
-        {/* Progress Visualization Gallery */}
+        {/* Progress Visualization Gallery - MOVED TO TOP */}
         <div className="mb-8">
           <h2 className="ghibli-subtitle mb-4">Your Growth Visualization</h2>
           <ProgressGallery goals={goals} />
         </div>
+
+        {/* Stats Overview */}
+        <StatsOverview goals={goals} />
 
         {/* AI Goal Suggestions */}
         {goals && goals.length > 0 && <AISuggestions goals={goals} />}
@@ -99,7 +99,7 @@ const Index = () => {
         {/* Weekly Review Section */}
         <WeeklyReview goals={goals} isLoading={isLoading} />
 
-        {/* Goals Section */}
+        {/* Goals Section - MOVED TO BOTTOM */}
         <GoalsList 
           goals={goals}
           isLoading={isLoading}
