@@ -46,9 +46,6 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
           <h1 className="text-2xl font-bold text-gryt-blue mb-2">
             Welcome to Gryt: The All-in-One Goal Achievement Platform
           </h1>
-          <p className="text-gray-600 italic mb-2">
-            In a world full of motivation noise, Gryt gives you structure, strategy, and support.
-          </p>
           <p className="text-gray-600">
             {getGreeting()} {userName}! Your journey to achievement continues.
           </p>
