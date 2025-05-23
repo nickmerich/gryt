@@ -43,7 +43,8 @@ const GoalDetail = () => {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        imageUrl: data.image_url || undefined,  // Handle the case where image_url may not exist
+        // Handle image_url safely with type assertion since it might be added later to the database
+        imageUrl: (data as any).image_url || undefined,
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };
