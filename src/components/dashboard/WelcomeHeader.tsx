@@ -2,6 +2,7 @@
 import { Plus } from 'lucide-react';
 import GhibliButton from '@/components/GhibliButton';
 import { useAuth } from '@/contexts/AuthContext';
+import GhibliIllustration from '@/components/GhibliIllustration';
 
 interface WelcomeHeaderProps {
   onOpenCreateDialog: () => void;
@@ -49,8 +50,12 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
             "Journey together, achieve together."
           </p>
         </div>
-        <div className="hidden md:block">
-          {/* Could add an illustration here later */}
+        <div className="hidden md:block w-1/3">
+          <GhibliIllustration 
+            type="sunset" 
+            className="h-32 w-full rounded-lg opacity-80"
+            animate={true}
+          />
         </div>
       </div>
     </>

@@ -3,6 +3,7 @@ import { Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import GhibliButton from '@/components/GhibliButton';
 import GhibliCard from '@/components/GhibliCard';
+import GhibliIllustration from '@/components/GhibliIllustration';
 
 const DreamCirclesCallout = () => {
   return (
@@ -23,10 +24,15 @@ const DreamCirclesCallout = () => {
             </GhibliButton>
           </Link>
         </div>
-        <div className="bg-gradient-to-r from-gryt-blue to-gryt-purple md:w-1/3 p-6 flex items-center justify-center">
-          <div className="text-white text-center">
-            <div className="text-3xl font-bold mb-2">6+</div>
-            <div className="text-sm">Active Dream Circles</div>
+        <div className="md:w-1/3 relative overflow-hidden">
+          <div className="absolute inset-0">
+            <GhibliIllustration type="forest" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-gryt-blue/30 to-gryt-purple/30 flex items-center justify-center">
+              <div className="text-white text-center z-10">
+                <div className="text-3xl font-bold mb-2">6+</div>
+                <div className="text-sm">Active Dream Circles</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Goal } from '@/hooks/useGoals';
 import ProgressVisualization from './ProgressVisualization';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import GhibliIllustration from './GhibliIllustration';
 
 interface ProgressGalleryProps {
   goals?: Goal[];
@@ -13,8 +14,11 @@ interface ProgressGalleryProps {
 const ProgressGallery: React.FC<ProgressGalleryProps> = ({ goals = [], className }) => {
   if (!goals.length) {
     return (
-      <Card className={cn("w-full", className)}>
-        <CardContent className="pt-6 text-center">
+      <Card className={cn("w-full relative overflow-hidden", className)}>
+        <div className="absolute inset-0 opacity-10">
+          <GhibliIllustration type="mountains" className="w-full h-full" />
+        </div>
+        <CardContent className="pt-6 text-center relative z-10">
           <p className="text-gray-500">No goals to visualize yet. Create some goals to see your progress!</p>
         </CardContent>
       </Card>
@@ -23,11 +27,14 @@ const ProgressGallery: React.FC<ProgressGalleryProps> = ({ goals = [], className
 
   return (
     <div className={cn("space-y-6", className)}>
-      <Card>
-        <CardHeader>
+      <Card className="relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <GhibliIllustration type="grass" className="w-full h-full" />
+        </div>
+        <CardHeader className="relative z-10">
           <CardTitle className="text-lg font-semibold">Your Growth Journey</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {goals.map((goal) => (
               <div key={goal.id} className="flex flex-col space-y-2">

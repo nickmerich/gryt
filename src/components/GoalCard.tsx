@@ -60,7 +60,14 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
   };
 
   return (
-    <GhibliCard glow={isCompleted} className="slide-animation transition-all duration-300 hover:scale-[1.02]">
+    <GhibliCard 
+      glow={isCompleted} 
+      className="slide-animation transition-all duration-300 hover:scale-[1.02]"
+      illustration={goal.category === 'Health & Fitness' ? 'mountains' : 
+                    goal.category === 'Education' ? 'landscape' : 
+                    goal.category === 'Personal' ? 'foggy' : 'grass'}
+      illustrationOpacity={0.03}
+    >
       <CardHeader className="pb-4">
         <div className="flex justify-between items-start mb-2">
           <Badge className={getCategoryColor(goal.category)}>
