@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,50 +15,57 @@ import CircleDetail from '@/pages/CircleDetail';
 import Community from '@/pages/Community';
 import Integrations from '@/pages/Integrations';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import GoalDetail from '@/pages/GoalDetail'; // Add this import
+import GoalDetail from '@/pages/GoalDetail';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Index />} />
-      <Route path="/login" element={<Auth />} />
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/goal/:goalId" element={ // Add this route
-        <ProtectedRoute>
-          <GoalDetail />
-        </ProtectedRoute>
-      } />
-      <Route path="/circles" element={
-        <ProtectedRoute>
-          <Circles />
-        </ProtectedRoute>
-      } />
-      <Route path="/circles/:circleId" element={
-        <ProtectedRoute>
-          <CircleDetail />
-        </ProtectedRoute>
-      } />
-      <Route path="/community" element={
-        <ProtectedRoute>
-          <Community />
-        </ProtectedRoute>
-      } />
-      <Route path="/profile" element={
-        <ProtectedRoute>
-          <Profile />
-        </ProtectedRoute>
-      } />
-      <Route path="/integrations" element={
-        <ProtectedRoute>
-          <Integrations />
-        </ProtectedRoute>
-      } />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Index />
+          </ProtectedRoute>
+        } />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/goal/:goalId" element={
+          <ProtectedRoute>
+            <GoalDetail />
+          </ProtectedRoute>
+        } />
+        <Route path="/circles" element={
+          <ProtectedRoute>
+            <Circles />
+          </ProtectedRoute>
+        } />
+        <Route path="/circles/:circleId" element={
+          <ProtectedRoute>
+            <CircleDetail />
+          </ProtectedRoute>
+        } />
+        <Route path="/community" element={
+          <ProtectedRoute>
+            <Community />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/integrations" element={
+          <ProtectedRoute>
+            <Integrations />
+          </ProtectedRoute>
+        } />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
