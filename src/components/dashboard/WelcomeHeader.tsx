@@ -24,7 +24,7 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
     <div className="flex items-center justify-between mb-8 bg-gryt-light rounded-lg p-6">
       <div className="text-left">
         <h1 className="text-2xl font-bold text-gryt-blue mb-2">
-          Welcome to Gryt — Your Goal Achieving Platform
+          Welcome to Gryt — Your Personalized Goal Achieving Platform
         </h1>
         <p className="text-gray-600">
           {getGreeting()}, {userName}. Let's build momentum today.
