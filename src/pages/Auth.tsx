@@ -9,10 +9,12 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import GhibliIllustration from '@/components/GhibliIllustration';
 import GhibliButton from '@/components/GhibliButton';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { signIn, signUp } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,6 +52,10 @@ const Auth = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left side - Illustration */}
@@ -82,7 +88,7 @@ const Auth = () => {
             <p className="text-gryt-blue dark:text-gryt-light text-sm">Your AI-powered goal achievement companion</p>
           </div>
           
-          <Card className="ghibli-card">
+          <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
             <CardHeader>
               <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Authentication</CardTitle>
               <CardDescription>Sign in to your account or create a new one</CardDescription>
@@ -90,8 +96,8 @@ const Auth = () => {
             <CardContent>
               <Tabs defaultValue="signin" className="slide-animation">
                 <TabsList className="grid w-full grid-cols-2 mb-4">
-                  <TabsTrigger value="signin">Sign In</TabsTrigger>
-                  <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                  <TabsTrigger value="signin" className="text-base font-medium">Sign In</TabsTrigger>
+                  <TabsTrigger value="signup" className="text-base font-medium">Sign Up</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="signin">
@@ -116,18 +122,31 @@ const Auth = () => {
                             Forgot password?
                           </a>
                         </div>
-                        <Input
-                          id="password-signin"
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          className="bg-white/50 dark:bg-gryt-dark/50"
-                        />
+                        <div className="relative">
+                          <Input
+                            id="password-signin"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? (
+                              <EyeOff size={18} />
+                            ) : (
+                              <Eye size={18} />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <GhibliButton
                         type="submit"
-                        className="w-full bg-gryt-red hover:bg-gryt-red/90 text-white"
+                        className="w-full bg-gryt-red hover:bg-gryt-red/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                         glowColor="red"
                         disabled={isLoading}
                       >
@@ -154,18 +173,31 @@ const Auth = () => {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="password-signup">Password</Label>
-                        <Input
-                          id="password-signup"
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          className="bg-white/50 dark:bg-gryt-dark/50"
-                        />
+                        <div className="relative">
+                          <Input
+                            id="password-signup"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? (
+                              <EyeOff size={18} />
+                            ) : (
+                              <Eye size={18} />
+                            )}
+                          </button>
+                        </div>
                       </div>
                       <GhibliButton
                         type="submit"
-                        className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white"
+                        className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
                         glowColor="blue"
                         disabled={isLoading}
                       >
