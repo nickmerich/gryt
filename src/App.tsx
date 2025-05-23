@@ -15,6 +15,7 @@ import IntegrationCallback from '@/pages/IntegrationCallback';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import GoalDetail from '@/pages/GoalDetail';
 import Playground from '@/pages/Playground';
+import Settings from '@/pages/Settings';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -64,6 +65,11 @@ function App() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } />
           <Route path="/integrations" element={
