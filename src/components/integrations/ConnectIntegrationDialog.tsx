@@ -39,6 +39,17 @@ const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
     }
   };
 
+  const handleOAuthConnect = () => {
+    if (!integration || !integration.authUrl) return;
+    
+    // Generate a random state parameter to prevent CSRF
+    const state = integration.id;
+    
+    // In a production app, we'd use a real OAuth flow with a proper state parameter
+    // and redirect URI. For this implementation, we'll simulate the OAuth flow.
+    window.location.href = `${integration.authUrl}?state=${state}`;
+  };
+
   if (!integration) return null;
 
   const isOAuth = integration.authType === 'oauth';
@@ -69,13 +80,11 @@ const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
                 Cancel
               </Button>
               <Button
-                onClick={() => {
-                  // In a real implementation, this would redirect to OAuth flow
-                  alert(`This would redirect to ${integration.name}'s OAuth flow`);
-                }}
+                onClick={handleOAuthConnect}
                 style={{ backgroundColor: integration.color }}
+                disabled={!integration.authUrl || integration.status === 'coming_soon'}
               >
-                Connect with {integration.name}
+                {integration.status === 'coming_soon' ? 'Coming Soon' : `Connect with ${integration.name}`}
               </Button>
             </div>
           </div>
@@ -105,10 +114,10 @@ const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
               </Button>
               <Button 
                 type="submit" 
-                disabled={!apiKey.trim() || isLoading}
+                disabled={!apiKey.trim() || isLoading || integration.status === 'coming_soon'}
                 style={{ backgroundColor: integration.color }}
               >
-                {isLoading ? 'Connecting...' : 'Connect'}
+                {isLoading ? 'Connecting...' : (integration.status === 'coming_soon' ? 'Coming Soon' : 'Connect')}
               </Button>
             </div>
           </form>

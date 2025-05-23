@@ -2,79 +2,100 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
   IntegrationProvider, 
   UserIntegration,
   getAvailableIntegrations,
   getUserIntegrations,
   connectIntegration,
-  disconnectIntegration
+  disconnectIntegration,
+  handleOAuthCallback
 } from '@/services/integrationService';
 
 export const useIntegrations = () => {
   const { user } = useAuth();
-  const [availableIntegrations, setAvailableIntegrations] = useState<IntegrationProvider[]>([]);
-  const [userIntegrations, setUserIntegrations] = useState<UserIntegration[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const userId = user?.id;
 
   // Fetch available integrations and user's connected integrations
-  useEffect(() => {
-    const fetchIntegrations = async () => {
-      try {
-        setIsLoading(true);
-        // Get all available integrations
-        const integrations = getAvailableIntegrations();
-        setAvailableIntegrations(integrations);
-        
-        // If user is logged in, get their connected integrations
-        if (user) {
-          const userConnectedIntegrations = await getUserIntegrations(user.id);
-          setUserIntegrations(userConnectedIntegrations);
-        }
-      } catch (err: any) {
-        console.error('Error fetching integrations:', err);
-        setError(err.message);
-        toast.error('Failed to load integrations');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchIntegrations();
-  }, [user]);
+  const { 
+    data: availableIntegrations = [],
+    isLoading: isLoadingAvailable 
+  } = useQuery({
+    queryKey: ['integrations', 'available'],
+    queryFn: () => getAvailableIntegrations(),
+    staleTime: Infinity // These rarely change
+  });
+  
+  const { 
+    data: userIntegrations = [], 
+    isLoading: isLoadingUser, 
+    error 
+  } = useQuery({
+    queryKey: ['integrations', 'user', userId],
+    queryFn: () => userId ? getUserIntegrations(userId) : Promise.resolve([]),
+    enabled: !!userId,
+  });
+  
+  // Mutation for connecting a new integration
+  const connectMutation = useMutation({
+    mutationFn: ({ providerId, token }: { providerId: string, token: string }) => {
+      if (!userId) throw new Error('User must be logged in');
+      return connectIntegration(providerId, token, userId);
+    },
+    onSuccess: () => {
+      toast.success('Integration connected successfully');
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'user'] });
+    },
+    onError: (err: any) => {
+      console.error('Error connecting integration:', err);
+      toast.error('Failed to connect integration');
+    }
+  });
+  
+  // Mutation for disconnecting an integration
+  const disconnectMutation = useMutation({
+    mutationFn: (integrationId: string) => disconnectIntegration(integrationId),
+    onSuccess: () => {
+      toast.success('Integration disconnected');
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'user'] });
+    },
+    onError: (err: any) => {
+      console.error('Error disconnecting integration:', err);
+      toast.error('Failed to disconnect integration');
+    }
+  });
+  
+  // Mutation for handling OAuth callback
+  const oauthCallbackMutation = useMutation({
+    mutationFn: ({ providerId, code }: { providerId: string, code: string }) => {
+      if (!userId) throw new Error('User must be logged in');
+      return handleOAuthCallback(providerId, code, userId);
+    },
+    onSuccess: () => {
+      toast.success('Integration connected successfully');
+      queryClient.invalidateQueries({ queryKey: ['integrations', 'user'] });
+    },
+    onError: (err: any) => {
+      console.error('Error with OAuth callback:', err);
+      toast.error('Failed to connect integration');
+    }
+  });
 
   // Connect a new integration
   const connect = async (providerId: string, token: string) => {
-    if (!user) {
-      toast.error('You must be logged in to connect an integration');
-      return null;
-    }
-
-    try {
-      const integration = await connectIntegration(providerId, token, user.id);
-      setUserIntegrations(prev => [...prev, integration]);
-      toast.success('Integration connected successfully');
-      return integration;
-    } catch (err: any) {
-      console.error('Error connecting integration:', err);
-      toast.error('Failed to connect integration');
-      return null;
-    }
+    return connectMutation.mutateAsync({ providerId, token });
   };
 
   // Disconnect an integration
   const disconnect = async (integrationId: string) => {
-    try {
-      await disconnectIntegration(integrationId);
-      setUserIntegrations(prev => prev.filter(i => i.id !== integrationId));
-      toast.success('Integration disconnected');
-      return true;
-    } catch (err: any) {
-      console.error('Error disconnecting integration:', err);
-      toast.error('Failed to disconnect integration');
-      return false;
-    }
+    return disconnectMutation.mutateAsync(integrationId);
+  };
+  
+  // Handle OAuth callback
+  const handleOAuth = async (providerId: string, code: string) => {
+    return oauthCallbackMutation.mutateAsync({ providerId, code });
   };
 
   // Check if a provider is connected
@@ -94,10 +115,11 @@ export const useIntegrations = () => {
   return {
     availableIntegrations,
     userIntegrations,
-    isLoading,
+    isLoading: isLoadingAvailable || isLoadingUser,
     error,
     connect,
     disconnect,
+    handleOAuth,
     isConnected,
     getIntegrationsWithStatus
   };

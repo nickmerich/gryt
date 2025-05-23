@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export interface IntegrationProvider {
   id: string;
@@ -10,6 +11,7 @@ export interface IntegrationProvider {
   status: 'available' | 'coming_soon';
   color: string;
   authType: 'oauth' | 'api_key';
+  authUrl?: string;
 }
 
 export interface UserIntegration {
@@ -22,6 +24,7 @@ export interface UserIntegration {
   created_at: string;
   last_synced?: string;
   status: 'active' | 'expired' | 'error';
+  metadata?: any;
 }
 
 // List of available integration providers
@@ -34,7 +37,8 @@ export const integrationProviders: IntegrationProvider[] = [
     category: 'Fitness',
     status: 'available',
     color: '#FC4C02',
-    authType: 'oauth'
+    authType: 'oauth',
+    authUrl: '/api/auth/strava'
   },
   {
     id: 'duolingo',
@@ -44,7 +48,8 @@ export const integrationProviders: IntegrationProvider[] = [
     category: 'Learning',
     status: 'available',
     color: '#58CC02',
-    authType: 'oauth'
+    authType: 'oauth',
+    authUrl: '/api/auth/duolingo'
   },
   {
     id: 'chess',
@@ -104,7 +109,8 @@ export const integrationProviders: IntegrationProvider[] = [
     category: 'Creativity',
     status: 'available',
     color: '#171515',
-    authType: 'oauth'
+    authType: 'oauth',
+    authUrl: '/api/auth/github'
   },
   {
     id: 'youtube',
@@ -145,62 +151,116 @@ export const getIntegrationsByCategory = () => {
   }));
 };
 
-// Mock user integrations data for development
-const mockUserIntegrations: UserIntegration[] = [
-  {
-    id: '1',
-    user_id: '123',
-    provider_id: 'strava',
-    access_token: 'mock-token',
-    created_at: new Date().toISOString(),
-    status: 'active'
-  },
-  {
-    id: '2',
-    user_id: '123',
-    provider_id: 'github',
-    access_token: 'mock-token',
-    created_at: new Date().toISOString(),
-    status: 'active'
-  }
-];
-
 // Function to get user's connected integrations
 export const getUserIntegrations = async (userId: string): Promise<UserIntegration[]> => {
-  // For now, return mock data until we set up the database table
-  console.log('Getting integrations for user:', userId);
-  return mockUserIntegrations.filter(integration => integration.user_id === userId);
+  try {
+    const { data, error } = await supabase
+      .from('user_integrations')
+      .select('*')
+      .eq('user_id', userId);
+      
+    if (error) {
+      console.error('Error fetching user integrations:', error);
+      throw error;
+    }
+    
+    return data || [];
+  } catch (err) {
+    console.error('Failed to fetch integrations:', err);
+    return [];
+  }
 };
 
-// Function to connect an integration
+// Function to connect an integration with API key
 export const connectIntegration = async (providerId: string, token: string, userId: string): Promise<UserIntegration> => {
-  console.log('Connecting integration:', providerId, 'for user:', userId);
-  
-  // Create a new mock integration
-  const newIntegration: UserIntegration = {
-    id: Math.random().toString(36).substring(7),
-    provider_id: providerId,
-    user_id: userId,
-    access_token: token,
-    created_at: new Date().toISOString(),
-    status: 'active'
-  };
-  
-  // Add to mock data
-  mockUserIntegrations.push(newIntegration);
-  
-  return newIntegration;
+  try {
+    // For API key based integrations (like Chess.com)
+    const { data, error } = await supabase
+      .from('user_integrations')
+      .insert({
+        user_id: userId,
+        provider_id: providerId,
+        access_token: token,
+        status: 'active'
+      })
+      .select()
+      .single();
+      
+    if (error) {
+      console.error('Error connecting integration:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (err) {
+    console.error('Failed to connect integration:', err);
+    throw err;
+  }
 };
 
 // Function to disconnect an integration
 export const disconnectIntegration = async (integrationId: string): Promise<boolean> => {
-  console.log('Disconnecting integration:', integrationId);
-  
-  // Remove from mock data
-  const index = mockUserIntegrations.findIndex(i => i.id === integrationId);
-  if (index !== -1) {
-    mockUserIntegrations.splice(index, 1);
+  try {
+    const { error } = await supabase
+      .from('user_integrations')
+      .delete()
+      .eq('id', integrationId);
+      
+    if (error) {
+      console.error('Error disconnecting integration:', error);
+      throw error;
+    }
+    
+    return true;
+  } catch (err) {
+    console.error('Failed to disconnect integration:', err);
+    return false;
   }
-  
-  return true;
+};
+
+// Function to handle OAuth callback and store token
+export const handleOAuthCallback = async (
+  providerId: string, 
+  code: string, 
+  userId: string
+): Promise<UserIntegration | null> => {
+  try {
+    // In a real implementation, this would exchange the code for tokens
+    // with the provider's OAuth service
+    console.log(`Exchanging code for ${providerId} tokens...`);
+    
+    // For demo purposes, we'll simulate a successful token exchange
+    const mockTokenResponse = {
+      access_token: `mock_${providerId}_token_${Date.now()}`,
+      refresh_token: `mock_${providerId}_refresh_${Date.now()}`,
+      expires_in: 3600
+    };
+    
+    const expiresAt = new Date();
+    expiresAt.setSeconds(expiresAt.getSeconds() + mockTokenResponse.expires_in);
+    
+    // Store the tokens in our database
+    const { data, error } = await supabase
+      .from('user_integrations')
+      .insert({
+        user_id: userId,
+        provider_id: providerId,
+        access_token: mockTokenResponse.access_token,
+        refresh_token: mockTokenResponse.refresh_token,
+        token_expires_at: expiresAt.toISOString(),
+        status: 'active'
+      })
+      .select()
+      .single();
+      
+    if (error) {
+      console.error('Error storing OAuth tokens:', error);
+      throw error;
+    }
+    
+    return data;
+  } catch (err) {
+    console.error('OAuth callback handling failed:', err);
+    return null;
+  }
 };

@@ -212,6 +212,51 @@ export type Database = {
           },
         ]
       }
+      user_integrations: {
+        Row: {
+          access_token: string | null
+          created_at: string
+          id: string
+          last_synced: string | null
+          metadata: Json | null
+          provider_id: string
+          provider_user_id: string | null
+          refresh_token: string | null
+          status: string
+          token_expires_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token?: string | null
+          created_at?: string
+          id?: string
+          last_synced?: string | null
+          metadata?: Json | null
+          provider_id: string
+          provider_user_id?: string | null
+          refresh_token?: string | null
+          status?: string
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string | null
+          created_at?: string
+          id?: string
+          last_synced?: string | null
+          metadata?: Json | null
+          provider_id?: string
+          provider_user_id?: string | null
+          refresh_token?: string | null
+          status?: string
+          token_expires_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -11,6 +11,7 @@ import Circles from '@/pages/Circles';
 import CircleDetail from '@/pages/CircleDetail';
 import Community from '@/pages/Community';
 import Integrations from '@/pages/Integrations';
+import IntegrationCallback from '@/pages/IntegrationCallback';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import GoalDetail from '@/pages/GoalDetail';
 
@@ -67,6 +68,11 @@ function App() {
           <Route path="/integrations" element={
             <ProtectedRoute>
               <Integrations />
+            </ProtectedRoute>
+          } />
+          <Route path="/integration-callback" element={
+            <ProtectedRoute>
+              <IntegrationCallback />
             </ProtectedRoute>
           } />
           <Route path="*" element={<NotFound />} />
