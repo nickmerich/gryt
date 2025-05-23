@@ -61,22 +61,6 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
     );
   };
 
-  // Determine gradient based on category
-  const getGradient = (category: string) => {
-    switch (category) {
-      case 'Health & Fitness':
-        return 'green-teal';
-      case 'Career':
-        return 'blue-purple';
-      case 'Finance':
-        return 'coral-orange';
-      case 'Personal':
-        return 'blue-purple';
-      default:
-        return 'blue-purple';
-    }
-  };
-
   // Random motivational quotes
   const motivationalQuotes = [
     "Every step forward is a victory.",
