@@ -18,39 +18,58 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
   hideIllustration = false
 }) => {
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-30 w-full backdrop-blur-sm bg-white/80 dark:bg-gryt-dark/80 border-b">
-        <div className="container mx-auto flex justify-between items-center">
-          <MainNav />
-          <div className="hidden md:block py-2 italic text-gryt-blue font-medium">
-            Build yourself. Do the thing.
+    <div className="min-h-screen flex bg-gryt-gray">
+      {/* Sidebar */}
+      <div className="hidden md:block w-64 bg-white border-r border-gray-100 p-4">
+        <div className="flex items-center mb-8">
+          <div className="w-8 h-8 bg-gryt-blue rounded-lg flex items-center justify-center text-white mr-2">
+            <span className="font-bold">G</span>
           </div>
+          <span className="font-bold text-xl text-gryt-blue">Gryt</span>
         </div>
-      </header>
-      
-      <main className="flex-1 relative">
-        {!hideIllustration && (
-          <div className="fixed inset-0 z-0 pointer-events-none">
-            <GhibliIllustration 
-              type={illustrationType} 
-              className="opacity-20 w-full h-full"
-            />
-          </div>
-        )}
         
-        <div className={cn(
-          "relative z-10 container mx-auto py-8 px-4",
-          className
-        )}>
-          {children}
-        </div>
-      </main>
+        <MainNav />
+      </div>
       
-      <footer className="py-6 px-4 border-t backdrop-blur-sm bg-white/80 dark:bg-gryt-dark/80 text-center text-sm text-gryt-blue dark:text-gryt-light">
-        <div className="container mx-auto">
-          <p>© {new Date().getFullYear()} Gryt. Journey together, achieve together.</p>
-        </div>
-      </footer>
+      <div className="flex-1 flex flex-col">
+        <header className="sticky top-0 z-30 w-full backdrop-blur-sm bg-white/90 border-b md:hidden">
+          <div className="container mx-auto flex justify-between items-center p-4">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-gryt-blue rounded-lg flex items-center justify-center text-white mr-2">
+                <span className="font-bold">G</span>
+              </div>
+              <span className="font-bold text-lg text-gryt-blue">Gryt</span>
+            </div>
+            <div className="md:hidden">
+              <MainNav />
+            </div>
+          </div>
+        </header>
+        
+        <main className="flex-1 relative">
+          {!hideIllustration && (
+            <div className="fixed inset-0 z-0 pointer-events-none">
+              <GhibliIllustration 
+                type={illustrationType} 
+                className="opacity-10 w-full h-full"
+              />
+            </div>
+          )}
+          
+          <div className={cn(
+            "relative z-10 container mx-auto py-8 px-4",
+            className
+          )}>
+            {children}
+          </div>
+        </main>
+        
+        <footer className="py-4 px-4 border-t bg-white text-center text-sm text-gryt-blue">
+          <div className="container mx-auto">
+            <p>© {new Date().getFullYear()} Gryt. Journey together, achieve together.</p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };

@@ -2,16 +2,21 @@
 import { useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { Menu, Home, Users, BarChart, X, MessageCircle } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, Home, Users, BarChart, X, MessageCircle, User, Settings } from 'lucide-react';
 import ProfileMenu from './ProfileMenu';
 
 const MainNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
 
   const navItems = [
     {
-      name: 'Home',
+      name: 'My Dashboard',
       href: '/',
       icon: Home
     },
@@ -21,7 +26,7 @@ const MainNav = () => {
       icon: Users
     },
     {
-      name: 'Dashboard',
+      name: 'Progress',
       href: '/dashboard',
       icon: BarChart
     },
@@ -29,19 +34,31 @@ const MainNav = () => {
       name: 'Community',
       href: '/community',
       icon: MessageCircle
+    },
+    {
+      name: 'Profile',
+      href: '/profile',
+      icon: User
+    },
+    {
+      name: 'Settings',
+      href: '/settings',
+      icon: Settings
     }
   ];
 
   const NavLinks = () => (
-    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-6">
+    <div className="flex flex-col gap-1 md:w-full">
       {navItems.map((item) => (
         <Link
           key={item.href}
           to={item.href}
-          className="flex items-center gap-2 py-2 px-3 rounded-md text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+          className={`flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors ${
+            isActive(item.href) ? 'bg-gryt-light text-gryt-blue font-medium' : ''
+          }`}
           onClick={() => setIsOpen(false)}
         >
-          <item.icon className="h-4 w-4" />
+          <item.icon className="h-5 w-5" />
           <span>{item.name}</span>
         </Link>
       ))}
@@ -49,16 +66,12 @@ const MainNav = () => {
   );
 
   return (
-    <div className="flex items-center py-2">
-      <Link to="/" className="flex items-center mr-6">
-        <span className="text-xl font-bold text-blue-600">Gryt</span>
-      </Link>
-      
-      <div className="hidden md:flex">
+    <div className="flex items-center md:block py-2">
+      <div className="hidden md:flex md:flex-col md:w-full">
         <NavLinks />
       </div>
       
-      <div className="ml-auto flex items-center gap-4">
+      <div className="ml-auto md:hidden flex items-center gap-4">
         <ProfileMenu />
         
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -71,7 +84,7 @@ const MainNav = () => {
           <SheetContent side="left">
             <div className="flex items-center justify-between mb-6">
               <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-                <span className="text-xl font-bold text-blue-600">Gryt</span>
+                <span className="text-xl font-bold text-gryt-blue">Gryt</span>
               </Link>
               <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)}>
                 <X className="h-5 w-5" />

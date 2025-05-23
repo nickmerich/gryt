@@ -10,19 +10,19 @@ interface GhibliButtonProps extends ButtonProps {
 const GhibliButton: React.FC<GhibliButtonProps> = ({ 
   children, 
   className,
-  glowColor = 'red',
+  glowColor = 'blue', // Changed default to blue to match the design
   ...props 
 }) => {
   const glowStyles = {
     red: 'before:from-gryt-red/20 before:to-gryt-red/5',
-    blue: 'before:from-gryt-blue/20 before:to-gryt-purple/5',
+    blue: 'before:from-gryt-blue/20 before:to-gryt-blue/5',
     light: 'before:from-gryt-light/20 before:to-gryt-light/5'
   };
 
   return (
     <Button 
       className={cn(
-        'ghibli-button',
+        'ghibli-button rounded-md', // Added more rounded corners
         glowStyles[glowColor],
         className
       )}

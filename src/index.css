@@ -1,10 +1,11 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 220 30% 98%;
+    --background: 210 33% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -13,16 +14,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 228 84% 60%; /* Updated to match blue in design */
+    --primary: 215 74% 57%; /* Updated to match blue in design */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 228 84% 60%; /* Matching primary */
+    --secondary: 215 74% 57%; /* Matching primary */
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 223 20% 96%; /* Light blue-gray */
+    --muted: 210 33% 96%; /* Light blue-gray */
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 242 83% 70%; /* Purple accent */
+    --accent: 242 83% 60%; /* Purple accent */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,9 +35,9 @@
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 228 84% 60%; /* Updated to match design */
+    --sidebar-primary: 215 74% 57%; /* Updated to match design */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
@@ -110,11 +111,11 @@
   }
   
   .ghibli-title {
-    @apply font-serif text-2xl font-bold text-gryt-dark dark:text-gryt-gray;
+    @apply font-medium text-2xl font-bold text-gryt-blue dark:text-gryt-gray;
   }
   
   .ghibli-subtitle {
-    @apply font-serif text-lg font-medium text-gryt-blue dark:text-gryt-light;
+    @apply font-medium text-lg font-medium text-gryt-dark dark:text-gryt-light;
   }
   
   .floating-animation {
