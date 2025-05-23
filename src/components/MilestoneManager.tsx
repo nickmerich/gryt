@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMilestones } from '@/hooks/useMilestones';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { generateMilestonesForGoal } from '@/utils/milestoneGenerator';
 import MilestoneList from './milestones/MilestoneList';
 import AddMilestoneForm from './milestones/AddMilestoneForm';
 import MilestoneStats from './milestones/MilestoneStats';
+import { Loader2, Plus } from 'lucide-react';
 
 interface MilestoneManagerProps {
   goalId: string;
