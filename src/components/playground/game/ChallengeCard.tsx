@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Check, X } from 'lucide-react';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GhibliButton from '@/components/GhibliButton';
@@ -16,7 +16,7 @@ interface ChallengeCardProps {
   onAbort: (id: string) => void;
 }
 
-const ChallengeCard: React.FC<ChallengeCardProps> = ({
+const ChallengeCardComponent: React.FC<ChallengeCardProps> = ({
   challenge,
   activeChallenge,
   timeRemaining,
@@ -105,5 +105,8 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     </GhibliCard>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+const ChallengeCard = memo(ChallengeCardComponent);
 
 export default ChallengeCard;

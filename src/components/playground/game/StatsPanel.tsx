@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Award, Clock, Check, Trophy } from 'lucide-react';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GhibliButton from '@/components/GhibliButton';
@@ -11,7 +11,7 @@ interface StatsPanelProps {
   onResetAll: () => void;
 }
 
-const StatsPanel: React.FC<StatsPanelProps> = ({ userScore, earnedBadges, onResetAll }) => {
+const StatsPanelComponent: React.FC<StatsPanelProps> = ({ userScore, earnedBadges, onResetAll }) => {
   return (
     <div className="space-y-6">
       <GhibliCard>
@@ -91,5 +91,8 @@ const StatsPanel: React.FC<StatsPanelProps> = ({ userScore, earnedBadges, onRese
     </div>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+const StatsPanel = memo(StatsPanelComponent);
 
 export default StatsPanel;

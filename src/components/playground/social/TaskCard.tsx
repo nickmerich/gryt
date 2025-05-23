@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { ThumbsUp } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,7 +12,15 @@ interface TaskCardProps {
   cheerTask: (taskId: string) => void;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, updateTaskProgress, cheerTask }) => {
+const TaskCardComponent: React.FC<TaskCardProps> = ({ task, updateTaskProgress, cheerTask }) => {
+  const handleUpdateProgress = (increment: number) => {
+    updateTaskProgress(task.id, increment);
+  };
+  
+  const handleCheerTask = () => {
+    cheerTask(task.id);
+  };
+
   return (
     <div 
       className="border rounded-lg p-4 hover:shadow-sm transition-shadow"
@@ -50,7 +58,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, updateTaskProgress, cheerTask
               variant="ghost" 
               size="sm"
               className="gap-1"
-              onClick={() => cheerTask(task.id)}
+              onClick={handleCheerTask}
             >
               <ThumbsUp className="w-3 h-3" />
               <span>{task.cheers}</span>
@@ -61,14 +69,14 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, updateTaskProgress, cheerTask
             <GhibliButton 
               size="sm" 
               variant="outline"
-              onClick={() => updateTaskProgress(task.id, 10)}
+              onClick={() => handleUpdateProgress(10)}
               disabled={task.progress === 100}
             >
               +10%
             </GhibliButton>
             <GhibliButton 
               size="sm"
-              onClick={() => updateTaskProgress(task.id, 20)}
+              onClick={() => handleUpdateProgress(20)}
               disabled={task.progress === 100}
               className={task.progress === 100 ? "bg-gray-300" : "bg-blue-600 hover:bg-blue-700 text-white"}
             >
@@ -80,5 +88,8 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, updateTaskProgress, cheerTask
     </div>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+const TaskCard = memo(TaskCardComponent);
 
 export default TaskCard;

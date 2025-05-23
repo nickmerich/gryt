@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import ChallengeCard from './game/ChallengeCard';
 import StatsPanel from './game/StatsPanel';
 import { useGameMode } from './game/useGameMode'; // Import is the same but file is now .tsx
 import { GameModePanelProps } from './game/GameModeTypes';
 
-const GameModePanel: React.FC<GameModePanelProps> = ({ mode }) => {
+const GameModePanelComponent: React.FC<GameModePanelProps> = ({ mode }) => {
   const {
     challenges,
     activeChallenge,
@@ -44,5 +44,8 @@ const GameModePanel: React.FC<GameModePanelProps> = ({ mode }) => {
     </div>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+const GameModePanel = memo(GameModePanelComponent);
 
 export default GameModePanel;
