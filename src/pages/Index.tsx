@@ -15,6 +15,7 @@ import DreamCirclesCallout from '@/components/dashboard/DreamCirclesCallout';
 import WeeklyReview from '@/components/dashboard/WeeklyReview';
 import GoalsList from '@/components/dashboard/GoalsList';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
+import IntegrationsModule from '@/components/dashboard/IntegrationsModule';
 
 const Index = () => {
   const { user } = useAuth();
@@ -84,6 +85,9 @@ const Index = () => {
             onUpdateGoalProgress={handleUpdateProgress}
           />
         )}
+
+        {/* Integrations Module */}
+        <IntegrationsModule />
 
         {/* Dream Circles Callout */}
         <DreamCirclesCallout />
