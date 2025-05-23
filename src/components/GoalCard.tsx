@@ -1,19 +1,19 @@
 
 import { useState, useEffect } from 'react';
-import { Calendar, CheckCircle, Target, Flame, Trophy, Edit } from 'lucide-react';
+import { Calendar, CheckCircle, Target, Flame, Trophy, Edit, ChevronRight } from 'lucide-react';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import GhibliCard from './GhibliCard';
-import GhibliButton from './GhibliButton';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
 import { useTodos } from '@/hooks/useTodos';
 import ProgressVisualization from './ProgressVisualization';
 import { Goal } from '@/hooks/useGoals';
 import EditGoalDialog from './EditGoalDialog';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 interface GoalCardProps {
   goal: Goal;
@@ -34,28 +34,11 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
       setStreakCount(count);
     }
   }, [streaks, getCurrentStreak]);
-  
-  // Get all todos for this goal's milestones
-  const { data: allTodos, isLoading: loadingTodos } = useQuery({
-    queryKey: ['all-todos-for-goal', goal.id],
-    queryFn: async () => {
-      if (!milestones || milestones.length === 0) return [];
-      
-      const milestoneIds = milestones.map(m => m.id);
-      const { data, error } = await supabase
-        .from('todos')
-        .select('*')
-        .in('milestone_id', milestoneIds);
-      
-      if (error) throw error;
-      return data || [];
-    },
-    enabled: !!milestones && milestones.length > 0
-  });
-  
+
   const completedMilestonesCount = milestones?.filter(m => m.is_completed).length || 0;
-  const totalTodosCount = allTodos?.length || 0;
-  const completedTodosCount = allTodos?.filter(todo => todo.is_completed).length || 0;
+  const totalMilestonesCount = milestones?.length || 0;
+  
+  const nextMilestone = milestones?.find(m => !m.is_completed);
 
   const isCompleted = goal.progress >= 100;
   const daysUntilTarget = Math.ceil(
@@ -78,195 +61,156 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
     );
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      'Health & Fitness': 'bg-green-100 text-green-800',
-      'Education': 'bg-blue-100 text-blue-800',
-      'Career': 'bg-gryt-blue/20 text-gryt-blue',
-      'Personal': 'bg-orange-100 text-orange-800',
-      'Finance': 'bg-yellow-100 text-yellow-800',
-    };
-    return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+  // Determine gradient based on category
+  const getGradient = (category: string) => {
+    switch (category) {
+      case 'Health & Fitness':
+        return 'green-teal';
+      case 'Career':
+        return 'blue-purple';
+      case 'Finance':
+        return 'coral-orange';
+      case 'Personal':
+        return 'blue-purple';
+      default:
+        return 'blue-purple';
+    }
   };
 
-  const getStreakDescription = (streaks?: number): string => {
-    if (!streaks) return "No active streak yet";
-    if (streaks === 1) return "1 day streak";
-    if (streaks < 5) return `${streaks} day streak`;
-    if (streaks < 10) return `${streaks} day streak 🔥`;
-    return `${streaks} day streak 🔥🔥`;
-  };
+  // Random motivational quotes
+  const motivationalQuotes = [
+    "Every step forward is a victory.",
+    "Progress is progress, no matter how small.",
+    "You're closer than you think!",
+    "Keep pushing, keep growing.",
+    "Small steps, big changes.",
+    "You've got this!"
+  ];
+  
+  const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
 
   return (
     <>
-      <GhibliCard 
-        glow={isCompleted} 
-        className="slide-animation transition-all duration-300 hover:scale-[1.02]"
-        illustration={goal.category === 'Health & Fitness' ? 'mountains' : 
-                     goal.category === 'Education' ? 'landscape' : 
-                     goal.category === 'Personal' ? 'foggy' : 'grass'}
-        illustrationOpacity={0.03}
-      >
-        <CardHeader className="pb-4">
-          <div className="flex justify-between items-start mb-2">
-            <Badge className={getCategoryColor(goal.category)}>
-              {goal.category}
-            </Badge>
-            <div className="flex gap-2">
-              {isCompleted && <Trophy className="w-5 h-5 text-yellow-500" />}
-              {!isCompleted && streakCount >= 5 && 
-                <Badge variant="outline" className="flex items-center gap-1 border-gryt-red/30 text-gryt-red">
-                  <Flame className="w-3 h-3" />
-                  {streakCount}
+      <div className="group">
+        <div className={`rounded-xl overflow-hidden border shadow-sm transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] bg-gradient-to-r ${
+          goal.category === 'Health & Fitness' ? 'from-green-400 to-teal-500' :
+          goal.category === 'Career' ? 'from-gryt-blue to-gryt-purple' :
+          goal.category === 'Finance' ? 'from-yellow-400 to-orange-500' :
+          'from-pink-400 to-purple-500'
+        } text-white`}>
+          <div className="flex flex-col h-full">
+            <div className="p-6 pb-4">
+              <div className="flex justify-between items-start mb-2">
+                <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                  {goal.category}
                 </Badge>
-              }
-              <button 
-                onClick={() => setIsEditDialogOpen(true)}
-                className="text-gryt-blue hover:text-gryt-blue/70 transition-colors"
-                title="Edit goal"
-              >
-                <Edit className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          <CardTitle className="text-lg font-bold text-gryt-dark dark:text-gryt-gray">{goal.title}</CardTitle>
-          <CardDescription className="text-gryt-blue/80 dark:text-gryt-light/80">{goal.description}</CardDescription>
-        </CardHeader>
-        
-        <CardContent className="space-y-4">
-          {/* Goal image if available */}
-          {goal.imageUrl && (
-            <div className="rounded-md overflow-hidden border mb-4 h-32">
-              <img
-                src={goal.imageUrl}
-                alt={goal.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-          
-          {/* Mini progress visualization */}
-          <div className="h-16">
-            <ProgressVisualization 
-              goal={goal} 
-              type={goal.category === 'Health & Fitness' ? 'mountain' : 'tree'} 
-              size="sm"
-            />
-          </div>
-        
-          {/* Progress */}
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gryt-dark/70 dark:text-gryt-gray/70">Progress</span>
-              <span className="text-sm font-semibold text-gryt-blue dark:text-gryt-light">{goal.progress}%</span>
-            </div>
-            <Progress value={goal.progress} className="h-2 bg-gryt-gray dark:bg-gryt-dark/50" 
-              indicatorClassName="bg-gradient-to-r from-gryt-red to-gryt-blue" />
-          </div>
-
-          {/* Streaks */}
-          {!isCompleted && (
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-1 text-gryt-red">
-                <Flame className="w-4 h-4" />
-                <span>{getStreakDescription(streakCount)}</span>
+                <div className="flex gap-2">
+                  {isCompleted && <Trophy className="w-5 h-5 text-yellow-300" />}
+                  {!isCompleted && streakCount >= 3 && 
+                    <Badge variant="outline" className="flex items-center gap-1 border-white/30 text-white bg-white/10 backdrop-blur-sm">
+                      <Flame className="w-3 h-3 text-orange-300" />
+                      {streakCount}
+                    </Badge>
+                  }
+                  <button 
+                    onClick={() => setIsEditDialogOpen(true)}
+                    className="text-white/70 hover:text-white transition-colors"
+                    title="Edit goal"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              {goal.lastCheckin && <span className="text-xs text-gryt-blue/60 dark:text-gryt-light/60">
-                Last update: {new Date(goal.lastCheckin).toLocaleDateString()}
-              </span>}
+              <h3 className="text-xl font-bold mt-2 mb-1">{goal.title}</h3>
+              <p className="text-white/80 text-sm line-clamp-2">{goal.description}</p>
             </div>
-          )}
-
-          {/* Milestones */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
-              <span className="text-sm font-medium text-gryt-dark/80 dark:text-gryt-gray/80">
-                Milestones ({completedMilestonesCount}/{milestones?.length || 0})
-              </span>
-            </div>
-            {loadingMilestones ? (
-              <div className="text-sm text-gray-500">Loading milestones...</div>
-            ) : milestones && milestones.length > 0 ? (
-              <div className="space-y-1">
-                {milestones.slice(0, 3).map((milestone) => (
-                  <div key={milestone.id} className="flex items-center gap-2 text-sm">
-                    <div className={`w-2 h-2 rounded-full ${
-                      milestone.is_completed ? 'bg-gryt-blue dark:bg-gryt-light' : 'bg-gryt-gray dark:bg-gryt-dark/50'
-                    }`} />
-                    <span className={milestone.is_completed ? 'text-gryt-blue dark:text-gryt-light line-through' : 'text-gryt-dark/70 dark:text-gryt-gray/70'}>
-                      {milestone.title}
-                    </span>
-                    {milestone.is_completed && (
-                      <CheckCircle className="w-3 h-3 text-gryt-blue dark:text-gryt-light ml-auto" />
-                    )}
-                  </div>
-                ))}
-                {milestones.length > 3 && (
-                  <div className="text-xs text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red mt-1 pl-4 cursor-pointer hover:underline transition-colors">
-                    +{milestones.length - 3} more milestones
-                  </div>
-                )}
+            
+            {/* Visualization area */}
+            <div className="px-6">
+              <div className="h-20 mb-2">
+                <ProgressVisualization 
+                  goal={goal} 
+                  type={goal.category === 'Health & Fitness' ? 'mountain' : 'tree'} 
+                  size="sm"
+                />
               </div>
-            ) : (
-              <div className="text-sm text-gray-500">No milestones added yet</div>
-            )}
-          </div>
+            </div>
 
-          {/* To-Do summary */}
-          {!loadingTodos && totalTodosCount > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
-                <span className="text-sm font-medium text-gryt-dark/80 dark:text-gryt-gray/80">
-                  Daily To-Do's ({completedTodosCount}/{totalTodosCount})
-                </span>
+            {/* Progress section */}
+            <div className="px-6 pb-2">
+              <div className="flex justify-between items-center mb-1.5">
+                <span className="text-sm font-medium text-white/80">Progress</span>
+                <span className="text-sm font-bold">{goal.progress}%</span>
               </div>
               <Progress 
-                value={(completedTodosCount / totalTodosCount) * 100} 
-                className="h-1.5 bg-gryt-gray dark:bg-gryt-dark/50" 
-                indicatorClassName="bg-green-500" 
+                value={goal.progress} 
+                className="h-2 bg-white/30" 
+                indicatorClassName="bg-white" 
               />
             </div>
-          )}
+            
+            {/* Next milestone */}
+            {nextMilestone && !isCompleted && (
+              <div className="px-6 py-2">
+                <div className="flex items-center gap-2 text-sm bg-white/10 p-2 rounded-md backdrop-blur-sm">
+                  <ChevronRight className="w-4 h-4 text-white/70" />
+                  <span className="font-medium">Next: {nextMilestone.title}</span>
+                </div>
+              </div>
+            )}
 
-          {/* Target Date */}
-          <div className="flex items-center gap-2 text-sm">
-            <Calendar className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
-            <span className={`${
-              daysUntilTarget < 0 ? 'text-gryt-red' : 
-              daysUntilTarget < 7 ? 'text-gryt-red/70' : 
-              'text-gryt-blue dark:text-gryt-light'
-            }`}>
-              {daysUntilTarget > 0 
-                ? `${daysUntilTarget} days remaining` 
-                : daysUntilTarget === 0 
-                ? 'Due today!' 
-                : `${Math.abs(daysUntilTarget)} days overdue`
-              }
-            </span>
-          </div>
-
-          {/* Action Button */}
-          {!isCompleted && (
-            <GhibliButton 
-              onClick={handleProgressUpdate}
-              className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white dark:bg-gryt-blue dark:hover:bg-gryt-blue/90"
-              size="sm"
-              glowColor="blue"
-            >
-              Update Progress (+10%)
-            </GhibliButton>
-          )}
-
-          {isCompleted && (
-            <div className="flex items-center justify-center text-gryt-blue dark:text-gryt-light gap-2 font-medium pulse-animation">
-              <CheckCircle className="w-4 h-4" />
-              <span>Goal completed!</span>
+            {/* Milestones summary */}
+            <div className="px-6 pb-2 pt-1">
+              <div className="flex items-center gap-2 text-sm text-white/90">
+                <Target className="w-4 h-4" />
+                <span>{completedMilestonesCount}/{totalMilestonesCount} milestones</span>
+              </div>
             </div>
-          )}
-        </CardContent>
-      </GhibliCard>
+
+            {/* Target date */}
+            <div className="px-6 pb-2">
+              <div className="flex items-center gap-2 text-sm">
+                <Calendar className="w-4 h-4 text-white/80" />
+                <span className={`${
+                  daysUntilTarget < 0 ? 'text-red-200' : 
+                  daysUntilTarget < 7 ? 'text-orange-200' : 
+                  'text-white/80'
+                }`}>
+                  {daysUntilTarget > 0 
+                    ? `${daysUntilTarget} days remaining` 
+                    : daysUntilTarget === 0 
+                    ? 'Due today!' 
+                    : `${Math.abs(daysUntilTarget)} days overdue`
+                  }
+                </span>
+              </div>
+            </div>
+            
+            {/* Motivational quote */}
+            <div className="px-6 pb-3">
+              <p className="text-xs italic text-white/70 mt-1">{randomQuote}</p>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-auto border-t border-white/20 p-4 bg-black/10 backdrop-blur-sm">
+              {!isCompleted ? (
+                <Button 
+                  onClick={handleProgressUpdate}
+                  className="w-full bg-white hover:bg-white/90 text-gryt-blue"
+                  size="sm"
+                >
+                  Update Progress (+10%)
+                </Button>
+              ) : (
+                <div className="flex items-center justify-center gap-2 font-medium">
+                  <CheckCircle className="w-4 h-4 text-yellow-300" />
+                  <span>Goal completed!</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
 
       <EditGoalDialog 
         goal={goal}

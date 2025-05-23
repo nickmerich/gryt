@@ -5,17 +5,29 @@ import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-xl border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-))
+  React.HTMLAttributes<HTMLDivElement> & {
+    gradient?: "blue-purple" | "coral-orange" | "green-teal" | "default";
+  }
+>(({ className, gradient = "default", ...props }, ref) => {
+  const gradientStyles = {
+    "blue-purple": "bg-gradient-to-r from-gryt-blue to-gryt-purple text-white",
+    "coral-orange": "bg-gradient-to-r from-orange-400 to-red-500 text-white",
+    "green-teal": "bg-gradient-to-r from-green-400 to-teal-500 text-white",
+    "default": "bg-card text-card-foreground"
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-xl border shadow-sm transition-all hover:shadow-md",
+        gradientStyles[gradient],
+        className
+      )}
+      {...props}
+    />
+  );
+})
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<

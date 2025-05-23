@@ -1,11 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, ArrowRight } from 'lucide-react';
+import { Users, ArrowRight, Flame, Calendar, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
 
 export interface CircleMember {
   id: string;
@@ -35,11 +36,26 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
     }
   };
 
+  // Determine gradient based on category
+  const getGradient = (category: string) => {
+    switch (category) {
+      case 'Health & Fitness':
+        return 'green-teal';
+      case 'Career':
+        return 'blue-purple';
+      default:
+        return 'coral-orange';
+    }
+  };
+
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-gryt-blue to-gryt-purple text-white">
+    <Card 
+      gradient={getGradient(circle.category)} 
+      className="overflow-hidden transition-all hover:shadow-lg hover:translate-y-[-4px] duration-300"
+    >
+      <CardHeader>
         <div className="flex items-center justify-between">
-          <Badge variant="outline" className="border-white text-white">
+          <Badge variant="outline" className="border-white text-white bg-white/20 backdrop-blur-sm">
             {circle.category}
           </Badge>
           <div className="flex -space-x-2">
@@ -59,21 +75,22 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
             )}
           </div>
         </div>
-        <CardTitle className="text-xl">{circle.name}</CardTitle>
+        <CardTitle className="text-xl mt-2">{circle.name}</CardTitle>
         <CardDescription className="text-blue-50">{circle.memberCount} members</CardDescription>
       </CardHeader>
-      <CardContent className="pt-4">
-        <p className="text-gray-700">{circle.description}</p>
+      <CardContent className="pt-0">
+        <p className="text-white/90 mb-4">{circle.description}</p>
+        <Progress value={70} className="h-1.5 bg-white/30" indicatorClassName="bg-white" />
       </CardContent>
-      <CardFooter className="flex justify-between border-t p-4 bg-gray-50">
+      <CardFooter className="flex justify-between border-t border-white/20 p-4 bg-black/10 backdrop-blur-sm">
         {circle.isJoined ? (
-          <Button asChild variant="outline" className="flex items-center">
+          <Button asChild variant="secondary" className="flex items-center bg-white/20 hover:bg-white/30 text-white">
             <Link to={`/circles/${circle.id}`}>
               View Circle <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         ) : (
-          <Button onClick={handleJoin} className="bg-gryt-blue hover:bg-gryt-blue/90">
+          <Button onClick={handleJoin} className="bg-white hover:bg-white/90 text-gryt-blue">
             <Users className="mr-2 h-4 w-4" />
             Join Circle
           </Button>
