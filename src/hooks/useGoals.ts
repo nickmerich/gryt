@@ -12,10 +12,10 @@ export interface Goal {
   progress: number;
   targetDate: string;
   lastCheckin?: string;
-  imageUrl?: string;  // Add this property
-  updated_at?: string; // Add this for StatsOverview component
-  milestones?: any[]; // Add the missing properties
-  completedMilestones?: number; // Add the missing properties
+  imageUrl?: string;
+  updated_at?: string;
+  milestones: any[]; // Change from optional to required
+  completedMilestones: number; // Change from optional to required
 }
 
 export interface GoalInput {
@@ -184,7 +184,7 @@ const useGoals = () => {
     },
   });
 
-  // Update the parseGoal function to include the missing properties
+  // Update the parseGoal function to always include the required properties
   const parseGoal = (goal: any): Goal => ({
     id: goal.id,
     title: goal.title,
@@ -195,8 +195,8 @@ const useGoals = () => {
     lastCheckin: goal.updated_at,
     updated_at: goal.updated_at,
     imageUrl: goal.image_url,
-    milestones: [], // Add default value for milestones
-    completedMilestones: 0 // Add default value for completedMilestones
+    milestones: goal.milestones || [], // Ensure this is always an array
+    completedMilestones: goal.completed_milestones || 0 // Ensure this is always a number
   });
 
   return {
