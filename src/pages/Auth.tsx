@@ -10,26 +10,43 @@ import { toast } from 'sonner';
 import GhibliIllustration from '@/components/GhibliIllustration';
 import GhibliButton from '@/components/GhibliButton';
 import { Eye, EyeOff } from 'lucide-react';
+import { Navigate } from 'react-router-dom';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
+
+  // Redirect if user is already authenticated
+  if (user) {
+    return <Navigate to="/" />;
+  }
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateInputs()) return;
+    
     setIsLoading(true);
     try {
       const { error } = await signIn(email, password);
       if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success('Signed in successfully!');
+        let errorMessage = 'Failed to sign in';
+        
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = 'Invalid email or password. Please try again.';
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Please verify your email address before signing in.';
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        toast.error(errorMessage);
       }
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign in');
+      toast.error(error.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -37,19 +54,56 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateInputs()) return;
+    
     setIsLoading(true);
     try {
-      const { error } = await signUp(email, password);
+      const { error, emailConfirmationRequired } = await signUp(email, password);
       if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success('Check your email to confirm your account!');
+        let errorMessage = 'Failed to create account';
+        
+        if (error.message.includes('already registered')) {
+          errorMessage = 'This email is already registered. Try signing in instead.';
+        } else if (error.message.includes('password')) {
+          errorMessage = 'Password should be at least 6 characters long.';
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        toast.error(errorMessage);
+      } else if (emailConfirmationRequired) {
+        setShowEmailConfirmation(true);
       }
     } catch (error: any) {
-      toast.error(error.message || 'Failed to sign up');
+      toast.error(error.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const validateInputs = () => {
+    if (!email.trim()) {
+      toast.error('Please enter your email address');
+      return false;
+    }
+    
+    if (!password.trim()) {
+      toast.error('Please enter your password');
+      return false;
+    }
+    
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      toast.error('Please enter a valid email address');
+      return false;
+    }
+    
+    if (password.length < 6) {
+      toast.error('Password should be at least 6 characters long');
+      return false;
+    }
+    
+    return true;
   };
 
   const togglePasswordVisibility = () => {
@@ -88,130 +142,162 @@ const Auth = () => {
             <p className="text-gryt-blue dark:text-gryt-light text-sm">Your AI-powered goal achievement companion</p>
           </div>
           
-          <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
-            <CardHeader>
-              <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Authentication</CardTitle>
-              <CardDescription>Sign in to your account or create a new one</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="signin" className="slide-animation">
-                <TabsList className="grid w-full grid-cols-2 mb-4">
-                  <TabsTrigger value="signin" className="text-base font-medium">Sign In</TabsTrigger>
-                  <TabsTrigger value="signup" className="text-base font-medium">Sign Up</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="signin">
-                  <form onSubmit={handleSignIn}>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email-signin">Email</Label>
-                        <Input
-                          id="email-signin"
-                          type="email"
-                          placeholder="name@example.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                          className="bg-white/50 dark:bg-gryt-dark/50"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Label htmlFor="password-signin">Password</Label>
-                          <a href="#" className="text-sm text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red">
-                            Forgot password?
-                          </a>
-                        </div>
-                        <div className="relative">
+          {showEmailConfirmation ? (
+            <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
+              <CardHeader>
+                <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Email Verification</CardTitle>
+                <CardDescription>Please check your email to complete registration</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-center">
+                  A verification link has been sent to your email address. 
+                  Please click on the link to verify your account.
+                </p>
+                <p className="text-center text-sm text-gryt-blue dark:text-gryt-light">
+                  If you don't see the email, please check your spam folder.
+                </p>
+              </CardContent>
+              <CardFooter className="flex justify-center">
+                <GhibliButton 
+                  className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white text-base py-6 font-medium"
+                  glowColor="blue"
+                  onClick={() => {
+                    setShowEmailConfirmation(false);
+                    setEmail('');
+                    setPassword('');
+                  }}
+                >
+                  Back to Login
+                </GhibliButton>
+              </CardFooter>
+            </Card>
+          ) : (
+            <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
+              <CardHeader>
+                <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Authentication</CardTitle>
+                <CardDescription>Sign in to your account or create a new one</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Tabs defaultValue="signin" className="slide-animation">
+                  <TabsList className="grid w-full grid-cols-2 mb-4">
+                    <TabsTrigger value="signin" className="text-base font-medium">Sign In</TabsTrigger>
+                    <TabsTrigger value="signup" className="text-base font-medium">Sign Up</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="signin">
+                    <form onSubmit={handleSignIn}>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="email-signin">Email</Label>
                           <Input
-                            id="password-signin"
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            id="email-signin"
+                            type="email"
+                            placeholder="name@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
+                            className="bg-white/50 dark:bg-gryt-dark/50"
                           />
-                          <button
-                            type="button"
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? (
-                              <EyeOff size={18} />
-                            ) : (
-                              <Eye size={18} />
-                            )}
-                          </button>
                         </div>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label htmlFor="password-signin">Password</Label>
+                            <a href="#" className="text-sm text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red">
+                              Forgot password?
+                            </a>
+                          </div>
+                          <div className="relative">
+                            <Input
+                              id="password-signin"
+                              type={showPassword ? "text" : "password"}
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                              className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
+                            />
+                            <button
+                              type="button"
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
+                              onClick={togglePasswordVisibility}
+                            >
+                              {showPassword ? (
+                                <EyeOff size={18} />
+                              ) : (
+                                <Eye size={18} />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        <GhibliButton
+                          type="submit"
+                          className="w-full bg-gryt-red hover:bg-gryt-red/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                          glowColor="red"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? 'Signing in...' : 'Sign In'}
+                        </GhibliButton>
                       </div>
-                      <GhibliButton
-                        type="submit"
-                        className="w-full bg-gryt-red hover:bg-gryt-red/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
-                        glowColor="red"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? 'Signing in...' : 'Sign In'}
-                      </GhibliButton>
-                    </div>
-                  </form>
-                </TabsContent>
-                
-                <TabsContent value="signup">
-                  <form onSubmit={handleSignUp}>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email-signup">Email</Label>
-                        <Input
-                          id="email-signup"
-                          type="email"
-                          placeholder="name@example.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                          className="bg-white/50 dark:bg-gryt-dark/50"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="password-signup">Password</Label>
-                        <div className="relative">
+                    </form>
+                  </TabsContent>
+                  
+                  <TabsContent value="signup">
+                    <form onSubmit={handleSignUp}>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="email-signup">Email</Label>
                           <Input
-                            id="password-signup"
-                            type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            id="email-signup"
+                            type="email"
+                            placeholder="name@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
+                            className="bg-white/50 dark:bg-gryt-dark/50"
                           />
-                          <button
-                            type="button"
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? (
-                              <EyeOff size={18} />
-                            ) : (
-                              <Eye size={18} />
-                            )}
-                          </button>
                         </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="password-signup">Password</Label>
+                          <div className="relative">
+                            <Input
+                              id="password-signup"
+                              type={showPassword ? "text" : "password"}
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                              className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
+                              minLength={6}
+                            />
+                            <button
+                              type="button"
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
+                              onClick={togglePasswordVisibility}
+                            >
+                              {showPassword ? (
+                                <EyeOff size={18} />
+                              ) : (
+                                <Eye size={18} />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        <GhibliButton
+                          type="submit"
+                          className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                          glowColor="blue"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? 'Creating account...' : 'Create Account'}
+                        </GhibliButton>
                       </div>
-                      <GhibliButton
-                        type="submit"
-                        className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
-                        glowColor="blue"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? 'Creating account...' : 'Create Account'}
-                      </GhibliButton>
-                    </div>
-                  </form>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-            <CardFooter className="flex justify-center text-sm text-gryt-dark/60 dark:text-gryt-light/60">
-              Protected by Supabase Authentication
-            </CardFooter>
-          </Card>
+                    </form>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+              <CardFooter className="flex justify-center text-sm text-gryt-dark/60 dark:text-gryt-light/60">
+                Protected by Supabase Authentication
+              </CardFooter>
+            </Card>
+          )}
         </div>
       </div>
     </div>
