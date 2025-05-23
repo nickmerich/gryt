@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Plus, Calendar, ChevronRight, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { toast } from "sonner";
 import GoalCard from '@/components/GoalCard';
 import CreateGoalDialog from '@/components/CreateGoalDialog';
 import AIInsights from '@/components/AIInsights';
+import ChatModal from '@/components/GrytGPT/ChatModal';
 
 interface Goal {
   id: string;
@@ -342,6 +342,9 @@ const Index = () => {
           onOpenChange={setIsCreateDialogOpen}
           onCreateGoal={addGoal}
         />
+        
+        {/* GrytGPT Chat Modal */}
+        <ChatModal goals={goals} />
       </div>
     </div>
   );
