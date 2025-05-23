@@ -7,7 +7,6 @@ import ChatModal from '@/components/GrytGPT/ChatModal';
 import { useGoals, GoalInput, EditGoalInput } from '@/hooks/useGoals';
 import { useAuth } from '@/contexts/AuthContext';
 import GhibliLayout from '@/components/GhibliLayout';
-import ProgressGallery from '@/components/ProgressGallery';
 import AISuggestions from '@/components/AISuggestions';
 
 // Import refactored components
@@ -74,12 +73,6 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with Navigation and Welcome Message */}
         <WelcomeHeader onOpenCreateDialog={() => setIsCreateDialogOpen(true)} />
-
-        {/* Progress Visualization Gallery */}
-        <div className="mb-8">
-          <h2 className="ghibli-subtitle mb-4">Your Growth Visualization</h2>
-          {goals && <ProgressGallery goals={goals} />}
-        </div>
 
         {/* Stats Overview */}
         <StatsOverview goals={goals} />
