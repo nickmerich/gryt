@@ -30,11 +30,7 @@ const Index = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const addGoal = (newGoal: GoalInput) => {
-    createGoal.mutate(newGoal, {
-      onSuccess: () => {
-        setIsCreateDialogOpen(false);
-      }
-    });
+    createGoal.mutate(newGoal);
   };
 
   const handleUpdateProgress = (goalId: string, newProgress: number) => {
@@ -81,7 +77,7 @@ const Index = () => {
         {/* Progress Visualization Gallery - MOVED TO TOP */}
         <div className="mb-8">
           <h2 className="ghibli-subtitle mb-4">Your Growth Visualization</h2>
-          <ProgressGallery goals={goals} />
+          {goals && <ProgressGallery goals={goals} />}
         </div>
 
         {/* Stats Overview */}

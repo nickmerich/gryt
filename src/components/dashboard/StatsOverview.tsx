@@ -17,6 +17,7 @@ const StatsOverview = ({ goals = [] }: StatsOverviewProps) => {
   // Calculate total active streaks (goals updated in the last 24 hours)
   const today = new Date().toISOString().split('T')[0];
   const totalActiveStreaks = goals?.filter(goal => {
+    if (!goal.updated_at) return false;
     const updatedAt = new Date(goal.updated_at).toISOString().split('T')[0];
     return updatedAt === today;
   }).length || 0;

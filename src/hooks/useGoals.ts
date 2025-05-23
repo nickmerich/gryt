@@ -1,3 +1,4 @@
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
@@ -13,6 +14,7 @@ export interface Goal {
   targetDate: string;
   lastCheckin?: string;
   imageUrl?: string;  // Add this property
+  updated_at?: string; // Add this for StatsOverview component
 }
 
 export interface GoalInput {
@@ -48,15 +50,17 @@ const useGoals = () => {
     return data.map(parseGoal);
   };
 
-  const createNewGoal = async (newGoal: GoalInput) => {
+  const createNewGoal = async (newGoal: GoalInput): Promise<string> => {
     const goalId = uuidv4();
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('goals')
       .insert([
         { 
           id: goalId, 
           ...newGoal,
           progress: 0,
+          // Get user_id from current session
+          user_id: (await supabase.auth.getSession()).data.session?.user.id
         }
       ]);
 
@@ -69,7 +73,7 @@ const useGoals = () => {
     return goalId;
   };
 
-  const updateExistingGoal = async (editGoal: EditGoalInput) => {
+  const updateExistingGoal = async (editGoal: EditGoalInput): Promise<void> => {
     const { error } = await supabase
       .from('goals')
       .update({ 
@@ -109,7 +113,7 @@ const useGoals = () => {
     return imageUrl;
   };
 
-  const updateProgress = async ({ goalId, newProgress }: { goalId: string, newProgress: number }) => {
+  const updateProgress = async ({ goalId, newProgress }: { goalId: string, newProgress: number }): Promise<void> => {
     const { error } = await supabase
       .from('goals')
       .update({ progress: newProgress, updated_at: new Date().toISOString() })
@@ -127,7 +131,8 @@ const useGoals = () => {
     queryFn: getGoals,
   });
 
-  const createGoal = useMutation(createNewGoal, {
+  const createGoal = useMutation({
+    mutationFn: createNewGoal,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goals'] });
       toast.success("Goal created successfully!");
@@ -137,7 +142,8 @@ const useGoals = () => {
     },
   });
 
-  const editGoal = useMutation(updateExistingGoal, {
+  const editGoal = useMutation({
+    mutationFn: updateExistingGoal,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goals'] });
       toast.success("Goal edited successfully!");
@@ -167,7 +173,8 @@ const useGoals = () => {
     }
   };
 
-  const updateGoalProgress = useMutation(updateProgress, {
+  const updateGoalProgress = useMutation({
+    mutationFn: updateProgress,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goals'] });
     },
@@ -185,6 +192,7 @@ const useGoals = () => {
     progress: goal.progress,
     targetDate: goal.target_date,
     lastCheckin: goal.updated_at,
+    updated_at: goal.updated_at,
     imageUrl: goal.image_url // Map the database column to the interface property
   });
 
