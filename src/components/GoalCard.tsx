@@ -1,9 +1,10 @@
 
 import { Calendar, CheckCircle, Target, Flame, Trophy } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import GhibliCard from './GhibliCard';
+import GhibliButton from './GhibliButton';
 
 interface Goal {
   id: string;
@@ -38,7 +39,7 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
     const colors = {
       'Health & Fitness': 'bg-green-100 text-green-800',
       'Education': 'bg-blue-100 text-blue-800',
-      'Career': 'bg-purple-100 text-purple-800',
+      'Career': 'bg-gryt-blue/20 text-gryt-blue',
       'Personal': 'bg-orange-100 text-orange-800',
       'Finance': 'bg-yellow-100 text-yellow-800',
     };
@@ -54,7 +55,7 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
   };
 
   return (
-    <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+    <GhibliCard glow={isCompleted} className="slide-animation transition-all duration-300 hover:scale-[1.02]">
       <CardHeader className="pb-4">
         <div className="flex justify-between items-start mb-2">
           <Badge className={getCategoryColor(goal.category)}>
@@ -62,34 +63,35 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
           </Badge>
           {isCompleted && <Trophy className="w-5 h-5 text-yellow-500" />}
           {!isCompleted && goal.streaks && goal.streaks >= 5 && 
-            <Badge variant="outline" className="flex items-center gap-1 border-orange-300 text-orange-600">
+            <Badge variant="outline" className="flex items-center gap-1 border-gryt-red/30 text-gryt-red">
               <Flame className="w-3 h-3" />
               {goal.streaks}
             </Badge>
           }
         </div>
-        <CardTitle className="text-lg font-bold text-gray-900">{goal.title}</CardTitle>
-        <CardDescription className="text-gray-600">{goal.description}</CardDescription>
+        <CardTitle className="text-lg font-bold text-gryt-dark dark:text-gryt-gray">{goal.title}</CardTitle>
+        <CardDescription className="text-gryt-blue/80 dark:text-gryt-light/80">{goal.description}</CardDescription>
       </CardHeader>
       
       <CardContent className="space-y-4">
         {/* Progress */}
         <div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">Progress</span>
-            <span className="text-sm font-semibold text-blue-600">{goal.progress}%</span>
+            <span className="text-sm font-medium text-gryt-dark/70 dark:text-gryt-gray/70">Progress</span>
+            <span className="text-sm font-semibold text-gryt-blue dark:text-gryt-light">{goal.progress}%</span>
           </div>
-          <Progress value={goal.progress} className="h-2" />
+          <Progress value={goal.progress} className="h-2 bg-gryt-gray dark:bg-gryt-dark/50" 
+            indicatorClassName="bg-gradient-to-r from-gryt-red to-gryt-blue" />
         </div>
 
         {/* Streaks */}
         {!isCompleted && goal.streaks !== undefined && (
           <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-1 text-orange-600">
+            <div className="flex items-center gap-1 text-gryt-red">
               <Flame className="w-4 h-4" />
               <span>{getStreakDescription(goal.streaks)}</span>
             </div>
-            {goal.lastCheckin && <span className="text-xs text-gray-500">
+            {goal.lastCheckin && <span className="text-xs text-gryt-blue/60 dark:text-gryt-light/60">
               Last update: {new Date(goal.lastCheckin).toLocaleDateString()}
             </span>}
           </div>
@@ -98,8 +100,8 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
         {/* Milestones */}
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Target className="w-4 h-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">
+            <Target className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
+            <span className="text-sm font-medium text-gryt-dark/80 dark:text-gryt-gray/80">
               Milestones ({goal.completedMilestones}/{goal.milestones.length})
             </span>
           </div>
@@ -107,18 +109,18 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
             {goal.milestones.slice(0, 3).map((milestone, index) => (
               <div key={index} className="flex items-center gap-2 text-sm">
                 <div className={`w-2 h-2 rounded-full ${
-                  index < goal.completedMilestones ? 'bg-green-500' : 'bg-gray-300'
+                  index < goal.completedMilestones ? 'bg-gryt-blue dark:bg-gryt-light' : 'bg-gryt-gray dark:bg-gryt-dark/50'
                 }`} />
-                <span className={index < goal.completedMilestones ? 'text-green-700 line-through' : 'text-gray-600'}>
+                <span className={index < goal.completedMilestones ? 'text-gryt-blue dark:text-gryt-light line-through' : 'text-gryt-dark/70 dark:text-gryt-gray/70'}>
                   {milestone}
                 </span>
                 {index < goal.completedMilestones && (
-                  <CheckCircle className="w-3 h-3 text-green-500 ml-auto" />
+                  <CheckCircle className="w-3 h-3 text-gryt-blue dark:text-gryt-light ml-auto" />
                 )}
               </div>
             ))}
             {goal.milestones.length > 3 && (
-              <div className="text-xs text-blue-600 mt-1 pl-4 cursor-pointer hover:underline">
+              <div className="text-xs text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red mt-1 pl-4 cursor-pointer hover:underline transition-colors">
                 +{goal.milestones.length - 3} more milestones
               </div>
             )}
@@ -127,11 +129,11 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
 
         {/* Target Date */}
         <div className="flex items-center gap-2 text-sm">
-          <Calendar className="w-4 h-4 text-gray-600" />
+          <Calendar className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
           <span className={`${
-            daysUntilTarget < 0 ? 'text-red-600' : 
-            daysUntilTarget < 7 ? 'text-orange-600' : 
-            'text-gray-600'
+            daysUntilTarget < 0 ? 'text-gryt-red' : 
+            daysUntilTarget < 7 ? 'text-gryt-red/70' : 
+            'text-gryt-blue dark:text-gryt-light'
           }`}>
             {daysUntilTarget > 0 
               ? `${daysUntilTarget} days remaining` 
@@ -144,23 +146,24 @@ const GoalCard = ({ goal, onUpdateProgress }: GoalCardProps) => {
 
         {/* Action Button */}
         {!isCompleted && (
-          <Button 
+          <GhibliButton 
             onClick={handleProgressUpdate}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white dark:bg-gryt-blue dark:hover:bg-gryt-blue/90"
             size="sm"
+            glowColor="blue"
           >
             Update Progress (+10%)
-          </Button>
+          </GhibliButton>
         )}
 
         {isCompleted && (
-          <div className="flex items-center justify-center text-green-700 gap-2 font-medium">
+          <div className="flex items-center justify-center text-gryt-blue dark:text-gryt-light gap-2 font-medium pulse-animation">
             <CheckCircle className="w-4 h-4" />
             <span>Goal completed!</span>
           </div>
         )}
       </CardContent>
-    </Card>
+    </GhibliCard>
   );
 };
 

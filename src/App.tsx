@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Circles from "./pages/Circles";
 import CircleDetail from "./pages/CircleDetail";
 import Dashboard from "./pages/Dashboard";
+import GhibliLayout from "./components/GhibliLayout";
 
 const queryClient = new QueryClient();
 
