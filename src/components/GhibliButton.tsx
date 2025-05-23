@@ -10,7 +10,7 @@ interface GhibliButtonProps extends ButtonProps {
 const GhibliButton: React.FC<GhibliButtonProps> = ({ 
   children, 
   className,
-  glowColor = 'blue', // Changed default to blue to match the design
+  glowColor = 'blue', // Default is blue to match the primary action style
   ...props 
 }) => {
   const glowStyles = {

@@ -41,8 +41,8 @@ const GoalsList = ({
         <h2 className="ghibli-title">Your Goals</h2>
         <GhibliButton 
           onClick={onOpenCreateDialog}
-          className="bg-gryt-red hover:bg-gryt-red/90 text-white"
-          glowColor="red"
+          className="bg-gryt-blue hover:bg-gryt-blue/90 text-white"
+          glowColor="blue"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Goal
@@ -73,8 +73,8 @@ const GoalsList = ({
             <p className="text-gryt-dark/70 dark:text-gryt-gray/70 mb-4">Start your journey by creating your first goal!</p>
             <GhibliButton 
               onClick={onOpenCreateDialog}
-              className="bg-gryt-red hover:bg-gryt-red/90 text-white"
-              glowColor="red"
+              className="bg-gryt-blue hover:bg-gryt-blue/90 text-white"
+              glowColor="blue"
             >
               <Plus className="w-4 h-4 mr-2" />
               Create Your First Goal
