@@ -34,7 +34,9 @@ const MilestoneManager = ({ goalId }: MilestoneManagerProps) => {
     milestones, 
     isLoading, 
     createMilestone, 
-    toggleMilestoneCompletion 
+    toggleMilestoneCompletion,
+    updateMilestone,
+    deleteMilestone
   } = useMilestones(goalId);
 
   // Fetch goal details for generating milestones
@@ -80,6 +82,38 @@ const MilestoneManager = ({ goalId }: MilestoneManagerProps) => {
   const handleCancelEdit = () => {
     setEditingMilestoneId(null);
     setEditingMilestoneTitle('');
+  };
+
+  const handleSaveEdit = (milestoneId: string) => {
+    if (!editingMilestoneTitle.trim()) return;
+    
+    updateMilestone.mutate(
+      { milestoneId, title: editingMilestoneTitle.trim() },
+      {
+        onSuccess: () => {
+          setEditingMilestoneId(null);
+          setEditingMilestoneTitle('');
+          toast.success('Milestone updated');
+        },
+        onError: () => {
+          toast.error('Failed to update milestone');
+        }
+      }
+    );
+  };
+
+  const handleDelete = (milestoneId: string) => {
+    deleteMilestone.mutate(
+      { milestoneId },
+      {
+        onSuccess: () => {
+          toast.success('Milestone deleted');
+        },
+        onError: () => {
+          toast.error('Failed to delete milestone');
+        }
+      }
+    );
   };
 
   const generateMilestonesAndTasks = async () => {
@@ -231,8 +265,7 @@ const MilestoneManager = ({ goalId }: MilestoneManagerProps) => {
                                   variant="default"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    // Save logic would go here
-                                    handleCancelEdit();
+                                    handleSaveEdit(milestone.id);
                                   }} 
                                   className="h-8 px-2"
                                 >
@@ -246,6 +279,47 @@ const MilestoneManager = ({ goalId }: MilestoneManagerProps) => {
                             </p>
                           )}
                         </div>
+                        
+                        {!editingMilestoneId && (
+                          <div className="flex gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEdit(milestone.id, milestone.title);
+                              }}
+                            >
+                              <span className="sr-only">Edit</span>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="h-4 w-4"
+                              >
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                              </svg>
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:bg-red-50"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(milestone.id);
+                              }}
+                            >
+                              <span className="sr-only">Delete</span>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                       
                       {/* Todo List for each milestone */}

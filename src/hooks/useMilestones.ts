@@ -64,6 +64,47 @@ export const useMilestones = (goalId?: string) => {
     }
   });
 
+  const updateMilestone = useMutation({
+    mutationFn: async ({ milestoneId, title }: { milestoneId: string, title: string }) => {
+      const { data, error } = await supabase
+        .from('milestones')
+        .update({ 
+          title,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', milestoneId)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['milestones', goalId] });
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to update milestone: ${error.message}`);
+    }
+  });
+
+  const deleteMilestone = useMutation({
+    mutationFn: async ({ milestoneId }: { milestoneId: string }) => {
+      const { error } = await supabase
+        .from('milestones')
+        .delete()
+        .eq('id', milestoneId);
+      
+      if (error) throw error;
+      return { id: milestoneId };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['milestones', goalId] });
+    },
+    onError: (error: any) => {
+      toast.error(`Failed to delete milestone: ${error.message}`);
+    }
+  });
+
   const toggleMilestoneCompletion = useMutation({
     mutationFn: async ({ milestoneId, isCompleted }: { milestoneId: string, isCompleted: boolean }) => {
       const { data, error } = await supabase
@@ -93,6 +134,8 @@ export const useMilestones = (goalId?: string) => {
     isLoading,
     error,
     createMilestone,
+    updateMilestone,
+    deleteMilestone,
     toggleMilestoneCompletion
   };
 };
