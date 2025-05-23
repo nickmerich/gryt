@@ -25,7 +25,7 @@ const OnboardingSandbox = ({ mode }: OnboardingSandboxProps) => {
     description: 'Train consistently to build up to running a 5K (3.1 miles) in just one month!',
     category: 'Health & Fitness',
     progress: 0,
-    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),  // Changed from created_at to updated_at
     targetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     userId: 'demo-user',
     milestones: [
