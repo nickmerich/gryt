@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Menu, Home, Users, BarChart, X } from 'lucide-react';
+import { Menu, Home, Users, BarChart, X, MessageCircle } from 'lucide-react';
 import ProfileMenu from './ProfileMenu';
 
 const MainNav = () => {
@@ -24,6 +24,11 @@ const MainNav = () => {
       name: 'Dashboard',
       href: '/dashboard',
       icon: BarChart
+    },
+    {
+      name: 'Community',
+      href: '/community',
+      icon: MessageCircle
     }
   ];
 
