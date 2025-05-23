@@ -1,5 +1,6 @@
 
 import { Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import GhibliButton from '@/components/GhibliButton';
 import GhibliCard from '@/components/GhibliCard';
@@ -56,12 +57,13 @@ const GoalsList = ({
       ) : goals?.length ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {goals.map((goal) => (
-            <GoalCard 
-              key={goal.id} 
-              goal={goal}
-              onUpdateProgress={onUpdateGoalProgress}
-              onEditGoal={handleEditGoal}
-            />
+            <Link to={`/goal/${goal.id}`} key={goal.id} className="block transition-transform hover:scale-[1.01]">
+              <GoalCard 
+                goal={goal}
+                onUpdateProgress={onUpdateGoalProgress}
+                onEditGoal={handleEditGoal}
+              />
+            </Link>
           ))}
         </div>
       ) : (

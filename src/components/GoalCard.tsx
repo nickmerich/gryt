@@ -8,9 +8,12 @@ import GhibliCard from './GhibliCard';
 import GhibliButton from './GhibliButton';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
+import { useTodos } from '@/hooks/useTodos';
 import ProgressVisualization from './ProgressVisualization';
 import { Goal } from '@/hooks/useGoals';
 import EditGoalDialog from './EditGoalDialog';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 interface GoalCardProps {
   goal: Goal;
@@ -32,7 +35,27 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
     }
   }, [streaks, getCurrentStreak]);
   
+  // Get all todos for this goal's milestones
+  const { data: allTodos, isLoading: loadingTodos } = useQuery({
+    queryKey: ['all-todos-for-goal', goal.id],
+    queryFn: async () => {
+      if (!milestones || milestones.length === 0) return [];
+      
+      const milestoneIds = milestones.map(m => m.id);
+      const { data, error } = await supabase
+        .from('todos')
+        .select('*')
+        .in('milestone_id', milestoneIds);
+      
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!milestones && milestones.length > 0
+  });
+  
   const completedMilestonesCount = milestones?.filter(m => m.is_completed).length || 0;
+  const totalTodosCount = allTodos?.length || 0;
+  const completedTodosCount = allTodos?.filter(todo => todo.is_completed).length || 0;
 
   const isCompleted = goal.progress >= 100;
   const daysUntilTarget = Math.ceil(
@@ -189,6 +212,23 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
               <div className="text-sm text-gray-500">No milestones added yet</div>
             )}
           </div>
+
+          {/* To-Do summary */}
+          {!loadingTodos && totalTodosCount > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="w-4 h-4 text-gryt-dark/70 dark:text-gryt-gray/70" />
+                <span className="text-sm font-medium text-gryt-dark/80 dark:text-gryt-gray/80">
+                  Daily To-Do's ({completedTodosCount}/{totalTodosCount})
+                </span>
+              </div>
+              <Progress 
+                value={(completedTodosCount / totalTodosCount) * 100} 
+                className="h-1.5 bg-gryt-gray dark:bg-gryt-dark/50" 
+                indicatorClassName="bg-green-500" 
+              />
+            </div>
+          )}
 
           {/* Target Date */}
           <div className="flex items-center gap-2 text-sm">

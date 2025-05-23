@@ -171,6 +171,44 @@ export type Database = {
           },
         ]
       }
+      todos: {
+        Row: {
+          created_at: string
+          due_date: string | null
+          id: string
+          is_completed: boolean
+          milestone_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean
+          milestone_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          is_completed?: boolean
+          milestone_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "todos_milestone_id_fkey"
+            columns: ["milestone_id"]
+            isOneToOne: false
+            referencedRelation: "milestones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
