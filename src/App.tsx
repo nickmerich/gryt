@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from '@/pages/Index';
 import Auth from '@/pages/Auth';
@@ -17,55 +18,60 @@ import Integrations from '@/pages/Integrations';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import GoalDetail from '@/pages/GoalDetail';
 
+// Create a client
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={
-          <ProtectedRoute>
-            <Index />
-          </ProtectedRoute>
-        } />
-        <Route path="/login" element={<Auth />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/goal/:goalId" element={
-          <ProtectedRoute>
-            <GoalDetail />
-          </ProtectedRoute>
-        } />
-        <Route path="/circles" element={
-          <ProtectedRoute>
-            <Circles />
-          </ProtectedRoute>
-        } />
-        <Route path="/circles/:circleId" element={
-          <ProtectedRoute>
-            <CircleDetail />
-          </ProtectedRoute>
-        } />
-        <Route path="/community" element={
-          <ProtectedRoute>
-            <Community />
-          </ProtectedRoute>
-        } />
-        <Route path="/profile" element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        } />
-        <Route path="/integrations" element={
-          <ProtectedRoute>
-            <Integrations />
-          </ProtectedRoute>
-        } />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Index />
+            </ProtectedRoute>
+          } />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/goal/:goalId" element={
+            <ProtectedRoute>
+              <GoalDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/circles" element={
+            <ProtectedRoute>
+              <Circles />
+            </ProtectedRoute>
+          } />
+          <Route path="/circles/:circleId" element={
+            <ProtectedRoute>
+              <CircleDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/community" element={
+            <ProtectedRoute>
+              <Community />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/integrations" element={
+            <ProtectedRoute>
+              <Integrations />
+            </ProtectedRoute>
+          } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
