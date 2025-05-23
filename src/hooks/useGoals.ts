@@ -102,7 +102,7 @@ const useGoals = () => {
       .from('goal-images')
       .upload(imageName, imageFile, {
         cacheControl: '3600',
-        upsert: false
+        upsert: true // Changed to true to allow overwriting existing files
       });
   
     if (error) {
@@ -111,8 +111,13 @@ const useGoals = () => {
       throw new Error(error.message);
     }
   
-    const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/goal-images/${data.path}`;
-    return imageUrl;
+    // Use the proper method to get a public URL for the uploaded image
+    const { data: publicUrlData } = supabase
+      .storage
+      .from('goal-images')
+      .getPublicUrl(data.path);
+      
+    return publicUrlData.publicUrl;
   };
 
   const updateProgress = async ({ goalId, newProgress }: { goalId: string, newProgress: number }): Promise<void> => {

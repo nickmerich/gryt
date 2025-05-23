@@ -39,13 +39,11 @@ const GoalDetail = () => {
       if (error) throw error;
       
       // Parse date fields and convert progress
-      // Use type assertion to handle the image_url property which exists in the database
-      // but isn't included in the TypeScript type definition
       return {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        imageUrl: (data as any).image_url || undefined, // Use type assertion to safely access image_url
+        imageUrl: data.image_url || undefined, // Correctly map image_url from DB to imageUrl in code
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };
@@ -224,6 +222,11 @@ const GoalDetail = () => {
                     src={goal.imageUrl}
                     alt={goal.title}
                     className="w-full h-48 object-cover"
+                    onError={(e) => {
+                      // Fallback for image loading errors
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Image+Not+Found';
+                      console.error('Failed to load image:', goal.imageUrl);
+                    }}
                   />
                 </div>
               </div>
