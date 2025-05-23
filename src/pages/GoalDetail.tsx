@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Goal } from '@/hooks/useGoals'; 
+import { Goal, parseGoalRow } from '@/integrations/supabase/goal.types'; 
 import { toast } from 'sonner';
 import { 
   ArrowLeft, 
@@ -38,15 +37,8 @@ const GoalDetail = () => {
         
       if (error) throw error;
       
-      // Parse date fields and convert using our utility function
-      return {
-        ...data,
-        targetDate: data.target_date,
-        lastCheckin: data.updated_at,
-        imageUrl: data.image_url || undefined, // Correctly map image_url to imageUrl with fallback
-        milestones: [],
-        completedMilestones: 0,
-      };
+      // Use parseGoalRow utility to convert database format to our Goal model
+      return parseGoalRow(data);
     },
     enabled: !!goalId && !!user,
   });
