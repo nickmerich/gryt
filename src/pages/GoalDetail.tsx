@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -18,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import GhibliLayout from '@/components/GhibliLayout';
 import MilestoneManager from '@/components/MilestoneManager';
 import ProgressVisualization from '@/components/ProgressVisualization';
+import MarathonTrainingTips from '@/components/MarathonTrainingTips';
 
 const GoalDetail = () => {
   const { goalId } = useParams<{ goalId: string }>();
@@ -108,6 +110,11 @@ const GoalDetail = () => {
     (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
   );
   const isCompleted = goal.progress >= 100;
+
+  // Check if this is a marathon-related goal
+  const isMarathonGoal = goal.category === 'Health & Fitness' && 
+                          (goal.title.toLowerCase().includes('marathon') || 
+                           goal.description?.toLowerCase().includes('marathon'));
 
   return (
     <GhibliLayout>
@@ -202,6 +209,11 @@ const GoalDetail = () => {
                 </Button>
               </div>
             </div>
+            
+            {/* Show Marathon Training Tips component for marathon-related goals */}
+            {isMarathonGoal && (
+              <MarathonTrainingTips goal={goal} />
+            )}
           </div>
           
           <div className="md:col-span-5 space-y-6">

@@ -1,4 +1,3 @@
-
 // Mock responses for the GrytGPT chatbot
 // In a real application, this would connect to an AI service or API
 
@@ -50,6 +49,29 @@ const reflectionQuestions = [
   "How are you different today compared to when you started?"
 ];
 
+// Marathon training tips
+const marathonTrainingTips = [
+  "Victory Visualization Mini-Workout: Take 10 minutes to perform light dynamic stretching while mentally rehearsing your race day success. Visualize yourself crossing the finish line under your goal time, feeling strong and accomplished.",
+  
+  "Marathon Macros Strategic Snacking: Focus on recovery nutrition with a 4:1 carb-to-protein ratio snack. Try a banana with Greek yogurt or a smoothie with berries and protein powder to replenish glycogen stores while supporting muscle repair.",
+  
+  "Mile Marker Motivation System: Create a playlist with 26 of your favorite energizing songs - one for each mile of the marathon. Listen to portions during light recovery walks to mentally prepare for race day while keeping your body active without overtraining.",
+  
+  "Runner's Reset Recovery Hack: Implement a 15-minute targeted recovery routine focusing on your feet and calves using a tennis ball for rolling and gentle self-massage. This addresses marathon-specific stress points and maintains circulation.",
+  
+  "Pace Progress Celebration Ritual: Document today's successful pace achievement in a dedicated marathon journal with three specific observations about what went well. This builds confidence and creates a resource of strategies for race day.",
+  
+  "Zone 2 Recovery Session: Spend 20-30 minutes in heart rate zone 2 (very easy effort where you can still hold a conversation) to improve aerobic capacity without adding training stress.",
+  
+  "Pre-Race Mental Rehearsal: Visualize potential race day challenges (weather, crowds, hills) and mentally practice your coping strategies. This builds psychological resilience for marathon day.",
+  
+  "Carb Cycling Strategy: On hard training days, increase carbohydrate intake to 7-10g per kg of bodyweight. On recovery days, moderate to 5-7g per kg to optimize glycogen storage for race day.",
+  
+  "Compression Recovery Protocol: Use compression socks or sleeves for 2-3 hours after training sessions to reduce inflammation and improve venous return, speeding recovery between sessions.",
+  
+  "Technique Focus Mini-Session: Spend 5-10 minutes practicing proper running form (arm swing, foot strike, posture) at an easy pace to ingrain efficiency that will save energy during your marathon."
+];
+
 // Generate a chat response based on user input and their goals
 export const generateChatResponse = (
   userInput: string,
@@ -61,8 +83,13 @@ export const generateChatResponse = (
       const input = userInput.toLowerCase();
       let response = "";
       
+      // Check for specific marathon training requests
+      if (input.includes('marathon') && 
+          (input.includes('training') || input.includes('run') || input.includes('tips'))) {
+        response = getMarathonTrainingResponse(goals);
+      }
       // Check for specific user intents
-      if (input.includes('motivat') || input.includes('encouragement') || input.includes('inspire')) {
+      else if (input.includes('motivat') || input.includes('encouragement') || input.includes('inspire')) {
         response = getMotivationalResponse(goals);
       } 
       else if (input.includes('journal') || input.includes('prompt') || input.includes('write')) {
@@ -85,6 +112,44 @@ export const generateChatResponse = (
       resolve(response);
     }, 1000);
   });
+};
+
+// Generate marathon training tips
+const getMarathonTrainingResponse = (goals: Goal[]): string => {
+  // Find marathon-related goals
+  const marathonGoals = goals.filter(goal => 
+    goal.category === 'Health & Fitness' && 
+    goal.title.toLowerCase().includes('marathon')
+  );
+  
+  if (marathonGoals.length > 0) {
+    const marathonGoal = marathonGoals[0];
+    const randomTips = shuffleArray([...marathonTrainingTips]).slice(0, 5);
+    
+    let progressStatus = "just getting started";
+    if (marathonGoal.progress > 80) progressStatus = "almost at the finish line";
+    else if (marathonGoal.progress > 50) progressStatus = "making great progress";
+    else if (marathonGoal.progress > 20) progressStatus = "building momentum";
+    
+    const response = `Here are 5 training tips for your "${marathonGoal.title}" goal, where you're ${progressStatus} at ${marathonGoal.progress}%:\n\n` +
+      randomTips.map((tip, index) => `${index + 1}. ${tip}`).join('\n\n');
+    
+    return response;
+  }
+  
+  // Generic marathon tips if no specific marathon goal is found
+  return `Here are some marathon training tips to help you succeed:\n\n` +
+    shuffleArray([...marathonTrainingTips]).slice(0, 3).map((tip, index) => `${index + 1}. ${tip}`).join('\n\n');
+};
+
+// Helper function to shuffle array
+const shuffleArray = <T>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
 };
 
 // Generate a motivational response
