@@ -16,6 +16,7 @@ import GhibliLayout from '@/components/GhibliLayout';
 import GhibliButton from '@/components/GhibliButton';
 import GhibliCard from '@/components/GhibliCard';
 import ProgressGallery from '@/components/ProgressGallery';
+import AISuggestions from '@/components/AISuggestions';
 
 const Index = () => {
   const { user } = useAuth();
@@ -121,6 +122,9 @@ const Index = () => {
           <h2 className="ghibli-subtitle mb-4">Your Growth Visualization</h2>
           <ProgressGallery goals={goals} />
         </div>
+
+        {/* AI Goal Suggestions - New Component */}
+        {goals && goals.length > 0 && <AISuggestions goals={goals} />}
 
         {/* Dream Circles Callout */}
         <GhibliCard className="mb-8 overflow-hidden" glow={true}>
