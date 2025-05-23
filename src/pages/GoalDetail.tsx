@@ -43,7 +43,8 @@ const GoalDetail = () => {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        imageUrl: data.image_url || undefined, // Correctly map image_url from DB to imageUrl in code
+        // Change this line to handle the database field correctly
+        imageUrl: data.image_url || undefined,
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };

@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
@@ -32,7 +31,7 @@ export interface EditGoalInput {
   description?: string;
   category: string;
   target_date?: string;
-  image_url?: string;  // Add this property
+  image_url?: string;  // This is the database field name
 }
 
 const useGoals = () => {
@@ -190,7 +189,7 @@ const useGoals = () => {
     },
   });
 
-  // Update the parseGoal function to always include the required properties
+  // Update the parseGoal function to correctly handle the field mapping
   const parseGoal = (goal: any): Goal => ({
     id: goal.id,
     title: goal.title,
@@ -200,9 +199,9 @@ const useGoals = () => {
     targetDate: goal.target_date,
     lastCheckin: goal.updated_at,
     updated_at: goal.updated_at,
-    imageUrl: goal.image_url,
-    milestones: goal.milestones || [], // Ensure this is always an array
-    completedMilestones: goal.completed_milestones || 0 // Ensure this is always a number
+    imageUrl: goal.image_url, // Make sure to map from the database field name
+    milestones: goal.milestones || [], 
+    completedMilestones: goal.completed_milestones || 0
   });
 
   return {
