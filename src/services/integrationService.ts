@@ -166,14 +166,14 @@ const mockUserIntegrations: UserIntegration[] = [
 ];
 
 // Function to get user's connected integrations
-export const getUserIntegrations = async (userId: string) => {
+export const getUserIntegrations = async (userId: string): Promise<UserIntegration[]> => {
   // For now, return mock data until we set up the database table
   console.log('Getting integrations for user:', userId);
   return mockUserIntegrations.filter(integration => integration.user_id === userId);
 };
 
 // Function to connect an integration
-export const connectIntegration = async (providerId: string, token: string, userId: string) => {
+export const connectIntegration = async (providerId: string, token: string, userId: string): Promise<UserIntegration> => {
   console.log('Connecting integration:', providerId, 'for user:', userId);
   
   // Create a new mock integration
@@ -193,7 +193,7 @@ export const connectIntegration = async (providerId: string, token: string, user
 };
 
 // Function to disconnect an integration
-export const disconnectIntegration = async (integrationId: string) => {
+export const disconnectIntegration = async (integrationId: string): Promise<boolean> => {
   console.log('Disconnecting integration:', integrationId);
   
   // Remove from mock data
