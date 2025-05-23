@@ -43,7 +43,7 @@ const GoalDetail = () => {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        imageUrl: data.image_url,
+        imageUrl: data.image_url,  // This is the issue - we need to check if it exists
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };
