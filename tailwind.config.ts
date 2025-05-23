@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -67,13 +68,14 @@ export default {
 					600: '#8b4513',
 					800: '#5d4037'
 				},
-				// Gryt App custom colors
+				// Updated Gryt App custom colors to match the design
 				gryt: {
 					red: '#E63946',
-					blue: '#457B9D',
-					gray: '#F1FAEE',
+					blue: '#4361EE',
+					gray: '#F8F9FC',
 					dark: '#1D3557', 
-					light: '#A8DADC'
+					light: '#A8DADC',
+					purple: '#6C63FF'
 				}
 			},
 			borderRadius: {

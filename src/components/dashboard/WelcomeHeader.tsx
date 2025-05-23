@@ -21,8 +21,8 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
           )}
           <GhibliButton 
             onClick={onOpenCreateDialog}
-            className="bg-gryt-red hover:bg-gryt-red/90 text-white"
-            glowColor="red"
+            className="bg-gryt-blue hover:bg-gryt-blue/90 text-white"
+            glowColor="blue"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Goal
@@ -32,7 +32,7 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
 
       <div className="text-center mb-8 slide-animation">
         <h1 className="ghibli-title mb-2">
-          Welcome to <span className="text-gryt-red">Gryt</span>
+          Welcome to <span className="text-gryt-blue">Gryt</span>
         </h1>
         <p className="ghibli-subtitle">Your AI-powered goal achievement companion</p>
       </div>

@@ -37,7 +37,7 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+      <CardHeader className="bg-gradient-to-r from-gryt-blue to-gryt-purple text-white">
         <div className="flex items-center justify-between">
           <Badge variant="outline" className="border-white text-white">
             {circle.category}
@@ -53,7 +53,7 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
               </Avatar>
             ))}
             {circle.memberCount > 3 && (
-              <div className="flex items-center justify-center h-7 w-7 rounded-full bg-white text-blue-600 text-xs font-bold border-2 border-white">
+              <div className="flex items-center justify-center h-7 w-7 rounded-full bg-white text-gryt-blue text-xs font-bold border-2 border-white">
                 +{circle.memberCount - 3}
               </div>
             )}
@@ -67,13 +67,13 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
       </CardContent>
       <CardFooter className="flex justify-between border-t p-4 bg-gray-50">
         {circle.isJoined ? (
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className="flex items-center">
             <Link to={`/circles/${circle.id}`}>
               View Circle <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         ) : (
-          <Button onClick={handleJoin} className="bg-blue-600 hover:bg-blue-700">
+          <Button onClick={handleJoin} className="bg-gryt-blue hover:bg-gryt-blue/90">
             <Users className="mr-2 h-4 w-4" />
             Join Circle
           </Button>

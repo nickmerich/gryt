@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import MainNav from '@/components/MainNav';
 import CircleCard, { Circle, CircleMember } from '@/components/circles/CircleCard';
 import { toast } from "sonner";
+import GhibliButton from '@/components/GhibliButton';
 
 // Sample data for the Dream Circles
 const sampleMembers: CircleMember[] = [
@@ -103,19 +104,19 @@ const Circles = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gryt-gray">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Navigation */}
         <div className="flex items-center justify-between mb-8">
           <MainNav />
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <GhibliButton className="bg-gryt-blue hover:bg-gryt-blue/90 text-white" glowColor="blue">
             <Plus className="mr-2 h-4 w-4" /> Create Circle
-          </Button>
+          </GhibliButton>
         </div>
         
         {/* Hero section */}
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dream Circles</h1>
+          <h1 className="text-3xl font-bold text-gryt-dark mb-2">Dream Circles</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Join micro-communities centered around specific goals. Share progress, overcome challenges, 
             and celebrate wins with people on similar journeys.

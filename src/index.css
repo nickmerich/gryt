@@ -1,11 +1,10 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 60 30% 98%;
+    --background: 220 30% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -14,16 +13,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 0 72% 56%; /* Gryt Red */
-    --primary-foreground: 60 30% 98%;
+    --primary: 228 84% 60%; /* Updated to match blue in design */
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 203 46% 44%; /* Victory Blue */
-    --secondary-foreground: 60 30% 98%;
+    --secondary: 228 84% 60%; /* Matching primary */
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 85 73% 96%; /* Light Neutral Grit Gray */
+    --muted: 223 20% 96%; /* Light blue-gray */
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 200 53% 76%; /* Light Victory Blue */
+    --accent: 242 83% 70%; /* Purple accent */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,7 +36,7 @@
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 0 72% 56%; /* Gryt Red */
+    --sidebar-primary: 228 84% 60%; /* Updated to match design */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
@@ -103,7 +102,7 @@
   }
   
   .ghibli-card {
-    @apply rounded-lg border border-transparent bg-white/80 shadow-lg backdrop-blur-sm transition-all hover:border-gryt-light hover:bg-white/90 hover:shadow-xl dark:bg-gryt-dark/80 dark:hover:bg-gryt-dark/90 dark:hover:border-gryt-blue/30;
+    @apply rounded-lg border border-transparent bg-white/90 shadow-md backdrop-blur-sm transition-all hover:border-gryt-light hover:bg-white/95 hover:shadow-lg dark:bg-gryt-dark/80 dark:hover:bg-gryt-dark/90 dark:hover:border-gryt-blue/30;
   }
   
   .ghibli-button {

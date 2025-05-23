@@ -23,7 +23,7 @@ const DreamCirclesCallout = () => {
             </GhibliButton>
           </Link>
         </div>
-        <div className="bg-gradient-to-r from-gryt-blue to-gryt-blue/70 md:w-1/3 p-6 flex items-center justify-center">
+        <div className="bg-gradient-to-r from-gryt-blue to-gryt-purple md:w-1/3 p-6 flex items-center justify-center">
           <div className="text-white text-center">
             <div className="text-3xl font-bold mb-2">6+</div>
             <div className="text-sm">Active Dream Circles</div>

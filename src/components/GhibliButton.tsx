@@ -15,7 +15,7 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
 }) => {
   const glowStyles = {
     red: 'before:from-gryt-red/20 before:to-gryt-red/5',
-    blue: 'before:from-gryt-blue/20 before:to-gryt-blue/5',
+    blue: 'before:from-gryt-blue/20 before:to-gryt-purple/5',
     light: 'before:from-gryt-light/20 before:to-gryt-light/5'
   };
 
