@@ -54,7 +54,7 @@ export const useMilestones = (goalId?: string) => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as Milestone; // Explicitly cast the return type
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['milestones', goalId] });
@@ -77,7 +77,7 @@ export const useMilestones = (goalId?: string) => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as Milestone; // Explicitly cast the return type
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['milestones', goalId] });
@@ -118,7 +118,7 @@ export const useMilestones = (goalId?: string) => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as Milestone; // Explicitly cast the return type
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['milestones', goalId] });
