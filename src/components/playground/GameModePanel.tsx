@@ -2,7 +2,7 @@
 import React from 'react';
 import ChallengeCard from './game/ChallengeCard';
 import StatsPanel from './game/StatsPanel';
-import { useGameMode } from './game/useGameMode';
+import { useGameMode } from './game/useGameMode'; // Import is the same but file is now .tsx
 import { GameModePanelProps } from './game/GameModeTypes';
 
 const GameModePanel: React.FC<GameModePanelProps> = ({ mode }) => {
