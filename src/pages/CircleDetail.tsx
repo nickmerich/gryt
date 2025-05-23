@@ -1,25 +1,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Users, ArrowLeft } from 'lucide-react';
+import { Users, ArrowLeft, Share2, UserPlus, Link2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import MainNav from '@/components/MainNav';
 import CirclePost, { Post } from '@/components/circles/CirclePost';
 import CreatePostForm from '@/components/circles/CreatePostForm';
 import { toast } from 'sonner';
 import { Circle, CircleMember } from '@/components/circles/CircleCard';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import GhibliCard from '@/components/GhibliCard';
+import GhibliButton from '@/components/GhibliButton';
 
-// Sample members
-const sampleMembers: CircleMember[] = [
-  { id: '1', name: 'Alex Johnson', avatar: 'https://i.pravatar.cc/150?img=1' },
-  { id: '2', name: 'Sam Taylor', avatar: 'https://i.pravatar.cc/150?img=2' },
-  { id: '3', name: 'Jamie Smith', avatar: 'https://i.pravatar.cc/150?img=3' },
-  { id: '4', name: 'Taylor Wilson', avatar: 'https://i.pravatar.cc/150?img=4' },
-  { id: '5', name: 'Jordan Blake', avatar: 'https://i.pravatar.cc/150?img=5' },
-  { id: '6', name: 'Casey Morgan', avatar: 'https://i.pravatar.cc/150?img=6' },
-  { id: '7', name: 'Riley Johnson', avatar: 'https://i.pravatar.cc/150?img=7' },
+// Sample members with join dates added
+const sampleMembers: (CircleMember & { joinDate: string, streak: number, progress: number })[] = [
+  { id: '1', name: 'Alex Johnson', avatar: 'https://i.pravatar.cc/150?img=1', joinDate: '2023-01-15', streak: 12, progress: 78 },
+  { id: '2', name: 'Sam Taylor', avatar: 'https://i.pravatar.cc/150?img=2', joinDate: '2023-02-20', streak: 8, progress: 65 },
+  { id: '3', name: 'Jamie Smith', avatar: 'https://i.pravatar.cc/150?img=3', joinDate: '2023-03-05', streak: 21, progress: 92 },
+  { id: '4', name: 'Taylor Wilson', avatar: 'https://i.pravatar.cc/150?img=4', joinDate: '2023-04-10', streak: 5, progress: 45 },
+  { id: '5', name: 'Jordan Blake', avatar: 'https://i.pravatar.cc/150?img=5', joinDate: '2023-05-25', streak: 16, progress: 81 },
+  { id: '6', name: 'Casey Morgan', avatar: 'https://i.pravatar.cc/150?img=6', joinDate: '2023-06-12', streak: 7, progress: 59 },
+  { id: '7', name: 'Riley Johnson', avatar: 'https://i.pravatar.cc/150?img=7', joinDate: '2023-07-30', streak: 3, progress: 32 },
 ];
 
 // Sample circles data
@@ -84,10 +89,19 @@ const userGoals = [
   { id: 'g3', title: 'Secure Funding' }
 ];
 
+// Weekly prompts for the circle
+const weeklyPrompt = {
+  title: "This week's focus",
+  content: "What's one small step you've taken this week that you're proud of, even if it didn't lead to the results you hoped for?",
+  date: "May 20 - May 26"
+};
+
 const CircleDetail = () => {
   const { circleId } = useParams<{ circleId: string }>();
   const [circle, setCircle] = useState<Circle | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [leaderboardSort, setLeaderboardSort] = useState<'streak' | 'progress'>('streak');
   
   useEffect(() => {
     // In a real app, fetch circle data from API
@@ -131,6 +145,24 @@ const CircleDetail = () => {
       return post;
     }));
   };
+  
+  const handleShare = () => {
+    // In a real app, this would open a share dialog
+    toast.success('Share link copied to clipboard!');
+  };
+  
+  const handleInvite = () => {
+    // In a real app, this would open an invite dialog
+    toast.success('Invitation dialog would open here');
+  };
+  
+  const getSortedMembers = () => {
+    return [...sampleMembers].sort((a, b) => 
+      leaderboardSort === 'streak' 
+        ? b.streak - a.streak 
+        : b.progress - a.progress
+    );
+  };
 
   if (!circle) {
     return <div className="container mx-auto px-4 py-8">Circle not found</div>;
@@ -141,15 +173,17 @@ const CircleDetail = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header with Navigation */}
         <div className="flex items-center justify-between mb-8">
+          <Link to="/circles" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+            <GhibliButton variant="ghost" size="sm" className="gap-1">
+              <ArrowLeft className="h-4 w-4" />
+              Back to circles
+            </GhibliButton>
+          </Link>
           <MainNav />
         </div>
         
         {/* Circle Header */}
         <div className="mb-8">
-          <Link to="/circles" className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
-            <ArrowLeft className="h-4 w-4 mr-1" /> Back to all circles
-          </Link>
-          
           <div className="p-6 bg-white rounded-lg shadow-sm">
             <div className="flex justify-between items-start">
               <div>
@@ -161,74 +195,220 @@ const CircleDetail = () => {
                 <p className="text-gray-600 mb-4">{circle.description}</p>
               </div>
               
-              <Button variant="outline" className="flex items-center gap-2">
-                <Users className="h-4 w-4" /> View Members
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex items-center gap-2" onClick={handleShare}>
+                  <Share2 className="h-4 w-4" /> Share
+                </Button>
+                <Button variant="outline" className="flex items-center gap-2" onClick={handleInvite}>
+                  <UserPlus className="h-4 w-4" /> Invite
+                </Button>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Link2 className="h-4 w-4" /> Link Integration
+                </Button>
+              </div>
             </div>
             
             <div className="flex items-center mt-4">
-              <div className="flex -space-x-2 mr-3">
-                {circle.members.slice(0, 5).map((member) => (
-                  <Avatar key={member.id} className="border-2 border-white h-8 w-8">
-                    {member.avatar ? (
-                      <AvatarImage src={member.avatar} alt={member.name} />
-                    ) : (
-                      <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                    )}
-                  </Avatar>
-                ))}
-                {circle.memberCount > 5 && (
-                  <div className="flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 text-gray-800 text-xs font-bold border-2 border-white">
-                    +{circle.memberCount - 5}
-                  </div>
-                )}
-              </div>
+              <TooltipProvider>
+                <div className="flex -space-x-2 mr-3">
+                  {circle.members.slice(0, 5).map((member) => (
+                    <Tooltip key={member.id}>
+                      <TooltipTrigger asChild>
+                        <Avatar className="border-2 border-white h-8 w-8">
+                          {member.avatar ? (
+                            <AvatarImage src={member.avatar} alt={member.name} />
+                          ) : (
+                            <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                          )}
+                        </Avatar>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{member.name}</p>
+                        <p className="text-xs text-gray-500">Joined: {(member as any).joinDate}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                  {circle.memberCount > 5 && (
+                    <div className="flex items-center justify-center h-8 w-8 rounded-full bg-gray-100 text-gray-800 text-xs font-bold border-2 border-white">
+                      +{circle.memberCount - 5}
+                    </div>
+                  )}
+                </div>
+              </TooltipProvider>
               <span className="text-sm text-gray-500">Join the conversation!</span>
             </div>
           </div>
         </div>
         
-        {/* Main content area */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left sidebar - on larger screens */}
-          <div className="hidden lg:block">
-            <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-              <h3 className="font-medium text-gray-900 mb-3">About this circle</h3>
-              <p className="text-gray-600 text-sm mb-4">{circle.description}</p>
-              <div className="border-t border-gray-100 pt-4">
-                <h4 className="text-sm font-medium text-gray-900 mb-2">Top contributors</h4>
-                <div className="space-y-3">
-                  {circle.members.slice(0, 3).map(member => (
-                    <div key={member.id} className="flex items-center">
-                      <Avatar className="h-8 w-8 mr-2">
-                        {member.avatar ? (
-                          <AvatarImage src={member.avatar} alt={member.name} />
-                        ) : (
-                          <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
-                        )}
-                      </Avatar>
-                      <span className="text-sm">{member.name}</span>
+        {/* Main tabs and content */}
+        <Tabs defaultValue="overview" className="mb-6" onValueChange={(value) => setActiveTab(value)}>
+          <TabsList className="mb-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="members">Members</TabsTrigger>
+            <TabsTrigger value="progress">Progress</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Left sidebar */}
+              <div className="lg:col-span-1 space-y-6">
+                {/* Weekly prompt card */}
+                <GhibliCard className="p-6" illustration="sunset" illustrationOpacity={0.07}>
+                  <h3 className="font-medium text-gray-900 mb-2">{weeklyPrompt.title}</h3>
+                  <p className="text-gray-600 text-sm mb-2">{weeklyPrompt.content}</p>
+                  <p className="text-xs text-gray-500">{weeklyPrompt.date}</p>
+                </GhibliCard>
+                
+                {/* Leaderboard */}
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="font-medium text-gray-900">Leaderboard</h3>
+                    <div className="flex items-center gap-2">
+                      <Button 
+                        variant={leaderboardSort === 'streak' ? 'default' : 'outline'} 
+                        size="sm" 
+                        className="text-xs" 
+                        onClick={() => setLeaderboardSort('streak')}
+                      >
+                        By Streak
+                      </Button>
+                      <Button 
+                        variant={leaderboardSort === 'progress' ? 'default' : 'outline'} 
+                        size="sm" 
+                        className="text-xs"
+                        onClick={() => setLeaderboardSort('progress')}
+                      >
+                        By Progress
+                      </Button>
                     </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {getSortedMembers().slice(0, 5).map((member, index) => (
+                      <div key={member.id} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-gray-500 w-5">{index + 1}</span>
+                          <Avatar className="h-8 w-8">
+                            {member.avatar ? (
+                              <AvatarImage src={member.avatar} alt={member.name} />
+                            ) : (
+                              <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                            )}
+                          </Avatar>
+                          <span className="text-sm">{member.name}</span>
+                        </div>
+                        <div className="text-sm font-medium">
+                          {leaderboardSort === 'streak' ? (
+                            <span className="text-gryt-red">{member.streak} days</span>
+                          ) : (
+                            <span className="text-gryt-blue">{member.progress}%</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Main feed */}
+              <div className="lg:col-span-2">
+                <CreatePostForm onSubmit={handleCreatePost} goals={userGoals} />
+                
+                <div className="space-y-4 mt-6">
+                  {posts.map(post => (
+                    <CirclePost key={post.id} post={post} onLike={handleLikePost} />
                   ))}
                 </div>
               </div>
             </div>
-          </div>
+          </TabsContent>
           
-          {/* Main feed */}
-          <div className="lg:col-span-2">
-            <CreatePostForm onSubmit={handleCreatePost} goals={userGoals} />
-            
-            <div className="space-y-4">
-              {posts.map(post => (
-                <CirclePost key={post.id} post={post} onLike={handleLikePost} />
-              ))}
+          <TabsContent value="members">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h2 className="text-xl font-bold mb-4">Members</h2>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-6">
+                <TooltipProvider>
+                  {sampleMembers.map(member => (
+                    <Tooltip key={member.id}>
+                      <TooltipTrigger asChild>
+                        <div className="flex flex-col items-center">
+                          <Avatar className="h-16 w-16 mb-2">
+                            {member.avatar ? (
+                              <AvatarImage src={member.avatar} alt={member.name} />
+                            ) : (
+                              <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                            )}
+                          </Avatar>
+                          <span className="text-sm text-center">{member.name}</span>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{member.name}</p>
+                        <p className="text-xs text-gray-500">Joined: {member.joinDate}</p>
+                        <p className="text-xs text-gray-500">Streak: {member.streak} days</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </TooltipProvider>
+              </div>
+              
+              <Button variant="outline" className="flex items-center gap-2" onClick={handleInvite}>
+                <UserPlus className="h-4 w-4" /> Invite New Members
+              </Button>
             </div>
-          </div>
-        </div>
+          </TabsContent>
+          
+          <TabsContent value="progress">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h2 className="text-xl font-bold mb-4">Circle Progress</h2>
+              
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Member</TableHead>
+                    <TableHead>Streak</TableHead>
+                    <TableHead>Progress</TableHead>
+                    <TableHead>Last Activity</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sampleMembers.map((member) => (
+                    <TableRow key={member.id}>
+                      <TableCell className="flex items-center gap-2">
+                        <Avatar className="h-8 w-8">
+                          {member.avatar ? (
+                            <AvatarImage src={member.avatar} alt={member.name} />
+                          ) : (
+                            <AvatarFallback>{member.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                          )}
+                        </Avatar>
+                        <span>{member.name}</span>
+                      </TableCell>
+                      <TableCell>{member.streak} days</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-gryt-blue rounded-full"
+                              style={{ width: `${member.progress}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-xs">{member.progress}%</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>Today</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
 };
 
 export default CircleDetail;
+
