@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Copy, Calendar, Clock, Edit, ArrowRight, Music, Running, BookOpen } from 'lucide-react';
+import { Copy, Calendar, Clock, Edit, ArrowRight, Music, Activity, BookOpen } from 'lucide-react';
 import GhibliCard from '@/components/GhibliCard';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import GhibliButton from '@/components/GhibliButton';
@@ -31,7 +31,7 @@ const TemplateCreation = ({ mode }: TemplateCreationProps) => {
       title: 'Marathon Training Plan',
       description: 'A 16-week training program to prepare for your first marathon',
       category: 'Health & Fitness',
-      icon: <Running className="w-5 h-5" />,
+      icon: <Activity className="w-5 h-5" />,
       color: 'bg-green-100 text-green-800',
       durationDays: 112,
       milestones: [

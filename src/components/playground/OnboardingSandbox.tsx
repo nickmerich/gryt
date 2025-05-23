@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Goal } from '@/hooks/useGoals';
-import { CheckCircle, ArrowRight, RotateCcw, Party } from 'lucide-react';
+import { CheckCircle, ArrowRight, RotateCcw, Sparkles } from 'lucide-react';
 import GhibliCard from '@/components/GhibliCard';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -13,14 +13,19 @@ interface OnboardingSandboxProps {
   mode: 'sandbox' | 'real';
 }
 
+// Define a custom type for our demo goal that extends Goal but includes todos
+interface DemoGoal extends Goal {
+  todos: { id: string; title: string; isCompleted: boolean }[];
+}
+
 const OnboardingSandbox = ({ mode }: OnboardingSandboxProps) => {
-  const [demoGoal, setDemoGoal] = useState<Goal>({
+  const [demoGoal, setDemoGoal] = useState<DemoGoal>({
     id: 'demo-goal',
     title: 'Run 5K in 30 Days',
     description: 'Train consistently to build up to running a 5K (3.1 miles) in just one month!',
     category: 'Health & Fitness',
     progress: 0,
-    createdAt: new Date().toISOString(),
+    created_at: new Date().toISOString(),
     targetDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     userId: 'demo-user',
     milestones: [
@@ -30,6 +35,7 @@ const OnboardingSandbox = ({ mode }: OnboardingSandboxProps) => {
       { id: '4', title: 'Run 4K comfortably', isCompleted: false },
       { id: '5', title: 'Complete full 5K', isCompleted: false },
     ],
+    completedMilestones: 0,
     todos: [
       { id: '1', title: 'Buy proper running shoes', isCompleted: false },
       { id: '2', title: '10-minute warm-up routine', isCompleted: false },
@@ -58,7 +64,12 @@ const OnboardingSandbox = ({ mode }: OnboardingSandboxProps) => {
     if (newProgress >= 20 && !demoGoal.milestones[0].isCompleted) {
       const updatedMilestones = [...demoGoal.milestones];
       updatedMilestones[0] = {...updatedMilestones[0], isCompleted: true};
-      setDemoGoal({...demoGoal, milestones: updatedMilestones, progress: newProgress});
+      setDemoGoal({
+        ...demoGoal, 
+        milestones: updatedMilestones, 
+        progress: newProgress,
+        todos: demoGoal.todos
+      });
       setShowCelebration(true);
       toast.success("🎉 You've completed your first milestone!");
       
@@ -77,7 +88,10 @@ const OnboardingSandbox = ({ mode }: OnboardingSandboxProps) => {
     const updatedTodos = demoGoal.todos.map(todo => 
       todo.id === id ? {...todo, isCompleted: !todo.isCompleted} : todo
     );
-    setDemoGoal({...demoGoal, todos: updatedTodos});
+    setDemoGoal({
+      ...demoGoal, 
+      todos: updatedTodos
+    });
     
     toast.success("Task completed! Great job staying on track.");
     setCompletedSteps([...completedSteps, tourStep]);
