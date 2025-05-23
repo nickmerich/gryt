@@ -1,8 +1,6 @@
 
 import { useState } from 'react';
 import { toast } from "sonner";
-import { Link } from 'react-router-dom';
-import { Gamepad2 } from 'lucide-react';
 import CreateGoalDialog from '@/components/CreateGoalDialog';
 import AIInsights from '@/components/AIInsights';
 import ChatModal from '@/components/GrytGPT/ChatModal';
@@ -11,7 +9,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import GhibliLayout from '@/components/GhibliLayout';
 import AISuggestions from '@/components/AISuggestions';
 import { useIsMobile } from '@/hooks/use-mobile';
-import GhibliButton from '@/components/GhibliButton';
 
 // Import refactored components
 import StatsOverview from '@/components/dashboard/StatsOverview';
@@ -96,25 +93,7 @@ const Index = () => {
           />
         )}
 
-        {/* Playground Banner */}
-        <div className="my-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200 shadow-sm">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-100 p-3 rounded-full text-blue-600">
-                <Gamepad2 className="h-8 w-8" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-blue-800">New! Gryt Playground</h3>
-                <p className="text-blue-700">Try our interactive sandbox where you can experiment with all Gryt features</p>
-              </div>
-            </div>
-            <Link to="/playground">
-              <GhibliButton className="bg-gryt-blue hover:bg-gryt-blue/90 text-white whitespace-nowrap">
-                Try Playground
-              </GhibliButton>
-            </Link>
-          </div>
-        </div>
+        {/* Removed Playground Banner */}
 
         {/* Integrations Module - Standard placement on desktop */}
         {!isMobile && (
