@@ -20,7 +20,12 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-30 w-full backdrop-blur-sm bg-white/80 dark:bg-gryt-dark/80 border-b">
-        <MainNav />
+        <div className="container mx-auto flex justify-between items-center">
+          <MainNav />
+          <div className="hidden md:block py-2 italic text-gryt-blue font-medium">
+            Build yourself. Do the thing.
+          </div>
+        </div>
       </header>
       
       <main className="flex-1 relative">
