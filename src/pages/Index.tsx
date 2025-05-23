@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Plus, Calendar, ChevronRight, BarChart, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,9 @@ import MainNav from '@/components/MainNav';
 import { Link } from 'react-router-dom';
 import { useGoals, GoalInput } from '@/hooks/useGoals';
 import { useAuth } from '@/contexts/AuthContext';
+import GhibliLayout from '@/components/GhibliLayout';
+import GhibliButton from '@/components/GhibliButton';
+import GhibliCard from '@/components/GhibliCard';
 
 const Index = () => {
   const { user } = useAuth();
@@ -43,101 +46,101 @@ const Index = () => {
   }).length || 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <GhibliLayout illustrationType="mountains">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Navigation */}
         <div className="flex items-center justify-between mb-8">
-          <MainNav />
           <div className="flex items-center gap-2">
             {user && (
               <div className="text-sm text-gray-600 mr-2">
                 {user.email}
               </div>
             )}
-            <Button 
+            <GhibliButton 
               onClick={() => setIsCreateDialogOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-gryt-red hover:bg-gryt-red/90 text-white"
+              glowColor="red"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Goal
-            </Button>
+            </GhibliButton>
           </div>
         </div>
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome to <span className="text-blue-600">Gryt</span>
+        <div className="text-center mb-8 slide-animation">
+          <h1 className="ghibli-title mb-2">
+            Welcome to <span className="text-gryt-red">Gryt</span>
           </h1>
-          <p className="text-lg text-gray-600">Your AI-powered goal achievement companion</p>
+          <p className="ghibli-subtitle">Your AI-powered goal achievement companion</p>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8">
-          <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+          <GhibliCard className="pulse-animation">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Active Goals</CardTitle>
+              <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Active Goals</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{totalGoals}</div>
+              <div className="text-2xl font-bold text-gryt-blue">{totalGoals}</div>
             </CardContent>
-          </Card>
+          </GhibliCard>
           
-          <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+          <GhibliCard className="pulse-animation">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Completed</CardTitle>
+              <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Completed</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{completedGoals}</div>
             </CardContent>
-          </Card>
+          </GhibliCard>
           
-          <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+          <GhibliCard className="pulse-animation">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Active Streaks</CardTitle>
+              <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Active Streaks</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">{totalActiveStreaks}</div>
             </CardContent>
-          </Card>
+          </GhibliCard>
           
-          <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+          <GhibliCard className="pulse-animation">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Avg Progress</CardTitle>
+              <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Avg Progress</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-purple-600">{averageProgress}%</div>
-              <Progress value={averageProgress} className="mt-2" />
+              <Progress value={averageProgress} className="mt-2" indicatorClassName="bg-gryt-red" />
             </CardContent>
-          </Card>
+          </GhibliCard>
         </div>
 
         {/* Dream Circles Callout */}
-        <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg mb-8 overflow-hidden">
+        <GhibliCard className="mb-8 overflow-hidden" glow={true}>
           <div className="flex flex-col md:flex-row">
             <div className="md:w-2/3 p-6">
               <div className="flex items-center mb-2">
-                <Users className="h-5 w-5 text-blue-600 mr-2" />
-                <h3 className="text-xl font-semibold text-blue-600">Dream Circles</h3>
+                <Users className="h-5 w-5 text-gryt-blue mr-2" />
+                <h3 className="text-xl font-semibold text-gryt-blue">Dream Circles</h3>
               </div>
-              <p className="mb-4 text-gray-700">
+              <p className="mb-4 text-gryt-dark dark:text-gryt-gray">
                 Join micro-communities centered around specific goals. Connect with others on similar journeys, 
                 share progress, overcome challenges together, and celebrate each other's wins.
               </p>
               <Link to="/circles">
-                <Button className="bg-blue-600 hover:bg-blue-700">
+                <GhibliButton className="bg-gryt-blue hover:bg-gryt-blue/90 text-white" glowColor="blue">
                   Find Your Circle
-                </Button>
+                </GhibliButton>
               </Link>
             </div>
-            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 md:w-1/3 p-6 flex items-center justify-center">
+            <div className="bg-gradient-to-r from-gryt-blue to-gryt-blue/70 md:w-1/3 p-6 flex items-center justify-center">
               <div className="text-white text-center">
                 <div className="text-3xl font-bold mb-2">6+</div>
                 <div className="text-sm">Active Dream Circles</div>
               </div>
             </div>
           </div>
-        </Card>
+        </GhibliCard>
 
         {/* AI Insights */}
         {goals && goals.length > 0 && <AIInsights goals={goals} />}
@@ -145,16 +148,16 @@ const Index = () => {
         {/* Weekly Review Section */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Weekly Review</h2>
-            <Button variant="ghost" className="text-blue-600 p-0">
+            <h2 className="ghibli-subtitle">Weekly Review</h2>
+            <Button variant="ghost" className="text-gryt-blue p-0">
               View All <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+            <GhibliCard>
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center text-gray-700 text-base">
-                  <Calendar className="w-4 h-4 mr-2 text-blue-500" />
+                <CardTitle className="flex items-center text-gryt-dark text-base dark:text-gryt-light">
+                  <Calendar className="w-4 h-4 mr-2 text-gryt-red" />
                   Upcoming Deadlines
                 </CardTitle>
               </CardHeader>
@@ -193,11 +196,11 @@ const Index = () => {
                   <p className="text-gray-500 text-sm">No upcoming deadlines in the next 14 days.</p>
                 )}
               </CardContent>
-            </Card>
+            </GhibliCard>
 
-            <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+            <GhibliCard>
               <CardHeader className="pb-2">
-                <CardTitle className="flex items-center text-gray-700 text-base">
+                <CardTitle className="flex items-center text-gryt-dark text-base dark:text-gryt-light">
                   <BarChart className="w-4 h-4 mr-2 text-green-500" />
                   Progress Highlights
                 </CardTitle>
@@ -226,27 +229,28 @@ const Index = () => {
                   <p className="text-gray-500 text-sm">No progress recorded yet. Start working on your goals!</p>
                 )}
               </CardContent>
-            </Card>
+            </GhibliCard>
           </div>
         </div>
 
         {/* Goals Section */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Your Goals</h2>
-          <Button 
+          <h2 className="ghibli-title">Your Goals</h2>
+          <GhibliButton 
             onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-gryt-red hover:bg-gryt-red/90 text-white"
+            glowColor="red"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Goal
-          </Button>
+          </GhibliButton>
         </div>
 
         {/* Goals Grid */}
         {isLoading ? (
           <div className="text-center py-10">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700 mb-4"></div>
-            <p className="text-gray-600">Loading your goals...</p>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gryt-red mb-4"></div>
+            <p className="text-gryt-dark dark:text-gryt-gray">Loading your goals...</p>
           </div>
         ) : goals?.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -259,19 +263,20 @@ const Index = () => {
             ))}
           </div>
         ) : (
-          <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg">
+          <GhibliCard>
             <CardContent className="text-center py-12">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No goals yet</h3>
-              <p className="text-gray-600 mb-4">Start your journey by creating your first goal!</p>
-              <Button 
+              <h3 className="text-lg font-semibold text-gryt-dark dark:text-gryt-gray mb-2">No goals yet</h3>
+              <p className="text-gryt-dark/70 dark:text-gryt-gray/70 mb-4">Start your journey by creating your first goal!</p>
+              <GhibliButton 
                 onClick={() => setIsCreateDialogOpen(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-gryt-red hover:bg-gryt-red/90 text-white"
+                glowColor="red"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Your First Goal
-              </Button>
+              </GhibliButton>
             </CardContent>
-          </Card>
+          </GhibliCard>
         )}
 
         {/* Create Goal Dialog */}
@@ -284,7 +289,7 @@ const Index = () => {
         {/* GrytGPT Chat Modal */}
         <ChatModal goals={goals || []} />
       </div>
-    </div>
+    </GhibliLayout>
   );
 };
 
