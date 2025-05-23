@@ -10,7 +10,7 @@ export interface Goal {
   title: string;
   description: string;
   category: string;
-  target_date: string;
+  targetDate: string;
   progress: number;
   user_id: string;
   created_at: string;
@@ -44,7 +44,18 @@ export const useGoals = () => {
         throw error;
       }
       
-      return data || [];
+      // Transform snake_case to camelCase for the expected Goal interface
+      return (data || []).map(goal => ({
+        id: goal.id,
+        title: goal.title,
+        description: goal.description || '',
+        category: goal.category,
+        targetDate: goal.target_date,
+        progress: goal.progress,
+        user_id: goal.user_id,
+        created_at: goal.created_at,
+        updated_at: goal.updated_at
+      }));
     },
     enabled: !!user,
   });

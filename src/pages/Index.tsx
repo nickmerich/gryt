@@ -164,19 +164,19 @@ const Index = () => {
                   <div className="text-center py-4">Loading...</div>
                 ) : goals?.filter(goal => {
                   const daysLeft = Math.ceil(
-                    (new Date(goal.target_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                    (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                   );
                   return daysLeft <= 14 && daysLeft > 0;
                 }).length > 0 ? (
                   <ul className="space-y-3">
                     {goals?.filter(goal => {
                       const daysLeft = Math.ceil(
-                        (new Date(goal.target_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                        (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                       );
                       return daysLeft <= 14 && daysLeft > 0;
                     }).slice(0, 3).map(goal => {
                       const daysLeft = Math.ceil(
-                        (new Date(goal.target_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                        (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                       );
                       return (
                         <li key={goal.id} className="flex justify-between">
@@ -257,9 +257,9 @@ const Index = () => {
                 goal={{
                   id: goal.id,
                   title: goal.title,
-                  description: goal.description || '',
+                  description: goal.description,
                   category: goal.category,
-                  targetDate: goal.target_date,
+                  targetDate: goal.targetDate,
                   progress: goal.progress,
                   milestones: [], // Will be fetched in the GoalCard component
                   completedMilestones: 0, // Will be calculated in the GoalCard component
