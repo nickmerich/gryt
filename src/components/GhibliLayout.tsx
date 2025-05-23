@@ -3,6 +3,7 @@ import React from 'react';
 import MainNav from './MainNav';
 import { cn } from '@/lib/utils';
 import GhibliIllustration from './GhibliIllustration';
+import { Link } from 'react-router-dom';
 
 interface GhibliLayoutProps {
   children: React.ReactNode;
@@ -22,10 +23,32 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
       <header className="sticky top-0 z-30 w-full backdrop-blur-sm bg-white/90 border-b">
         <div className="container mx-auto flex justify-between items-center p-4">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gryt-blue rounded-lg flex items-center justify-center text-white mr-2">
-              <span className="font-bold">G</span>
-            </div>
-            <span className="font-bold text-lg text-gryt-blue">Gryt</span>
+            <Link to="/" className="flex items-center">
+              <div className="w-8 h-8 bg-gryt-blue rounded-lg flex items-center justify-center text-white mr-2">
+                <span className="font-bold">G</span>
+              </div>
+              <span className="font-bold text-lg text-gryt-blue">Gryt</span>
+            </Link>
+            <nav className="ml-8 hidden md:flex space-x-6">
+              <Link 
+                to="/" 
+                className="text-gray-600 hover:text-gryt-blue transition-colors"
+              >
+                Home
+              </Link>
+              <Link 
+                to="/circles" 
+                className="text-gray-600 hover:text-gryt-blue transition-colors"
+              >
+                Goal Circles
+              </Link>
+              <Link 
+                to="/integrations" 
+                className="text-gray-600 hover:text-gryt-blue transition-colors"
+              >
+                Integrations
+              </Link>
+            </nav>
           </div>
           <MainNav />
         </div>

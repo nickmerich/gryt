@@ -16,6 +16,7 @@ import DreamCirclesCallout from '@/components/dashboard/DreamCirclesCallout';
 import WeeklyReview from '@/components/dashboard/WeeklyReview';
 import GoalsList from '@/components/dashboard/GoalsList';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
+import IntegrationsFeature from '@/components/IntegrationsFeature';
 
 const Index = () => {
   const { user } = useAuth();
@@ -93,6 +94,9 @@ const Index = () => {
 
         {/* Dream Circles Callout */}
         <DreamCirclesCallout />
+
+        {/* NEW: Integrations Feature */}
+        <IntegrationsFeature />
 
         {/* AI Insights */}
         {goals && goals.length > 0 && <AIInsights goals={goals} />}

@@ -4,9 +4,11 @@ import { Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import MainNav from '@/components/MainNav';
-import CircleCard, { Circle, CircleMember } from '@/components/circles/CircleCard';
+import IntegratedCircleCard from '@/components/circles/IntegratedCircleCard';
+import { Circle, CircleMember } from '@/components/circles/CircleCard';
 import { toast } from "sonner";
 import GhibliIllustration from '@/components/GhibliIllustration';
+import { useIntegrations } from '@/hooks/useIntegrations';
 
 // Sample data for the Goal Circles
 const sampleMembers: CircleMember[] = [
@@ -77,6 +79,9 @@ const initialCircles: Circle[] = [
 const Circles = () => {
   const [circles, setCircles] = useState<Circle[]>(initialCircles);
   const [searchQuery, setSearchQuery] = useState('');
+  const { getIntegrationsWithStatus } = useIntegrations();
+  
+  const integrations = getIntegrationsWithStatus();
   
   const filteredCircles = circles.filter((circle) => {
     const searchLower = searchQuery.toLowerCase();
@@ -146,9 +151,10 @@ const Circles = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCircles.length > 0 ? (
               filteredCircles.map((circle) => (
-                <CircleCard 
+                <IntegratedCircleCard
                   key={circle.id} 
                   circle={circle} 
+                  integrations={integrations}
                   onJoin={handleJoinCircle} 
                 />
               ))
