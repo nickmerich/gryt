@@ -43,8 +43,8 @@ const GoalDetail = () => {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        // Change this line to handle the database field correctly
-        imageUrl: data.image_url || undefined,
+        // Fix the property access - use direct property mapping
+        imageUrl: data.image_url, // The database field might be different from our frontend model
         milestones: [], // This will be loaded separately
         completedMilestones: 0,
       };

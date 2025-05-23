@@ -2,21 +2,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from "sonner";
+import { Goal, parseGoalRow } from "@/integrations/supabase/goal.types";
 
-// Update the Goal interface to include the missing properties
-export interface Goal {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  progress: number;
-  targetDate: string;
-  lastCheckin?: string;
-  imageUrl?: string;
-  updated_at?: string;
-  milestones: any[]; // Change from optional to required
-  completedMilestones: number; // Change from optional to required
-}
+// We'll just import the Goal interface from our new types file
+// instead of redefining it here
 
 export interface GoalInput {
   title: string;
@@ -48,7 +37,7 @@ const useGoals = () => {
       throw new Error(error.message);
     }
 
-    return data.map(parseGoal);
+    return data.map(parseGoalRow);
   };
 
   const createNewGoal = async (newGoal: GoalInput): Promise<string> => {
@@ -187,21 +176,6 @@ const useGoals = () => {
     onError: (error: any) => {
       toast.error(error.message);
     },
-  });
-
-  // Update the parseGoal function to correctly handle the field mapping
-  const parseGoal = (goal: any): Goal => ({
-    id: goal.id,
-    title: goal.title,
-    description: goal.description || '',
-    category: goal.category,
-    progress: goal.progress,
-    targetDate: goal.target_date,
-    lastCheckin: goal.updated_at,
-    updated_at: goal.updated_at,
-    imageUrl: goal.image_url, // Make sure to map from the database field name
-    milestones: goal.milestones || [], 
-    completedMilestones: goal.completed_milestones || 0
   });
 
   return {
