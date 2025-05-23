@@ -27,6 +27,7 @@ export {
   connectIntegration, 
   disconnectIntegration,
   handleOAuthCallback,
-  IntegrationProvider,
-  UserIntegration
 };
+
+// Export types using 'export type' syntax for compatibility with isolatedModules
+export type { IntegrationProvider, UserIntegration };
