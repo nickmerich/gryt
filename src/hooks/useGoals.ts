@@ -1,11 +1,12 @@
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from "sonner";
 import { Goal, parseGoalRow } from "@/integrations/supabase/goal.types";
 
-// We'll just import the Goal interface from our new types file
-// instead of redefining it here
+// Re-export the Goal interface so existing imports continue to work
+export { Goal } from "@/integrations/supabase/goal.types";
 
 export interface GoalInput {
   title: string;

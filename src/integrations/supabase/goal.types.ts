@@ -29,7 +29,7 @@ export const parseGoalRow = (goal: GoalRow): Goal => ({
   targetDate: goal.target_date || '',
   lastCheckin: goal.updated_at,
   updated_at: goal.updated_at,
-  imageUrl: goal.image_url, // This will be undefined if image_url doesn't exist
+  imageUrl: goal.image_url as string | undefined, // Type assertion to handle potential missing field
   milestones: [],
   completedMilestones: 0
 });

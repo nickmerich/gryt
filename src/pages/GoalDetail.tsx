@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Goal } from '@/hooks/useGoals';
+import { Goal } from '@/integrations/supabase/goal.types';
 import { toast } from 'sonner';
 import { 
   ArrowLeft, 
@@ -38,14 +37,13 @@ const GoalDetail = () => {
         
       if (error) throw error;
       
-      // Parse date fields and convert progress
+      // Parse date fields and convert using our utility function
       return {
         ...data,
         targetDate: data.target_date,
         lastCheckin: data.updated_at,
-        // Fix the property access - use direct property mapping
-        imageUrl: data.image_url, // The database field might be different from our frontend model
-        milestones: [], // This will be loaded separately
+        imageUrl: data.image_url as string | undefined, // Use type assertion for now
+        milestones: [],
         completedMilestones: 0,
       };
     },
