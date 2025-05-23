@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react';
-import { Plus, Calendar, ChevronRight, BarChart } from 'lucide-react';
+import { Plus, Calendar, ChevronRight, BarChart, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -8,6 +9,8 @@ import GoalCard from '@/components/GoalCard';
 import CreateGoalDialog from '@/components/CreateGoalDialog';
 import AIInsights from '@/components/AIInsights';
 import ChatModal from '@/components/GrytGPT/ChatModal';
+import MainNav from '@/components/MainNav';
+import { Link } from 'react-router-dom';
 
 interface Goal {
   id: string;
@@ -162,6 +165,18 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <div className="container mx-auto px-4 py-8">
+        {/* Header with Navigation */}
+        <div className="flex items-center justify-between mb-8">
+          <MainNav />
+          <Button 
+            onClick={() => setIsCreateDialogOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Goal
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -209,6 +224,33 @@ const Index = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Dream Circles Callout */}
+        <Card className="bg-white/70 backdrop-blur-sm border-0 shadow-lg mb-8 overflow-hidden">
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-2/3 p-6">
+              <div className="flex items-center mb-2">
+                <Users className="h-5 w-5 text-blue-600 mr-2" />
+                <h3 className="text-xl font-semibold text-blue-600">Dream Circles</h3>
+              </div>
+              <p className="mb-4 text-gray-700">
+                Join micro-communities centered around specific goals. Connect with others on similar journeys, 
+                share progress, overcome challenges together, and celebrate each other's wins.
+              </p>
+              <Link to="/circles">
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  Find Your Circle
+                </Button>
+              </Link>
+            </div>
+            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 md:w-1/3 p-6 flex items-center justify-center">
+              <div className="text-white text-center">
+                <div className="text-3xl font-bold mb-2">6+</div>
+                <div className="text-sm">Active Dream Circles</div>
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {/* AI Insights */}
         <AIInsights goals={goals} />
