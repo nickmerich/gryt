@@ -97,17 +97,20 @@ const MilestoneManager = ({ goalId }: MilestoneManagerProps) => {
       // Create each milestone sequentially
       for (const milestone of result.milestones) {
         // Create the milestone
-        const { data: milestoneData } = await createMilestone.mutateAsync({ 
+        const response = await createMilestone.mutateAsync({ 
           goalId, 
           title: milestone.name 
         });
         
+        // Fix: Access the milestone id correctly
+        const milestoneId = response?.id;
+        
         // If we have a milestoneId and tasks, create todos for each task
-        if (milestoneData?.id && milestone.tasks && milestone.tasks.length > 0) {
+        if (milestoneId && milestone.tasks && milestone.tasks.length > 0) {
           // We'll use a direct supabase call to create todos
           const tasksToInsert = milestone.tasks.map(task => ({
             title: task.title,
-            milestone_id: milestoneData.id,
+            milestone_id: milestoneId,
             is_completed: false
           }));
           
