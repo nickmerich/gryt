@@ -1,114 +1,216 @@
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import type { Goal } from "@/integrations/supabase/types";
 
-export interface Goal {
+export interface GoalInput {
+  title: string;
+  description: string;
+  category: string;
+  target_date: string;
+  image_url?: string;
+}
+
+export interface EditGoalInput {
   id: string;
   title: string;
   description: string;
   category: string;
-  progress: number;
   target_date: string;
   image_url?: string;
-  created_at: string;
-  updated_at: string;
-  user_id: string;
 }
 
 export const useGoals = () => {
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
-  const fetchGoals = async () => {
-    if (!user) return;
-    
-    try {
+  const {
+    data: goals,
+    isLoading: loading,
+    error,
+  } = useQuery({
+    queryKey: ["goals", user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      
       const { data, error } = await supabase
-        .from('goals')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+        .from("goals")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      setGoals(data || []);
-    } catch (error) {
-      console.error('Error fetching goals:', error);
-      toast.error('Failed to fetch goals');
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (error) {
+        console.error("Error fetching goals:", error);
+        throw error;
+      }
 
-  useEffect(() => {
-    fetchGoals();
-  }, [user]);
+      return data || [];
+    },
+    enabled: !!user,
+  });
 
-  const createGoal = async (goalData: Omit<Goal, 'id' | 'created_at' | 'updated_at' | 'user_id'>) => {
-    if (!user) return;
+  const createGoal = useMutation({
+    mutationFn: async (goalData: Omit<Goal, "id" | "user_id" | "created_at" | "updated_at">) => {
+      if (!user) throw new Error("User not authenticated");
 
-    try {
       const { data, error } = await supabase
-        .from('goals')
+        .from("goals")
         .insert([{ ...goalData, user_id: user.id }])
         .select()
         .single();
 
-      if (error) throw error;
-      setGoals(prev => [data, ...prev]);
-      toast.success('Goal created successfully!');
-      return data;
-    } catch (error) {
-      console.error('Error creating goal:', error);
-      toast.error('Failed to create goal');
-      throw error;
-    }
-  };
+      if (error) {
+        console.error("Error creating goal:", error);
+        throw error;
+      }
 
-  const updateGoal = async (goalId: string, updates: Partial<Goal>) => {
-    try {
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+      toast.success("Goal created successfully!");
+    },
+    onError: (error) => {
+      console.error("Error creating goal:", error);
+      toast.error("Failed to create goal. Please try again.");
+    },
+  });
+
+  const editGoal = useMutation({
+    mutationFn: async (goalData: EditGoalInput) => {
+      const { id, ...updates } = goalData;
+      
       const { data, error } = await supabase
-        .from('goals')
+        .from("goals")
         .update(updates)
-        .eq('id', goalId)
+        .eq("id", id)
         .select()
         .single();
 
-      if (error) throw error;
-      setGoals(prev => prev.map(goal => goal.id === goalId ? data : goal));
+      if (error) {
+        console.error("Error updating goal:", error);
+        throw error;
+      }
+
       return data;
-    } catch (error) {
-      console.error('Error updating goal:', error);
-      toast.error('Failed to update goal');
-      throw error;
-    }
-  };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+      toast.success("Goal updated successfully!");
+    },
+    onError: (error) => {
+      console.error("Error updating goal:", error);
+      toast.error("Failed to update goal. Please try again.");
+    },
+  });
 
-  const deleteGoal = async (goalId: string) => {
-    try {
+  const updateGoal = useMutation({
+    mutationFn: async ({ goalId, updates }: { goalId: string; updates: Partial<Goal> }) => {
+      const { data, error } = await supabase
+        .from("goals")
+        .update(updates)
+        .eq("id", goalId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error updating goal:", error);
+        throw error;
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+    },
+    onError: (error) => {
+      console.error("Error updating goal:", error);
+      toast.error("Failed to update goal. Please try again.");
+    },
+  });
+
+  const updateGoalProgress = useMutation({
+    mutationFn: async ({ goalId, newProgress }: { goalId: string; newProgress: number }) => {
+      const { data, error } = await supabase
+        .from("goals")
+        .update({ progress: newProgress })
+        .eq("id", goalId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Error updating goal progress:", error);
+        throw error;
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+      toast.success("Progress updated!");
+    },
+    onError: (error) => {
+      console.error("Error updating goal progress:", error);
+      toast.error("Failed to update progress. Please try again.");
+    },
+  });
+
+  const deleteGoal = useMutation({
+    mutationFn: async (goalId: string) => {
       const { error } = await supabase
-        .from('goals')
+        .from("goals")
         .delete()
-        .eq('id', goalId);
+        .eq("id", goalId);
 
-      if (error) throw error;
-      setGoals(prev => prev.filter(goal => goal.id !== goalId));
-      toast.success('Goal deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting goal:', error);
-      toast.error('Failed to delete goal');
-      throw error;
+      if (error) {
+        console.error("Error deleting goal:", error);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["goals"] });
+      toast.success("Goal deleted successfully!");
+    },
+    onError: (error) => {
+      console.error("Error deleting goal:", error);
+      toast.error("Failed to delete goal. Please try again.");
+    },
+  });
+
+  const uploadGoalImage = async (file: File, goalId: string): Promise<string> => {
+    if (!user) throw new Error("User not authenticated");
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${user.id}/${goalId}/${Date.now()}.${fileExt}`;
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('goal-images')
+      .upload(fileName, file);
+
+    if (uploadError) {
+      console.error("Error uploading image:", uploadError);
+      throw uploadError;
     }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('goal-images')
+      .getPublicUrl(fileName);
+
+    return publicUrl;
   };
 
   return {
     goals,
     loading,
+    isLoading: loading,
+    error,
     createGoal,
+    editGoal,
     updateGoal,
+    updateGoalProgress,
     deleteGoal,
-    refetch: fetchGoals
+    uploadGoalImage,
   };
 };
