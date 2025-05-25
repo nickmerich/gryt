@@ -352,6 +352,69 @@
   .text-gryt-yellow {
     color: #000000 !important;
   }
+
+  /* Additional comprehensive overrides */
+  /* Target any custom color variables that might be yellow */
+  [style*="color: var(--yellow"],
+  [style*="color: var(--amber"] {
+    color: #000000 !important;
+  }
+
+  /* Override computed styles */
+  *[style*="color: #fde047"],
+  *[style*="color: #facc15"],
+  *[style*="color: #eab308"],
+  *[style*="color: #ca8a04"],
+  *[style*="color: #a16207"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: #f59e0b"],
+  *[style*="color: #d97706"] {
+    color: #000000 !important;
+  }
+
+  /* Ensure all yellow variants are covered */
+  .text-yellow-50,
+  .text-yellow-100,
+  .text-yellow-200,
+  .text-yellow-300,
+  .text-yellow-400,
+  .text-yellow-500,
+  .text-yellow-600,
+  .text-yellow-700,
+  .text-yellow-800,
+  .text-yellow-900,
+  .text-amber-50,
+  .text-amber-100,
+  .text-amber-200,
+  .text-amber-300,
+  .text-amber-400,
+  .text-amber-500,
+  .text-amber-600,
+  .text-amber-700,
+  .text-amber-800,
+  .text-amber-900 {
+    color: #000000 !important;
+  }
+
+  /* Override any component library yellow text */
+  .lucide-react[style*="color: yellow"],
+  .lucide-react[style*="color: #"] {
+    color: currentColor !important;
+  }
+
+  /* Ensure text inheritance works properly */
+  * {
+    color: inherit;
+  }
+
+  /* But override specifically for yellow */
+  *[class*="yellow"]:not([class*="bg-"]):not([class*="border-"]):not([class*="ring-"]):not([class*="shadow-"]) {
+    color: #000000 !important;
+  }
+
+  *[class*="amber"]:not([class*="bg-"]):not([class*="border-"]):not([class*="ring-"]):not([class*="shadow-"]) {
+    color: #000000 !important;
+  }
 }
 
 @keyframes fadeIn {
