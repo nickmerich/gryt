@@ -41,8 +41,8 @@ const GoalsList = ({
         <h2 className="ghibli-title">Your Goals</h2>
         <GhibliButton 
           onClick={onOpenCreateDialog}
-          magical={true}
-          hoverText="Let's go!"
+          energizing={true}
+          transformText="Crush It!"
           className="text-white font-semibold"
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -74,8 +74,8 @@ const GoalsList = ({
             <p className="text-gryt-dark/70 dark:text-gryt-gray/70 mb-4">Start your journey by creating your first goal!</p>
             <GhibliButton 
               onClick={onOpenCreateDialog}
-              magical={true}
-              hoverText="Let's go!"
+              energizing={true}
+              transformText="Crush It!"
               className="text-white font-semibold"
             >
               <Plus className="w-4 h-4 mr-2" />
