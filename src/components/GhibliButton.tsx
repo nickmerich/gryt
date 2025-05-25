@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button, ButtonProps } from '@/components/ui/button';
@@ -45,6 +44,11 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
     ' before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/30 before:via-transparent before:to-white/30 before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-500 before:ease-in-out'
     : '';
 
+  // Extract the icon and text content
+  const childrenArray = React.Children.toArray(children);
+  const icon = childrenArray.find(child => React.isValidElement(child) && child.type !== 'string');
+  const textContent = childrenArray.filter(child => typeof child === 'string' || !React.isValidElement(child)).join('');
+
   return (
     <Button 
       className={cn(
@@ -60,29 +64,24 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
         "relative z-10 flex items-center gap-2 transition-all duration-300",
         (magical || energizing) && isHovered && "transform"
       )}>
-        {React.Children.map(children, (child, index) => {
-          // If it's the plus icon (first child), add pulse animation on hover
-          if (index === 0 && (magical || energizing) && React.isValidElement(child)) {
-            return (
-              <span className={cn(
-                "transition-all duration-300",
-                isHovered && "animate-pulse scale-110"
-              )}>
-                {child}
-              </span>
-            );
-          }
-          return child;
-        })}
+        {/* Icon with pulse animation on hover */}
+        {icon && (
+          <span className={cn(
+            "transition-all duration-300",
+            (magical || energizing) && isHovered && "animate-pulse scale-110"
+          )}>
+            {icon}
+          </span>
+        )}
         
         {/* Text transformation for energizing buttons */}
-        {energizing && transformText && (
+        {energizing && transformText ? (
           <span className="relative overflow-hidden">
             <span className={cn(
               "block transition-all duration-300 font-bold",
               isHovered ? "transform -translate-y-full opacity-0" : "transform translate-y-0 opacity-100"
             )}>
-              {typeof children === 'string' ? children : React.Children.toArray(children).slice(1)}
+              {textContent}
             </span>
             <span className={cn(
               "absolute top-0 left-0 block transition-all duration-300 font-bold text-yellow-300",
@@ -91,6 +90,9 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
               {transformText}
             </span>
           </span>
+        ) : (
+          // Regular text content when not using transform
+          textContent
         )}
         
         {/* Magical hover text */}
