@@ -4,7 +4,7 @@ import GhibliLayout from '@/components/GhibliLayout';
 import IntegrationsGrid from '@/components/integrations/IntegrationsGrid';
 import ConnectIntegrationDialog from '@/components/integrations/ConnectIntegrationDialog';
 import PostConnectionGoalSuggestions from '@/components/integrations/PostConnectionGoalSuggestions';
-import { Button } from '@/components/ui/button';
+import GhibliButton from '@/components/GhibliButton';
 import { Plus, Sparkles } from 'lucide-react';
 import { useIntegrations } from '@/hooks/useIntegrations';
 import { IntegrationProvider } from '@/services/integration/types';
@@ -75,14 +75,15 @@ const Integrations = () => {
           <p className="text-xl text-black max-w-2xl mx-auto leading-relaxed">
             Sync your favorite fitness, productivity, and lifestyle apps to automatically track progress toward your goals.
           </p>
-          <Button 
+          <GhibliButton 
             onClick={() => setIsDialogOpen(true)}
             size="lg"
-            className="modern-button"
+            energizing={true}
+            transformText="Let's Connect!"
           >
-            <Plus className="w-5 h-5 mr-2" />
+            <Plus className="w-5 h-5" />
             Add Integration
-          </Button>
+          </GhibliButton>
         </div>
 
         {/* Integrations Grid */}
