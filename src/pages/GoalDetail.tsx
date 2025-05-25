@@ -1,135 +1,144 @@
 
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { Goal, parseGoalRow } from '@/integrations/supabase/goal.types'; 
-import { toast } from 'sonner';
-import { Loader2, Info } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Calendar, Target, TrendingUp, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { useGoals } from '@/hooks/useGoals';
+import { useMilestones } from '@/hooks/useMilestones';
 import GhibliLayout from '@/components/GhibliLayout';
-import MilestoneManager from '@/components/MilestoneManager';
-import MarathonTrainingTips from '@/components/MarathonTrainingTips';
-import GoalDetailHeader from '@/components/goals/GoalDetailHeader';
-import GoalProgressSection from '@/components/goals/GoalProgressSection';
+import MilestoneList from '@/components/milestones/MilestoneList';
 import GoalImageSection from '@/components/goals/GoalImageSection';
-import { Link } from 'react-router-dom';
+import GoalProgressSection from '@/components/goals/GoalProgressSection';
+import GoalDetailHeader from '@/components/goals/GoalDetailHeader';
 
 const GoalDetail = () => {
-  const { goalId } = useParams<{ goalId: string }>();
-  const { user } = useAuth();
-  const [updating, setUpdating] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { goals, isLoading } = useGoals();
+  const { milestones, isLoading: milestonesLoading } = useMilestones(id);
 
-  const { data: goal, isLoading, error } = useQuery<Goal>({
-    queryKey: ['goal-detail', goalId],
-    queryFn: async () => {
-      if (!goalId) throw new Error("Goal ID is required");
-      
-      const { data, error } = await supabase
-        .from('goals')
-        .select('*')
-        .eq('id', goalId)
-        .single();
-        
-      if (error) throw error;
-      
-      // Use parseGoalRow utility to convert database format to our Goal model
-      return parseGoalRow(data);
-    },
-    enabled: !!goalId && !!user,
-  });
-
-  const handleUpdateProgress = async (newProgress: number) => {
-    if (!goalId) return;
-    
-    setUpdating(true);
-    try {
-      const { error } = await supabase
-        .from('goals')
-        .update({ 
-          progress: newProgress,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', goalId);
-        
-      if (error) throw error;
-      
-      toast.success(`Progress updated to ${newProgress}%`);
-    } catch (err) {
-      console.error('Error updating progress:', err);
-      toast.error('Failed to update progress');
-    } finally {
-      setUpdating(false);
-    }
-  };
-
-  if (isLoading) {
+  if (isLoading || !id) {
     return (
       <GhibliLayout>
-        <div className="flex flex-col items-center justify-center py-12">
-          <Loader2 className="h-12 w-12 animate-spin text-gryt-blue" />
-          <p className="mt-4 text-gryt-blue">Loading goal details...</p>
+        <div className="flex items-center justify-center min-h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
         </div>
       </GhibliLayout>
     );
   }
 
-  if (error || !goal) {
+  const goal = goals?.find(g => g.id === id);
+
+  if (!goal) {
     return (
       <GhibliLayout>
-        <div className="flex flex-col items-center justify-center py-12">
-          <Info className="h-12 w-12 text-gryt-red" />
-          <h2 className="mt-4 font-bold text-xl">Goal not found</h2>
-          <p className="text-gray-600 mb-4">The goal you're looking for doesn't exist or you don't have access to it.</p>
-          <Button asChild>
-            <Link to="/">Return to Dashboard</Link>
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-bold text-black mb-4">Goal Not Found</h2>
+          <p className="text-slate-600 mb-6">The goal you're looking for doesn't exist or has been removed.</p>
+          <Button onClick={() => navigate('/')} variant="outline">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Dashboard
           </Button>
         </div>
       </GhibliLayout>
     );
   }
 
-  const daysUntilTarget = Math.ceil(
-    (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
-  );
-  
-  // Check if this is a marathon-related goal
-  const isMarathonGoal = goal.category === 'Health & Fitness' && 
-                        (goal.title.toLowerCase().includes('marathon') || 
-                         goal.description?.toLowerCase().includes('marathon'));
+  const targetDate = goal.targetDate ? new Date(goal.targetDate) : null;
+  const daysRemaining = targetDate ? Math.ceil((targetDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : null;
 
   return (
     <GhibliLayout>
-      <div className="container mx-auto px-4 py-8">
-        <GoalDetailHeader goal={goal} daysUntilTarget={daysUntilTarget} />
-        
-        {/* Goal Progress and Image Section */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
-          <div className="md:col-span-7 space-y-6">
-            {/* Progress visualization */}
-            <GoalProgressSection 
-              goal={goal} 
-              isUpdating={updating} 
-              onUpdateProgress={handleUpdateProgress} 
-            />
-            
-            {/* Show Marathon Training Tips component for marathon-related goals */}
-            {isMarathonGoal && (
-              <MarathonTrainingTips goal={goal} />
-            )}
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Back Button */}
+        <Button 
+          onClick={() => navigate('/')} 
+          variant="ghost" 
+          className="hover:bg-white/50"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </Button>
+
+        {/* Goal Header */}
+        <GoalDetailHeader goal={goal} />
+
+        {/* Stats Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="modern-card p-6 text-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <Target className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-black mb-2">Progress</h3>
+            <div className="text-3xl font-bold text-black mb-2">{goal.progress}%</div>
+            <Progress value={goal.progress} className="h-2" />
+          </div>
+
+          {targetDate && (
+            <div className="modern-card p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Calendar className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-black mb-2">Target Date</h3>
+              <div className="text-lg font-medium text-black mb-1">
+                {targetDate.toLocaleDateString()}
+              </div>
+              {daysRemaining !== null && (
+                <div className="text-sm text-slate-600">
+                  {daysRemaining > 0 ? `${daysRemaining} days remaining` : 'Overdue'}
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="modern-card p-6 text-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <TrendingUp className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold text-black mb-2">Milestones</h3>
+            <div className="text-3xl font-bold text-black mb-2">
+              {milestones?.filter(m => m.completed).length || 0}
+            </div>
+            <div className="text-sm text-slate-600">
+              of {milestones?.length || 0} completed
+            </div>
+          </div>
+        </div>
+
+        {/* Goal Image Section */}
+        <GoalImageSection goal={goal} />
+
+        {/* Goal Progress Section */}
+        <GoalProgressSection goal={goal} />
+
+        {/* Milestones Section */}
+        <div className="modern-card p-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-black">Milestones</h2>
+            <Badge variant="secondary" className="bg-indigo-100 text-indigo-800">
+              {milestones?.filter(m => m.completed).length || 0} / {milestones?.length || 0} Complete
+            </Badge>
           </div>
           
-          <div className="md:col-span-5 space-y-6">
-            {/* Goal Image */}
-            <GoalImageSection goal={goal} />
+          {milestonesLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            </div>
+          ) : (
+            <MilestoneList goalId={id} milestones={milestones || []} />
+          )}
+        </div>
+
+        {/* Additional Details */}
+        {goal.description && (
+          <div className="modern-card p-8">
+            <h2 className="text-2xl font-bold text-black mb-4">Description</h2>
+            <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+              {goal.description}
+            </p>
           </div>
-        </div>
-        
-        {/* Milestones & To-Dos Section */}
-        <div className="bg-white dark:bg-gryt-dark/30 p-6 rounded-lg border shadow-sm">
-          <MilestoneManager goalId={goal.id} />
-        </div>
+        )}
       </div>
     </GhibliLayout>
   );

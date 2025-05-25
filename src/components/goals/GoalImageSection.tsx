@@ -1,10 +1,8 @@
 
 import { useState } from 'react';
-import { Goal } from '@/integrations/supabase/goal.types';
-import { Loader2, Upload } from 'lucide-react';
+import { Camera, Upload, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useGoals } from '@/hooks/useGoals';
+import { Goal, useGoals } from '@/hooks/useGoals';
 import { toast } from 'sonner';
 
 interface GoalImageSectionProps {
@@ -13,134 +11,96 @@ interface GoalImageSectionProps {
 
 const GoalImageSection = ({ goal }: GoalImageSectionProps) => {
   const [isUploading, setIsUploading] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(goal.imageUrl || null);
   const { uploadGoalImage } = useGoals();
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
-      return;
-    }
-
-    // Validate file size (max 5MB)
+    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size should be less than 5MB');
+      toast.error('Image size must be less than 5MB');
       return;
     }
 
-    // Show preview
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target?.result) {
-        setImagePreview(e.target.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select a valid image file');
+      return;
+    }
 
-    // Upload image
     setIsUploading(true);
     try {
       await uploadGoalImage(file, goal.id);
-      toast.success('Image uploaded successfully!');
     } catch (error) {
-      console.error('Failed to upload image:', error);
-      // Reset preview if upload fails
-      setImagePreview(goal.imageUrl || null);
+      console.error('Upload error:', error);
     } finally {
       setIsUploading(false);
     }
   };
 
   return (
-    <div className="bg-white dark:bg-gryt-dark/30 p-6 rounded-lg border shadow-sm">
-      <h3 className="text-lg font-medium mb-4">Goal Visualization</h3>
-      
-      {imagePreview ? (
-        <div className="space-y-4">
-          <div className="rounded-md overflow-hidden border">
+    <div className="modern-card p-8">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center">
+          <Camera className="w-6 h-6 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-black">Goal Image</h2>
+      </div>
+
+      <div className="space-y-6">
+        {goal.imageUrl ? (
+          <div className="relative group">
             <img
-              src={imagePreview}
+              src={goal.imageUrl}
               alt={goal.title}
-              className="w-full h-48 object-cover"
-              onError={(e) => {
-                // Fallback for image loading errors
-                (e.target as HTMLImageElement).src = 'https://placehold.co/600x400?text=Image+Not+Found';
-                console.error('Failed to load image:', goal.imageUrl);
-              }}
+              className="w-full h-64 object-cover rounded-2xl shadow-lg"
             />
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl flex items-center justify-center">
+              <label className="cursor-pointer">
+                <Button variant="secondary" className="bg-white/90 hover:bg-white text-black">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Change Image
+                </Button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  disabled={isUploading}
+                />
+              </label>
+            </div>
           </div>
-          
-          <div>
-            <label className="block">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full cursor-pointer"
-                disabled={isUploading}
-              >
-                {isUploading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Uploading...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="mr-2 h-4 w-4" />
-                    Change Image
-                  </>
-                )}
+        ) : (
+          <div className="border-2 border-dashed border-slate-300 rounded-2xl p-12 text-center hover:border-slate-400 transition-colors">
+            <Camera className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-black mb-2">Add a goal image</h3>
+            <p className="text-slate-600 mb-6">
+              Upload an inspiring image to visualize your goal
+            </p>
+            <label className="cursor-pointer">
+              <Button variant="outline" className="border-slate-300 hover:bg-slate-50 text-black">
+                <Upload className="w-4 h-4 mr-2" />
+                {isUploading ? 'Uploading...' : 'Upload Image'}
               </Button>
-              <Input
+              <input
                 type="file"
                 accept="image/*"
+                onChange={handleImageUpload}
                 className="hidden"
-                onChange={handleImageChange}
                 disabled={isUploading}
               />
             </label>
           </div>
+        )}
+
+        <div className="text-sm text-slate-600">
+          <p>• Maximum file size: 5MB</p>
+          <p>• Supported formats: JPG, PNG, GIF</p>
+          <p>• Recommended dimensions: 16:9 aspect ratio</p>
         </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="rounded-md overflow-hidden border bg-gray-50 dark:bg-gray-800 flex items-center justify-center h-48">
-            <p className="text-gray-400">No image uploaded</p>
-          </div>
-          
-          <div>
-            <label className="block">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full cursor-pointer"
-                disabled={isUploading}
-              >
-                {isUploading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Uploading...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="mr-2 h-4 w-4" />
-                    Upload Image
-                  </>
-                )}
-              </Button>
-              <Input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-                disabled={isUploading}
-              />
-            </label>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
