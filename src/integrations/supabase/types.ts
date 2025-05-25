@@ -9,6 +9,47 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      goal_predictions: {
+        Row: {
+          calculation_date: string
+          completion_probability: number
+          confidence_score: number
+          created_at: string
+          goal_id: string
+          id: string
+          predicted_completion_date: string | null
+          risk_factors: Json | null
+        }
+        Insert: {
+          calculation_date?: string
+          completion_probability: number
+          confidence_score: number
+          created_at?: string
+          goal_id: string
+          id?: string
+          predicted_completion_date?: string | null
+          risk_factors?: Json | null
+        }
+        Update: {
+          calculation_date?: string
+          completion_probability?: number
+          confidence_score?: number
+          created_at?: string
+          goal_id?: string
+          id?: string
+          predicted_completion_date?: string | null
+          risk_factors?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goal_predictions_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       goals: {
         Row: {
           category: string
@@ -48,6 +89,53 @@ export type Database = {
         }
         Relationships: []
       }
+      habit_stacks: {
+        Row: {
+          anchor_routine: string
+          created_at: string
+          id: string
+          is_active: boolean
+          new_goal_id: string
+          success_rate: number | null
+          trigger_context: string | null
+          trigger_time: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          anchor_routine: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          new_goal_id: string
+          success_rate?: number | null
+          trigger_context?: string | null
+          trigger_time?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          anchor_routine?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          new_goal_id?: string
+          success_rate?: number | null
+          trigger_context?: string | null
+          trigger_time?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "habit_stacks_new_goal_id_fkey"
+            columns: ["new_goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       milestones: {
         Row: {
           created_at: string
@@ -76,6 +164,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "milestones_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mood_checkins: {
+        Row: {
+          checkin_date: string
+          created_at: string
+          energy_level: number
+          goal_id: string | null
+          id: string
+          mood_score: number
+          notes: string | null
+          stress_level: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checkin_date?: string
+          created_at?: string
+          energy_level: number
+          goal_id?: string | null
+          id?: string
+          mood_score: number
+          notes?: string | null
+          stress_level: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checkin_date?: string
+          created_at?: string
+          energy_level?: number
+          goal_id?: string | null
+          id?: string
+          mood_score?: number
+          notes?: string | null
+          stress_level?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mood_checkins_goal_id_fkey"
             columns: ["goal_id"]
             isOneToOne: false
             referencedRelation: "goals"
@@ -135,6 +270,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "progress_logs_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recovery_interventions: {
+        Row: {
+          created_at: string
+          goal_id: string
+          id: string
+          intervention_data: Json | null
+          intervention_type: string
+          resolved_at: string | null
+          trigger_type: string
+          user_id: string
+          was_accepted: boolean | null
+          was_effective: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          goal_id: string
+          id?: string
+          intervention_data?: Json | null
+          intervention_type: string
+          resolved_at?: string | null
+          trigger_type: string
+          user_id: string
+          was_accepted?: boolean | null
+          was_effective?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          goal_id?: string
+          id?: string
+          intervention_data?: Json | null
+          intervention_type?: string
+          resolved_at?: string | null
+          trigger_type?: string
+          user_id?: string
+          was_accepted?: boolean | null
+          was_effective?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recovery_interventions_goal_id_fkey"
             columns: ["goal_id"]
             isOneToOne: false
             referencedRelation: "goals"
