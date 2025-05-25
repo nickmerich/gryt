@@ -26,7 +26,7 @@ export const useDemoGoal = () => {
     created_at: '2024-01-15',
     updated_at: '2024-01-20',
     user_id: 'demo-user',
-    image_url: ''
+    imageUrl: ''
   });
 
   const [tourStep, setTourStep] = useState(0);
@@ -134,7 +134,7 @@ export const useDemoGoal = () => {
       created_at: '2024-01-15',
       updated_at: '2024-01-20',
       user_id: 'demo-user',
-      image_url: ''
+      imageUrl: ''
     });
     setTourStep(0);
     setCompletedSteps([]);
