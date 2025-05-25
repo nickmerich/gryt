@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import GhibliLayout from '@/components/GhibliLayout';
 import IntegrationsGrid from '@/components/integrations/IntegrationsGrid';
@@ -7,6 +6,7 @@ import PostConnectionGoalSuggestions from '@/components/integrations/PostConnect
 import GhibliButton from '@/components/GhibliButton';
 import { Plus, Sparkles } from 'lucide-react';
 import { useIntegrations } from '@/hooks/useIntegrations';
+import { usePendingIntegration } from '@/hooks/usePendingIntegration';
 import { IntegrationProvider } from '@/services/integration/types';
 import { toast } from 'sonner';
 
@@ -16,6 +16,9 @@ const Integrations = () => {
   const [selectedIntegration, setSelectedIntegration] = useState<IntegrationProvider | null>(null);
   const [recentlyConnected, setRecentlyConnected] = useState<string>('');
   const { getIntegrationsWithStatus, connect, disconnect, isLoading } = useIntegrations();
+  
+  // Handle any pending integrations from OAuth flow
+  usePendingIntegration();
 
   const integrations = getIntegrationsWithStatus();
 

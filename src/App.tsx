@@ -77,11 +77,7 @@ function App() {
               <Integrations />
             </ProtectedRoute>
           } />
-          <Route path="/integration-callback" element={
-            <ProtectedRoute>
-              <IntegrationCallback />
-            </ProtectedRoute>
-          } />
+          <Route path="/integration-callback" element={<IntegrationCallback />} />
           <Route path="/playground" element={
             <ProtectedRoute>
               <Playground />
