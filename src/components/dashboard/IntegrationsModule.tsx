@@ -8,11 +8,14 @@ import { ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const IntegrationsModule = () => {
-  const { availableIntegrations, userIntegrations, isLoading } = useIntegrations();
+  const { getIntegrationsWithStatus, userIntegrations, isLoading } = useIntegrations();
   const isMobile = useIsMobile();
   
+  // Get the integrations with their connection status
+  const integrationsWithStatus = getIntegrationsWithStatus();
+  
   // Get only the popular integrations that are available (not coming soon)
-  const popularIntegrations = availableIntegrations
+  const popularIntegrations = integrationsWithStatus
     .filter(integration => integration.status === 'available')
     .slice(0, isMobile ? 2 : 3); // Show fewer on mobile
   
@@ -48,7 +51,7 @@ const IntegrationsModule = () => {
             </p>
             <div className="flex flex-wrap gap-2 mb-4">
               {userIntegrations.map(integration => {
-                const details = availableIntegrations.find(i => i.id === integration.provider_id);
+                const details = integrationsWithStatus.find(i => i.id === integration.provider_id);
                 return details ? (
                   <div 
                     key={integration.id}
