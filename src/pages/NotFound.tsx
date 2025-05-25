@@ -18,6 +18,10 @@ const NotFound = () => {
   const isApiRoute = location.pathname.startsWith('/api/');
   const isIntegrationRoute = location.pathname.includes('/auth/');
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 p-4">
       <Card className="w-full max-w-md">
@@ -67,15 +71,12 @@ const NotFound = () => {
             </Button>
             
             <Button 
-              asChild 
               variant="outline" 
               className="flex-1"
-              onClick={() => window.history.back()}
+              onClick={handleGoBack}
             >
-              <span className="flex items-center justify-center gap-2 cursor-pointer">
-                <ArrowLeft className="w-4 h-4" />
-                Go Back
-              </span>
+              <ArrowLeft className="w-4 h-4" />
+              Go Back
             </Button>
           </div>
 
