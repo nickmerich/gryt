@@ -102,7 +102,7 @@ const IntegrationsModule = () => {
         )}
         
         <Link to="/integrations">
-          <Button className="w-full bg-gryt-blue/10 text-gryt-blue hover:bg-gryt-blue/20 border border-gryt-blue/20">
+          <Button className="w-full bg-gryt-blue/10 text-white hover:bg-gryt-blue/20 border border-gryt-blue/20">
             Connect More Tools
           </Button>
         </Link>
