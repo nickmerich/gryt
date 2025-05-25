@@ -38,14 +38,14 @@ const MainNav = () => {
                 className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <span>Stats</span>
+                <span>Goals</span>
               </Link>
               <Link
                 to="/circles"
                 className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <span>Goals</span>
+                <span>Community</span>
               </Link>
               <Link
                 to="/integrations"

@@ -30,13 +30,13 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
                 to="/" 
                 className="text-slate-600 hover:text-indigo-600 transition-colors font-medium"
               >
-                Stats
+                Goals
               </Link>
               <Link 
                 to="/circles" 
                 className="text-slate-600 hover:text-indigo-600 transition-colors font-medium"
               >
-                Goals
+                Community
               </Link>
               <Link 
                 to="/integrations" 
