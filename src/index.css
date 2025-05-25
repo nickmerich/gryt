@@ -138,11 +138,11 @@
   }
 
   .body-lg {
-    @apply text-xl text-slate-600 leading-relaxed;
+    @apply text-xl text-black leading-relaxed;
   }
 
   .body-md {
-    @apply text-lg text-slate-600 leading-relaxed;
+    @apply text-lg text-black leading-relaxed;
   }
 
   /* Animations */
@@ -156,6 +156,40 @@
 
   .animate-float {
     animation: float 6s ease-in-out infinite;
+  }
+
+  /* Override any yellow text colors */
+  .text-yellow-600,
+  .text-yellow-500,
+  .text-yellow-400,
+  .text-amber-600,
+  .text-amber-500,
+  .text-amber-400 {
+    @apply text-black !important;
+  }
+
+  /* Override placeholder text colors */
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-slate-500 !important;
+  }
+
+  /* Override any remaining yellow or light colored text */
+  .text-gray-400,
+  .text-gray-300,
+  .text-slate-300,
+  .text-slate-400 {
+    @apply text-slate-600 !important;
+  }
+
+  /* Ensure form labels are black */
+  label {
+    @apply text-black !important;
+  }
+
+  /* Ensure all text in dialogs is black */
+  [role="dialog"] * {
+    color: black !important;
   }
 }
 

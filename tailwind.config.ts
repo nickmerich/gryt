@@ -73,11 +73,11 @@ export default {
 					red: '#F15B6C',     // Updated to a softer red from image
 					blue: '#3B82F6',    // Updated to friendly blue (#3B82F6) from design system
 					gray: '#FAFAFA',    // Updated to soft off-white background color
-					dark: '#475569',    // Updated to slate gray 600 - never pure black
+					dark: '#000000',    // Changed from slate to pure black for better legibility
 					light: '#E7F1FF',   // Light blue background from banner
 					purple: '#8B5CF6',  // Updated purple accent color
 					green: '#22C55E',   // Progress color
-					yellow: '#FBBF24',  // Warning/reminder color
+					yellow: '#000000',  // Changed yellow to black for legibility
 					success: '#10B981', // Success color
 				}
 			},
