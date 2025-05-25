@@ -116,14 +116,14 @@ class CalendarService {
         });
       });
 
-      // Store calendar sync data
+      // Store calendar sync data - convert events to JSON-compatible format
       const { error: syncError } = await supabase
         .from('calendar_syncs')
         .upsert({
           goal_id: goalId,
           calendar_id: calendarId,
           last_sync: new Date().toISOString(),
-          sync_data: events
+          sync_data: JSON.parse(JSON.stringify(events)) // Ensure proper JSON format
         });
 
       if (syncError) throw syncError;

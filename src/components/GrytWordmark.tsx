@@ -7,50 +7,90 @@ interface GrytWordmarkProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'full-color' | 'black' | 'white';
   italic?: boolean;
+  showTagline?: boolean;
 }
 
 const GrytWordmark = ({ 
   className, 
   size = 'md', 
   variant = 'full-color',
-  italic = true 
+  italic = false,
+  showTagline = false 
 }: GrytWordmarkProps) => {
-  // Size mapping
+  // Size mapping - stronger, more purposeful typography
   const sizeClasses = {
     sm: 'text-lg',
-    md: 'text-2xl',
-    lg: 'text-4xl',
-    xl: 'text-6xl'
+    md: 'text-3xl',
+    lg: 'text-5xl',
+    xl: 'text-7xl'
   };
 
-  // Color variants
+  const taglineSizes = {
+    sm: 'text-xs',
+    md: 'text-sm',
+    lg: 'text-base',
+    xl: 'text-lg'
+  };
+
+  // Color variants - updated for bold, purposeful branding
   const getTextColor = () => {
     switch (variant) {
       case 'black':
         return 'text-black';
       case 'white':
         return 'text-white';
+      default: // full-color - bold gradient
+        return 'bg-gradient-to-r from-slate-800 via-blue-600 to-indigo-700 bg-clip-text text-transparent';
+    }
+  };
+
+  const getTaglineColor = () => {
+    switch (variant) {
+      case 'black':
+        return 'text-gray-600';
+      case 'white':
+        return 'text-white/70';
       default: // full-color
-        return 'bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 bg-clip-text text-transparent';
+        return 'text-slate-600';
     }
   };
 
   return (
-    <div 
-      className={cn(
-        "font-bold tracking-tight select-none",
-        sizeClasses[size],
-        getTextColor(),
-        italic && "italic transform -skew-x-6",
-        className
+    <div className={cn("select-none", className)}>
+      {/* Main wordmark */}
+      <div 
+        className={cn(
+          "font-black tracking-tight",
+          sizeClasses[size],
+          getTextColor(),
+          italic && "italic transform -skew-x-3",
+          "transition-all duration-300 hover:scale-105"
+        )}
+        style={{
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif',
+          fontWeight: 900,
+          letterSpacing: '-0.03em'
+        }}
+      >
+        Gryt
+      </div>
+
+      {/* Optional tagline */}
+      {showTagline && (
+        <div 
+          className={cn(
+            "font-medium tracking-wide mt-1",
+            taglineSizes[size],
+            getTaglineColor()
+          )}
+          style={{
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif',
+            letterSpacing: '0.02em'
+          }}
+        >
+          Turn ambition into identity.
+        </div>
       )}
-      style={{
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        fontWeight: 800,
-        letterSpacing: '-0.02em'
-      }}
-    >
-      Gryt
     </div>
   );
 };

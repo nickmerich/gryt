@@ -10,6 +10,7 @@ interface GrytLogoFullProps {
   variant?: 'full-color' | 'black' | 'white';
   layout?: 'horizontal' | 'vertical';
   showMotionLine?: boolean;
+  showTagline?: boolean;
 }
 
 const GrytLogoFull = ({ 
@@ -17,34 +18,42 @@ const GrytLogoFull = ({
   size = 'md', 
   variant = 'full-color',
   layout = 'horizontal',
-  showMotionLine = true 
+  showMotionLine = true,
+  showTagline = false 
 }: GrytLogoFullProps) => {
   const spacing = {
-    sm: layout === 'horizontal' ? 'gap-2' : 'gap-1',
-    md: layout === 'horizontal' ? 'gap-3' : 'gap-2',
-    lg: layout === 'horizontal' ? 'gap-4' : 'gap-3',
-    xl: layout === 'horizontal' ? 'gap-6' : 'gap-4'
+    sm: layout === 'horizontal' ? 'gap-3' : 'gap-2',
+    md: layout === 'horizontal' ? 'gap-4' : 'gap-3',
+    lg: layout === 'horizontal' ? 'gap-6' : 'gap-4',
+    xl: layout === 'horizontal' ? 'gap-8' : 'gap-6'
   };
 
   return (
     <div 
       className={cn(
-        "flex items-center",
-        layout === 'horizontal' ? 'flex-row' : 'flex-col',
+        "flex items-center group transition-all duration-300",
+        layout === 'horizontal' ? 'flex-row' : 'flex-col items-center',
         spacing[size],
         className
       )}
     >
-      <GrytLogo 
-        size={size} 
-        variant={variant} 
-        showMotionLine={showMotionLine}
-      />
-      <GrytWordmark 
-        size={size} 
-        variant={variant}
-        italic={true}
-      />
+      <div className="transition-transform duration-300 group-hover:scale-110">
+        <GrytLogo 
+          size={size} 
+          variant={variant} 
+          showMotionLine={showMotionLine}
+        />
+      </div>
+      <div className={cn(
+        "transition-all duration-300",
+        layout === 'vertical' && "text-center"
+      )}>
+        <GrytWordmark 
+          size={size} 
+          variant={variant}
+          showTagline={showTagline}
+        />
+      </div>
     </div>
   );
 };
