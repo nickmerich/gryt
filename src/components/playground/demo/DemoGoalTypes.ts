@@ -1,5 +1,5 @@
 
-import { Goal } from '@/hooks/useGoals';
+import { Goal } from '@/types/goal';
 
 // Define a custom type for our demo goal that extends Goal but includes todos
 export interface DemoGoal extends Goal {
@@ -11,4 +11,3 @@ export interface TourStep {
   title: string;
   description: string;
 }
-

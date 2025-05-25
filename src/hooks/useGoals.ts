@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import type { Goal } from "@/integrations/supabase/types";
+import { Goal, GoalRow, mapGoalRowToGoal } from "@/types/goal";
 
 export interface GoalInput {
   title: string;
@@ -21,6 +21,9 @@ export interface EditGoalInput {
   target_date: string;
   image_url?: string;
 }
+
+// Export the Goal type for other components to use
+export type { Goal };
 
 export const useGoals = () => {
   const { user } = useAuth();
@@ -46,18 +49,26 @@ export const useGoals = () => {
         throw error;
       }
 
-      return data || [];
+      // Map database rows to frontend Goal objects
+      return (data || []).map(mapGoalRowToGoal);
     },
     enabled: !!user,
   });
 
   const createGoal = useMutation({
-    mutationFn: async (goalData: Omit<Goal, "id" | "user_id" | "created_at" | "updated_at">) => {
+    mutationFn: async (goalData: GoalInput) => {
       if (!user) throw new Error("User not authenticated");
 
       const { data, error } = await supabase
         .from("goals")
-        .insert([{ ...goalData, user_id: user.id }])
+        .insert([{ 
+          title: goalData.title,
+          description: goalData.description,
+          category: goalData.category,
+          target_date: goalData.target_date,
+          image_url: goalData.image_url,
+          user_id: user.id 
+        }])
         .select()
         .single();
 
@@ -66,7 +77,7 @@ export const useGoals = () => {
         throw error;
       }
 
-      return data;
+      return mapGoalRowToGoal(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["goals"] });
@@ -94,7 +105,7 @@ export const useGoals = () => {
         throw error;
       }
 
-      return data;
+      return mapGoalRowToGoal(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["goals"] });
@@ -107,7 +118,7 @@ export const useGoals = () => {
   });
 
   const updateGoal = useMutation({
-    mutationFn: async ({ goalId, updates }: { goalId: string; updates: Partial<Goal> }) => {
+    mutationFn: async ({ goalId, updates }: { goalId: string; updates: Partial<GoalRow> }) => {
       const { data, error } = await supabase
         .from("goals")
         .update(updates)
@@ -120,7 +131,7 @@ export const useGoals = () => {
         throw error;
       }
 
-      return data;
+      return mapGoalRowToGoal(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["goals"] });
@@ -145,7 +156,7 @@ export const useGoals = () => {
         throw error;
       }
 
-      return data;
+      return mapGoalRowToGoal(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["goals"] });

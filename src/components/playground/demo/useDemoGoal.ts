@@ -44,17 +44,16 @@ export const useDemoGoal = () => {
 
   const updateProgress = () => {
     const newProgress = Math.min(demoGoal.progress + 20, 100);
-    setDemoGoal({...demoGoal, progress: newProgress});
+    setDemoGoal(prev => ({...prev, progress: newProgress}));
     
     if (newProgress >= 20 && !demoGoal.milestones[0].isCompleted) {
       const updatedMilestones = [...demoGoal.milestones];
       updatedMilestones[0] = {...updatedMilestones[0], isCompleted: true};
-      setDemoGoal({
-        ...demoGoal, 
+      setDemoGoal(prev => ({
+        ...prev, 
         milestones: updatedMilestones, 
-        progress: newProgress,
-        todos: demoGoal.todos
-      });
+        progress: newProgress
+      }));
       setShowCelebration(true);
       toast.success("🎉 You've completed your first milestone!");
       
@@ -73,10 +72,10 @@ export const useDemoGoal = () => {
     const updatedTodos = demoGoal.todos.map(todo => 
       todo.id === id ? {...todo, isCompleted: !todo.isCompleted} : todo
     );
-    setDemoGoal({
-      ...demoGoal, 
+    setDemoGoal(prev => ({
+      ...prev, 
       todos: updatedTodos
-    });
+    }));
     
     toast.success("Task completed! Great job staying on track.");
     setCompletedSteps([...completedSteps, tourStep]);
@@ -86,12 +85,12 @@ export const useDemoGoal = () => {
   };
 
   const resetDemo = () => {
-    setDemoGoal({
-      ...demoGoal,
+    setDemoGoal(prev => ({
+      ...prev,
       progress: 0,
-      milestones: demoGoal.milestones.map(m => ({...m, isCompleted: false})),
-      todos: demoGoal.todos.map(t => ({...t, isCompleted: false}))
-    });
+      milestones: prev.milestones.map(m => ({...m, isCompleted: false})),
+      todos: prev.todos.map(t => ({...t, isCompleted: false}))
+    }));
     setTourStep(0);
     setCompletedSteps([]);
     setShowCelebration(false);
