@@ -3,14 +3,18 @@ import { useState } from 'react';
 import GhibliLayout from '@/components/GhibliLayout';
 import IntegrationsGrid from '@/components/integrations/IntegrationsGrid';
 import ConnectIntegrationDialog from '@/components/integrations/ConnectIntegrationDialog';
+import PostConnectionGoalSuggestions from '@/components/integrations/PostConnectionGoalSuggestions';
 import { Button } from '@/components/ui/button';
 import { Plus, Sparkles } from 'lucide-react';
 import { useIntegrations } from '@/hooks/useIntegrations';
 import { IntegrationProvider } from '@/services/integration/types';
+import { toast } from 'sonner';
 
 const Integrations = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isGoalSuggestionsOpen, setIsGoalSuggestionsOpen] = useState(false);
   const [selectedIntegration, setSelectedIntegration] = useState<IntegrationProvider | null>(null);
+  const [recentlyConnected, setRecentlyConnected] = useState<string>('');
   const { getIntegrationsWithStatus, connect, disconnect, isLoading } = useIntegrations();
 
   const integrations = getIntegrationsWithStatus();
@@ -30,7 +34,21 @@ const Integrations = () => {
   const handleConnectSubmit = async (providerId: string, token: string) => {
     await connect(providerId, token);
     setIsDialogOpen(false);
+    
+    // Show goal suggestions after successful connection
+    const integration = integrations.find(i => i.id === providerId);
+    if (integration) {
+      setRecentlyConnected(integration.name);
+      setIsGoalSuggestionsOpen(true);
+    }
+    
     setSelectedIntegration(null);
+  };
+
+  const handleCreateGoalFromSuggestion = (suggestion: any) => {
+    // Here you would typically create a goal using your goal creation logic
+    toast.success(`Goal "${suggestion.title}" created! Start tracking your progress.`);
+    console.log('Creating goal from suggestion:', suggestion);
   };
 
   if (isLoading) {
@@ -110,6 +128,14 @@ const Integrations = () => {
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
           onConnect={handleConnectSubmit}
+        />
+
+        {/* Post-Connection Goal Suggestions */}
+        <PostConnectionGoalSuggestions
+          integration={recentlyConnected}
+          open={isGoalSuggestionsOpen}
+          onOpenChange={setIsGoalSuggestionsOpen}
+          onCreateGoal={handleCreateGoalFromSuggestion}
         />
       </div>
     </GhibliLayout>

@@ -1,9 +1,13 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
 import { IntegrationProvider } from '@/services/integration/types';
+import { HelpCircle, Shield, CheckCircle, Loader } from 'lucide-react';
 
 interface ConnectIntegrationDialogProps {
   integration: IntegrationProvider | null;
@@ -19,27 +23,36 @@ const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
   onConnect
 }) => {
   const [apiKey, setApiKey] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!integration) return;
     
-    setIsLoading(true);
+    setIsConnecting(true);
     try {
       await onConnect(integration.id, apiKey);
-      onOpenChange(false);
-      setApiKey('');
+      setIsConnected(true);
+      
+      // Show success state briefly before closing
+      setTimeout(() => {
+        onOpenChange(false);
+        setApiKey('');
+        setIsConnecting(false);
+        setIsConnected(false);
+      }, 1500);
     } catch (error) {
       console.error('Error connecting integration:', error);
-    } finally {
-      setIsLoading(false);
+      setIsConnecting(false);
     }
   };
 
-  const handleOAuthConnect = () => {
+  const handleOAuthConnect = async () => {
     if (!integration || !integration.authUrl) return;
+    
+    setIsConnecting(true);
     
     // Generate a random state parameter to prevent CSRF
     const state = integration.id;
@@ -55,40 +68,86 @@ const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Connect {integration.name}</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            Connect {integration.name}
+            <div 
+              className="w-3 h-3 rounded-full" 
+              style={{ backgroundColor: integration.color }}
+            />
+          </DialogTitle>
           <DialogDescription>
-            {isOAuth 
-              ? `You'll be redirected to ${integration.name} to authorize access to your account.`
-              : `Enter your ${integration.name} API key to connect your account.`}
+            We'll securely connect to {integration.name} to help you track progress and goals—no passwords shared. Takes 2 clicks.
           </DialogDescription>
         </DialogHeader>
         
         {isOAuth ? (
           <div className="space-y-4 pt-4">
-            <p className="text-sm text-gray-500">
-              You'll be redirected to {integration.name} to authorize Gryt to access your account data. 
-              No passwords will be stored, and you can revoke access at any time.
-            </p>
+            <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border">
+              <Shield className="h-4 w-4 text-blue-600" />
+              <span className="text-sm text-blue-800">Secure OAuth via {integration.name}. No passwords stored.</span>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HelpCircle className="h-4 w-4 text-blue-600" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>OAuth is a secure standard that lets you authorize apps without sharing passwords. You can revoke access anytime from your {integration.name} settings.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            
             <div className="flex justify-end space-x-2">
               <Button
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                disabled={isConnecting}
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleOAuthConnect}
                 style={{ backgroundColor: integration.color }}
-                disabled={!integration.authUrl || integration.status === 'coming_soon'}
+                disabled={!integration.authUrl || integration.status === 'coming_soon' || isConnecting}
+                className="min-w-[140px]"
               >
-                {integration.status === 'coming_soon' ? 'Coming Soon' : `Connect with ${integration.name}`}
+                {isConnecting ? (
+                  <div className="flex items-center gap-2">
+                    <Loader className="h-4 w-4 animate-spin" />
+                    Connecting...
+                  </div>
+                ) : isConnected ? (
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    Connected!
+                  </div>
+                ) : integration.status === 'coming_soon' ? (
+                  'Coming Soon'
+                ) : (
+                  `Connect with ${integration.name}`
+                )}
               </Button>
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border mb-4">
+              <Shield className="h-4 w-4 text-green-600" />
+              <span className="text-sm text-green-800">API key stored securely and encrypted.</span>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HelpCircle className="h-4 w-4 text-green-600" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>Your API key is encrypted and used only to sync your data. We never store or share your actual account credentials.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="api-key">{integration.name} API Key</Label>
               <Input
@@ -98,25 +157,40 @@ const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
                 onChange={(e) => setApiKey(e.target.value)}
                 placeholder={`Enter your ${integration.name} API key`}
                 required
+                disabled={isConnecting || isConnected}
               />
-              <p className="text-xs text-gray-500">
-                Your API key is stored securely and used only to sync your data.
-              </p>
             </div>
+            
             <div className="flex justify-end space-x-2 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                disabled={isConnecting}
               >
                 Cancel
               </Button>
               <Button 
                 type="submit" 
-                disabled={!apiKey.trim() || isLoading || integration.status === 'coming_soon'}
+                disabled={!apiKey.trim() || isConnecting || integration.status === 'coming_soon' || isConnected}
                 style={{ backgroundColor: integration.color }}
+                className="min-w-[120px]"
               >
-                {isLoading ? 'Connecting...' : (integration.status === 'coming_soon' ? 'Coming Soon' : 'Connect')}
+                {isConnecting ? (
+                  <div className="flex items-center gap-2">
+                    <Loader className="h-4 w-4 animate-spin" />
+                    Connecting...
+                  </div>
+                ) : isConnected ? (
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    Connected!
+                  </div>
+                ) : integration.status === 'coming_soon' ? (
+                  'Coming Soon'
+                ) : (
+                  'Connect'
+                )}
               </Button>
             </div>
           </form>
