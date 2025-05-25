@@ -117,7 +117,7 @@ const Circles = () => {
             <GhibliIllustration type="mountains" className="w-full h-full" />
           </div>
           <div className="text-center relative z-10 max-w-3xl mx-auto">
-            <h1 className="text-4xl font-bold text-gryt-dark mb-3">Goal Circles</h1>
+            <h1 className="text-4xl font-bold text-black mb-3">Goal Circles</h1>
             <p className="text-xl text-gray-600 mb-6">
               Join micro-communities centered around specific goals. Share progress, overcome challenges, 
               and celebrate wins with people on similar journeys.
@@ -155,7 +155,7 @@ const Circles = () => {
               ))
             ) : (
               <div className="col-span-full text-center py-12">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">No circles found</h3>
+                <h3 className="text-lg font-semibold text-black mb-2">No circles found</h3>
                 <p className="text-gray-600">Try adjusting your search criteria</p>
               </div>
             )}

@@ -23,7 +23,7 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
-              <span className="font-bold text-2xl ml-3 gradient-text">Gryt</span>
+              <span className="font-bold text-2xl ml-3 text-black">Gryt</span>
             </Link>
             <nav className="ml-12 hidden md:flex space-x-8">
               <Link 

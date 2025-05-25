@@ -55,8 +55,8 @@ const StatsOverview = ({ goals = [] }: StatsOverviewProps) => {
                 <stat.icon className="w-6 h-6 text-white" />
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold gradient-text">{stat.value}</div>
-                <CardTitle className="text-lg text-slate-900">{stat.title}</CardTitle>
+                <div className="text-3xl font-bold text-black">{stat.value}</div>
+                <CardTitle className="text-lg text-black">{stat.title}</CardTitle>
               </div>
             </div>
           </CardHeader>

@@ -75,7 +75,7 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
             )}
           </div>
         </div>
-        <CardTitle className="text-xl mt-2">{circle.name}</CardTitle>
+        <CardTitle className="text-xl mt-2 text-black">{circle.name}</CardTitle>
         <CardDescription className="text-blue-50">{circle.memberCount} members</CardDescription>
       </CardHeader>
       <CardContent className="pt-0">

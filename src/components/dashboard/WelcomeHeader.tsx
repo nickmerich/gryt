@@ -27,10 +27,10 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
             <Sparkles className="w-8 h-8 text-white" />
           </div>
           <div>
-            <h1 className="heading-md gradient-text mb-2">
+            <h1 className="text-3xl lg:text-4xl font-bold leading-tight text-black mb-2">
               {getGreeting()}, {userName}!
             </h1>
-            <p className="body-md">
+            <p className="text-lg text-slate-600 leading-relaxed">
               Ready to make progress on your goals today?
             </p>
           </div>

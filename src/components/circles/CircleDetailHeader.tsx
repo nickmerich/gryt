@@ -28,7 +28,7 @@ const CircleDetailHeader: React.FC<CircleDetailHeaderProps> = ({
               <Badge className="bg-blue-100 text-blue-800">{circle.category}</Badge>
               <span className="text-sm text-gray-500">{circle.memberCount} members</span>
             </div>
-            <h1 className="text-2xl font-bold mb-2">{circle.name}</h1>
+            <h1 className="text-2xl font-bold mb-2 text-black">{circle.name}</h1>
             <p className="text-gray-600 mb-4">{circle.description}</p>
           </div>
           
