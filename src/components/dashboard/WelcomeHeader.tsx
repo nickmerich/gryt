@@ -1,13 +1,15 @@
-
 import { Plus, Sparkles } from 'lucide-react';
 import GhibliButton from '@/components/GhibliButton';
 import { useAuth } from '@/contexts/AuthContext';
+import { motion } from 'framer-motion';
+import Button from '@/components/Button';
 
 interface WelcomeHeaderProps {
   onOpenCreateDialog: () => void;
+  subtitle?: string;
 }
 
-const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
+const WelcomeHeader = ({ onOpenCreateDialog, subtitle }: WelcomeHeaderProps) => {
   const { user } = useAuth();
   
   const getGreeting = () => {
@@ -18,34 +20,46 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
   };
   
   const userName = user?.email?.split('@')[0] || 'there';
+  const greeting = getGreeting();
+  const motivationalMessage = 'Ready to make progress on your goals today?';
 
   return (
-    <div className="modern-card p-8 mb-8 animate-fade-in">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <Sparkles className="w-8 h-8 text-white" />
-          </div>
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="space-y-2">
+        <div className="flex items-center space-x-3">
+          <motion.div
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+          >
+            <Sparkles className="w-8 h-8 text-gryt-blue" />
+          </motion.div>
           <div>
-            <h1 className="text-3xl lg:text-4xl font-bold leading-tight text-black mb-2">
-              {getGreeting()}, {userName}!
+            <h1 className="text-3xl font-bold text-gryt-dark">
+              {greeting}, {userName}!
             </h1>
-            <p className="text-lg text-slate-600 leading-relaxed">
-              Ready to make progress on your goals today?
+            {subtitle && (
+              <p className="text-gryt-blue font-medium mt-1">{subtitle}</p>
+            )}
+            <p className="text-gray-600">
+              {motivationalMessage}
             </p>
           </div>
         </div>
-        <GhibliButton 
+      </div>
+      
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <Button
           onClick={onOpenCreateDialog}
+          className="bg-gradient-to-r from-gryt-blue to-gryt-purple hover:from-gryt-blue/90 hover:to-gryt-purple/90 text-white shadow-lg hover:shadow-xl transition-all duration-300"
           size="lg"
-          magical={true}
-          hoverText="Let's go!"
-          className="text-white font-semibold"
         >
           <Plus className="w-5 h-5 mr-2" />
-          Create Goal
-        </GhibliButton>
-      </div>
+          Transform Your Identity
+        </Button>
+      </motion.div>
     </div>
   );
 };

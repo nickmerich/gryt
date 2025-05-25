@@ -2,9 +2,15 @@
 import { useState } from 'react';
 import { toast } from "sonner";
 import CreateGoalDialog from '@/components/CreateGoalDialog';
+import IdentityGoalCreation from '@/components/identity/IdentityGoalCreation';
+import IdentityTracker from '@/components/identity/IdentityTracker';
+import MicroCelebration from '@/components/celebration/MicroCelebration';
+import PersonalCoach from '@/components/coach/PersonalCoach';
 import AIInsights from '@/components/AIInsights';
 import ChatModal from '@/components/GrytGPT/ChatModal';
 import { useGoals, GoalInput, EditGoalInput } from '@/hooks/useGoals';
+import { useCelebration } from '@/hooks/useCelebration';
+import { usePersonalCoach } from '@/hooks/usePersonalCoach';
 import { useAuth } from '@/contexts/AuthContext';
 import GhibliLayout from '@/components/GhibliLayout';
 import AISuggestions from '@/components/AISuggestions';
@@ -28,14 +34,42 @@ const Index = () => {
     uploadGoalImage, 
     updateGoalProgress 
   } = useGoals();
+  
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [showIdentityCreation, setShowIdentityCreation] = useState(false);
   const isMobile = useIsMobile();
+  
+  // New behavior change features
+  const { 
+    showCelebration, 
+    celebrationData, 
+    closeCelebration,
+    celebrateFirstStep,
+    celebrateConsistency 
+  } = useCelebration();
+  
+  const { coachState, hideCoach, updateMood, getCoachInsight } = usePersonalCoach(goals || []);
 
   const addGoal = (newGoal: GoalInput) => {
     createGoal.mutate(newGoal);
   };
 
+  const addIdentityGoal = (goalData: any) => {
+    createGoal.mutate(goalData);
+    setShowIdentityCreation(false);
+    toast.success("Your transformation journey begins! 🌟");
+  };
+
   const handleUpdateProgress = (goalId: string, newProgress: number) => {
+    const goal = goals?.find(g => g.id === goalId);
+    if (goal) {
+      // Check for celebrations
+      if (goal.progress === 0 && newProgress > 0) {
+        celebrateFirstStep(goal);
+      } else if (newProgress > goal.progress && newProgress % 25 === 0) {
+        celebrateConsistency(goal, Math.floor(newProgress / 25));
+      }
+    }
     updateGoalProgress.mutate({ goalId, newProgress });
   };
 
@@ -56,13 +90,11 @@ const Index = () => {
         target_date: targetDate
       };
 
-      // If image file is provided, upload it first
       if (imageFile) {
         const imageUrl = await uploadGoalImage(imageFile, goalId);
         editData.image_url = imageUrl;
       }
 
-      // Update the goal with all data including image URL if available
       await editGoal.mutateAsync(editData);
     } catch (error) {
       console.error("Error editing goal:", error);
@@ -73,8 +105,18 @@ const Index = () => {
   return (
     <GhibliLayout>
       <div className="container mx-auto px-4 py-8">
-        {/* Header with Navigation and Welcome Message */}
-        <WelcomeHeader onOpenCreateDialog={() => setIsCreateDialogOpen(true)} />
+        {/* Header with Enhanced Welcome */}
+        <WelcomeHeader 
+          onOpenCreateDialog={() => setShowIdentityCreation(true)}
+          subtitle={getCoachInsight()}
+        />
+
+        {/* Identity Transformation Section */}
+        {goals && goals.length > 0 && (
+          <div className="mb-8">
+            <IdentityTracker goals={goals} />
+          </div>
+        )}
 
         {/* Stats Overview */}
         <StatsOverview goals={goals} />
@@ -92,8 +134,6 @@ const Index = () => {
             onUpdateGoalProgress={handleUpdateProgress}
           />
         )}
-
-        {/* Removed Playground Banner */}
 
         {/* Integrations Module - Standard placement on desktop */}
         {!isMobile && (
@@ -113,17 +153,48 @@ const Index = () => {
         <GoalsList 
           goals={goals}
           isLoading={isLoading}
-          onOpenCreateDialog={() => setIsCreateDialogOpen(true)}
+          onOpenCreateDialog={() => setShowIdentityCreation(true)}
           onUpdateGoalProgress={handleUpdateProgress}
           onEditGoal={handleEditGoal}
         />
 
-        {/* Create Goal Dialog */}
+        {/* Legacy Create Goal Dialog */}
         <CreateGoalDialog 
           open={isCreateDialogOpen}
           onOpenChange={setIsCreateDialogOpen}
           onCreateGoal={addGoal}
         />
+        
+        {/* Identity-Focused Goal Creation */}
+        {showIdentityCreation && (
+          <IdentityGoalCreation
+            onCreateGoal={addIdentityGoal}
+            onClose={() => setShowIdentityCreation(false)}
+          />
+        )}
+        
+        {/* Micro-Celebration System */}
+        {showCelebration && celebrationData && (
+          <MicroCelebration
+            trigger={celebrationData.type}
+            achievement={celebrationData.achievement}
+            identityShift={celebrationData.identityShift}
+            progress={celebrationData.progress}
+            onClose={closeCelebration}
+          />
+        )}
+        
+        {/* Personal Coach */}
+        {coachState.showCoach && (
+          <PersonalCoach
+            goals={goals || []}
+            userProgress={{}}
+            onResponse={(response) => {
+              updateMood(response.includes('struggling') ? 'struggling' : 'good');
+            }}
+            onClose={hideCoach}
+          />
+        )}
         
         {/* GrytGPT Chat Modal */}
         <ChatModal goals={goals || []} />
