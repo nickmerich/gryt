@@ -86,8 +86,20 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
         whileHover={{ y: -4 }}
         transition={{ duration: 0.2 }}
       >
-        <div className={`modern-card overflow-hidden bg-gradient-to-br ${gradient} text-white relative`}>
-          <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-black/20"></div>
+        <div className={`modern-card overflow-hidden bg-gradient-to-br ${gradient} text-white relative rounded-3xl`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-black/20 rounded-3xl"></div>
+          
+          {/* Goal Image Section */}
+          {goal.imageUrl && (
+            <div className="relative h-48 overflow-hidden">
+              <img
+                src={goal.imageUrl}
+                alt={goal.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+            </div>
+          )}
           
           <div className="relative z-10 flex flex-col h-full">
             <CardHeader className="pb-4">
@@ -112,14 +124,14 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
                   </button>
                 </div>
               </div>
-              <CardTitle className="text-2xl font-bold mb-2">{goal.title}</CardTitle>
+              <CardTitle className="text-2xl font-bold mb-2 text-white">{goal.title}</CardTitle>
               <CardDescription className="text-white/90 text-base line-clamp-2">
                 {goal.description}
               </CardDescription>
             </CardHeader>
             
             <div className="px-8">
-              <div className="h-20 mb-4 bg-white/10 rounded-2xl p-4">
+              <div className="h-20 mb-4 bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
                 <ProgressVisualization 
                   goal={goal} 
                   type={goal.category === 'Health & Fitness' ? 'mountain' : 'tree'} 
@@ -130,8 +142,8 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
 
             <CardContent className="pb-4">
               <div className="flex justify-between items-center mb-3">
-                <span className="text-base font-medium text-white/90">Progress</span>
-                <span className="text-xl font-bold">{goal.progress}%</span>
+                <span className="text-base font-medium text-white">Progress</span>
+                <span className="text-xl font-bold text-white">{goal.progress}%</span>
               </div>
               <Progress 
                 value={goal.progress} 
@@ -144,7 +156,7 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
               <div className="px-8 py-3">
                 <div className="flex items-center gap-3 text-sm bg-white/10 p-3 rounded-2xl backdrop-blur-sm">
                   <ChevronRight className="w-4 h-4 text-white/70" />
-                  <span className="font-medium">Next: {nextMilestone.title}</span>
+                  <span className="font-medium text-white">Next: {nextMilestone.title}</span>
                 </div>
               </div>
             )}
@@ -152,7 +164,7 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
             <div className="px-8 pb-3 space-y-3">
               <div className="flex items-center gap-3 text-sm text-white/90">
                 <Target className="w-4 h-4" />
-                <span>{completedMilestonesCount}/{totalMilestonesCount} milestones completed</span>
+                <span className="text-white">{completedMilestonesCount}/{totalMilestonesCount} milestones completed</span>
               </div>
 
               <div className="flex items-center gap-3 text-sm">
@@ -160,7 +172,7 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
                 <span className={`${
                   daysUntilTarget < 0 ? 'text-red-200' : 
                   daysUntilTarget < 7 ? 'text-orange-200' : 
-                  'text-white/80'
+                  'text-white'
                 }`}>
                   {daysUntilTarget > 0 
                     ? `${daysUntilTarget} days remaining` 
@@ -176,7 +188,7 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
               <p className="text-sm italic text-white/70">{randomQuote}</p>
             </div>
 
-            <div className="mt-auto border-t border-white/20 p-6 bg-black/10 backdrop-blur-sm">
+            <div className="mt-auto border-t border-white/20 p-6 bg-black/10 backdrop-blur-sm rounded-b-3xl">
               {!isCompleted ? (
                 <Button 
                   onClick={handleProgressUpdate}
@@ -186,7 +198,7 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
                   Update Progress (+10%)
                 </Button>
               ) : (
-                <div className="flex items-center justify-center gap-2 font-medium text-lg">
+                <div className="flex items-center justify-center gap-2 font-medium text-lg text-white">
                   <CheckCircle className="w-5 h-5 text-yellow-300" />
                   <span>Goal Completed! 🎉</span>
                 </div>

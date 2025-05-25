@@ -100,7 +100,7 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({
       <div className="text-center py-2">
         <Button 
           variant="ghost" 
-          className="text-gryt-blue"
+          className="text-black hover:text-gryt-blue"
           onClick={() => setShowSuggestions(true)}
         >
           <Sparkles className="h-4 w-4 mr-2" />
@@ -145,7 +145,7 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({
           <Button 
             variant="ghost" 
             size="sm"
-            className="text-sm"
+            className="text-sm text-black hover:text-gryt-blue"
             onClick={() => {
               if (showTrackerCard) {
                 setShowTrackerCard(false);
