@@ -1,78 +1,80 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { UserIntegration } from "./types";
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
-// Function to get user's connected integrations
-export const getUserIntegrations = async (userId: string): Promise<UserIntegration[]> => {
+export const connectIntegration = async (
+  providerId: string,
+  accessToken: string,
+  userId: string
+) => {
   try {
-    const { data, error } = await supabase
+    // Check if integration already exists
+    const { data: existingIntegration } = await supabase
       .from('user_integrations')
-      .select('*')
-      .eq('user_id', userId);
-      
-    if (error) {
-      console.error('Error fetching user integrations:', error);
-      throw error;
-    }
-    
-    // Ensure we return data with the correct types
-    return (data || []).map(item => ({
-      ...item,
-      status: (item.status as 'active' | 'expired' | 'error') || 'active'
-    })) as UserIntegration[];
-  } catch (err) {
-    console.error('Failed to fetch integrations:', err);
-    return [];
-  }
-};
-
-// Function to connect an integration with API key
-export const connectIntegration = async (providerId: string, token: string, userId: string): Promise<UserIntegration> => {
-  try {
-    // For API key based integrations (like Chess.com)
-    const { data, error } = await supabase
-      .from('user_integrations')
-      .insert({
-        user_id: userId,
-        provider_id: providerId,
-        access_token: token,
-        status: 'active'
-      })
-      .select()
+      .select('id')
+      .eq('provider_id', providerId)
+      .eq('user_id', userId)
       .single();
-      
-    if (error) {
-      console.error('Error connecting integration:', error);
-      throw error;
+
+    if (existingIntegration) {
+      // Update existing integration
+      const { error } = await supabase
+        .from('user_integrations')
+        .update({
+          access_token: accessToken,
+          status: 'active',
+          last_synced: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', existingIntegration.id);
+
+      if (error) {
+        console.error('Error updating integration:', error);
+        throw error;
+      }
+    } else {
+      // Create new integration
+      const { error } = await supabase
+        .from('user_integrations')
+        .insert({
+          user_id: userId,
+          provider_id: providerId,
+          access_token: accessToken,
+          status: 'active',
+          last_synced: new Date().toISOString()
+        });
+
+      if (error) {
+        console.error('Error creating integration:', error);
+        throw error;
+      }
     }
-    
-    // Ensure the returned data has the correct type
-    return {
-      ...data,
-      status: (data.status as 'active' | 'expired' | 'error')
-    } as UserIntegration;
-  } catch (err) {
-    console.error('Failed to connect integration:', err);
-    throw err;
+
+    console.log(`Successfully connected ${providerId} integration`);
+  } catch (error) {
+    console.error('Database service error:', error);
+    throw error;
   }
 };
 
-// Function to disconnect an integration
-export const disconnectIntegration = async (integrationId: string): Promise<boolean> => {
+export const disconnectIntegration = async (integrationId: string) => {
   try {
     const { error } = await supabase
       .from('user_integrations')
-      .delete()
+      .update({
+        status: 'inactive',
+        updated_at: new Date().toISOString()
+      })
       .eq('id', integrationId);
-      
+
     if (error) {
       console.error('Error disconnecting integration:', error);
       throw error;
     }
-    
-    return true;
-  } catch (err) {
-    console.error('Failed to disconnect integration:', err);
-    return false;
+
+    console.log('Successfully disconnected integration');
+  } catch (error) {
+    console.error('Database service error:', error);
+    throw error;
   }
 };
