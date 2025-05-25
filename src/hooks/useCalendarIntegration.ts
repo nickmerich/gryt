@@ -10,12 +10,14 @@ export const useCalendarIntegration = () => {
   const { data: integrations, isLoading } = useQuery({
     queryKey: ['calendar-integrations'],
     queryFn: () => calendarService.getCalendarIntegrations(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const connectGoogle = useMutation({
     mutationFn: () => calendarService.connectGoogleCalendar(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['calendar-integrations'] });
+      setError(null);
     },
     onError: (error: any) => {
       setError(error.message);
@@ -26,6 +28,7 @@ export const useCalendarIntegration = () => {
     mutationFn: (integrationId: string) => calendarService.disconnectCalendar(integrationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['calendar-integrations'] });
+      setError(null);
     },
     onError: (error: any) => {
       setError(error.message);
@@ -35,6 +38,9 @@ export const useCalendarIntegration = () => {
   const syncGoal = useMutation({
     mutationFn: ({ goalId, calendarId }: { goalId: string, calendarId?: string }) => 
       calendarService.syncGoalToCalendar(goalId, calendarId),
+    onSuccess: () => {
+      setError(null);
+    },
     onError: (error: any) => {
       setError(error.message);
     }

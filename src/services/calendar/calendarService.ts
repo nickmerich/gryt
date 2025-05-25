@@ -34,7 +34,7 @@ class CalendarService {
       if (!userData.user) throw new Error('Not authenticated');
 
       const { error } = await supabase
-        .from('calendar_integrations')
+        .from('calendar_integrations' as any)
         .upsert({
           user_id: userData.user.id,
           provider: 'google',
@@ -53,7 +53,7 @@ class CalendarService {
   async disconnectCalendar(integrationId: string): Promise<void> {
     try {
       const { error } = await supabase
-        .from('calendar_integrations')
+        .from('calendar_integrations' as any)
         .update({ is_active: false })
         .eq('id', integrationId);
 
@@ -117,7 +117,7 @@ class CalendarService {
 
       // Store calendar sync data
       const { error: syncError } = await supabase
-        .from('calendar_syncs')
+        .from('calendar_syncs' as any)
         .upsert({
           goal_id: goalId,
           calendar_id: calendarId,
@@ -139,7 +139,7 @@ class CalendarService {
       if (!userData.user) return [];
 
       const { data, error } = await supabase
-        .from('calendar_integrations')
+        .from('calendar_integrations' as any)
         .select('*')
         .eq('user_id', userData.user.id)
         .eq('is_active', true);
