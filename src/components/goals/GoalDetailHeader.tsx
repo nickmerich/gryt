@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Edit, Calendar, Tag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Goal } from '@/hooks/useGoals';
+import { Goal, useGoals } from '@/hooks/useGoals';
 import EditGoalDialog from '@/components/EditGoalDialog';
 
 interface GoalDetailHeaderProps {
@@ -12,6 +12,14 @@ interface GoalDetailHeaderProps {
 
 const GoalDetailHeader = ({ goal }: GoalDetailHeaderProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const { editGoal, uploadGoalImage } = useGoals();
+
+  const handleEditGoal = async (data: any, file?: File | null) => {
+    if (file) {
+      await uploadGoalImage(file, goal.id);
+    }
+    await editGoal.mutateAsync(data);
+  };
 
   return (
     <>
@@ -36,7 +44,7 @@ const GoalDetailHeader = ({ goal }: GoalDetailHeaderProps) => {
             </h1>
             
             {goal.description && (
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-lg text-black leading-relaxed">
                 {goal.description}
               </p>
             )}
@@ -46,7 +54,7 @@ const GoalDetailHeader = ({ goal }: GoalDetailHeaderProps) => {
             <Button 
               onClick={() => setIsEditDialogOpen(true)}
               variant="outline"
-              className="border-slate-300 hover:bg-slate-50"
+              className="border-slate-300 hover:bg-slate-50 text-black"
             >
               <Edit className="w-4 h-4 mr-2" />
               Edit Goal
@@ -59,6 +67,7 @@ const GoalDetailHeader = ({ goal }: GoalDetailHeaderProps) => {
         goal={goal}
         open={isEditDialogOpen}
         onOpenChange={setIsEditDialogOpen}
+        onEditGoal={handleEditGoal}
       />
     </>
   );

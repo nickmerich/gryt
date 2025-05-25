@@ -35,7 +35,7 @@ const GoalDetail = () => {
       <GhibliLayout>
         <div className="text-center py-12">
           <h2 className="text-2xl font-bold text-black mb-4">Goal Not Found</h2>
-          <p className="text-slate-600 mb-6">The goal you're looking for doesn't exist or has been removed.</p>
+          <p className="text-black mb-6">The goal you're looking for doesn't exist or has been removed.</p>
           <Button onClick={() => navigate('/')} variant="outline">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
@@ -55,7 +55,7 @@ const GoalDetail = () => {
         <Button 
           onClick={() => navigate('/')} 
           variant="ghost" 
-          className="hover:bg-white/50"
+          className="hover:bg-white/50 text-black"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Dashboard
@@ -85,7 +85,7 @@ const GoalDetail = () => {
                 {targetDate.toLocaleDateString()}
               </div>
               {daysRemaining !== null && (
-                <div className="text-sm text-slate-600">
+                <div className="text-sm text-black">
                   {daysRemaining > 0 ? `${daysRemaining} days remaining` : 'Overdue'}
                 </div>
               )}
@@ -98,9 +98,9 @@ const GoalDetail = () => {
             </div>
             <h3 className="text-lg font-semibold text-black mb-2">Milestones</h3>
             <div className="text-3xl font-bold text-black mb-2">
-              {milestones?.filter(m => m.completed).length || 0}
+              {milestones?.filter(m => m.is_completed).length || 0}
             </div>
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-black">
               of {milestones?.length || 0} completed
             </div>
           </div>
@@ -117,7 +117,7 @@ const GoalDetail = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-black">Milestones</h2>
             <Badge variant="secondary" className="bg-indigo-100 text-indigo-800">
-              {milestones?.filter(m => m.completed).length || 0} / {milestones?.length || 0} Complete
+              {milestones?.filter(m => m.is_completed).length || 0} / {milestones?.length || 0} Complete
             </Badge>
           </div>
           
@@ -126,7 +126,7 @@ const GoalDetail = () => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
             </div>
           ) : (
-            <MilestoneList goalId={id} milestones={milestones || []} />
+            <MilestoneList milestones={milestones || []} />
           )}
         </div>
 
@@ -134,7 +134,7 @@ const GoalDetail = () => {
         {goal.description && (
           <div className="modern-card p-8">
             <h2 className="text-2xl font-bold text-black mb-4">Description</h2>
-            <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+            <p className="text-black leading-relaxed whitespace-pre-wrap">
               {goal.description}
             </p>
           </div>

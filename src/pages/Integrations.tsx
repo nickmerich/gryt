@@ -5,9 +5,43 @@ import IntegrationsGrid from '@/components/integrations/IntegrationsGrid';
 import ConnectIntegrationDialog from '@/components/integrations/ConnectIntegrationDialog';
 import { Button } from '@/components/ui/button';
 import { Plus, Sparkles } from 'lucide-react';
+import { useIntegrations } from '@/hooks/useIntegrations';
+import { IntegrationProvider } from '@/services/integration/types';
 
 const Integrations = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedIntegration, setSelectedIntegration] = useState<IntegrationProvider | null>(null);
+  const { getIntegrationsWithStatus, connect, disconnect, isLoading } = useIntegrations();
+
+  const integrations = getIntegrationsWithStatus();
+
+  const handleConnect = (integration: IntegrationProvider) => {
+    setSelectedIntegration(integration);
+    setIsDialogOpen(true);
+  };
+
+  const handleDisconnect = async (integration: IntegrationProvider) => {
+    const userIntegration = integrations.find(i => i.id === integration.id)?.connectionDetails;
+    if (userIntegration) {
+      await disconnect(userIntegration.id);
+    }
+  };
+
+  const handleConnectSubmit = async (providerId: string, token: string) => {
+    await connect(providerId, token);
+    setIsDialogOpen(false);
+    setSelectedIntegration(null);
+  };
+
+  if (isLoading) {
+    return (
+      <GhibliLayout>
+        <div className="flex items-center justify-center min-h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        </div>
+      </GhibliLayout>
+    );
+  }
 
   return (
     <GhibliLayout className="max-w-6xl mx-auto">
@@ -20,7 +54,7 @@ const Integrations = () => {
           <h1 className="text-4xl lg:text-5xl font-bold text-black">
             Connect Your Apps
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-black max-w-2xl mx-auto leading-relaxed">
             Sync your favorite fitness, productivity, and lifestyle apps to automatically track progress toward your goals.
           </p>
           <Button 
@@ -34,7 +68,11 @@ const Integrations = () => {
         </div>
 
         {/* Integrations Grid */}
-        <IntegrationsGrid />
+        <IntegrationsGrid 
+          integrations={integrations}
+          onConnect={handleConnect}
+          onDisconnect={handleDisconnect}
+        />
 
         {/* Benefits Section */}
         <div className="modern-card p-8 text-center">
@@ -47,29 +85,31 @@ const Integrations = () => {
                 <span className="text-2xl">📊</span>
               </div>
               <h3 className="font-semibold text-black mb-2">Automatic Tracking</h3>
-              <p className="text-slate-600">No manual entry needed. Your progress updates automatically as you use your favorite apps.</p>
+              <p className="text-black">No manual entry needed. Your progress updates automatically as you use your favorite apps.</p>
             </div>
             <div>
               <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">🎯</span>
               </div>
               <h3 className="font-semibold text-black mb-2">Goal Alignment</h3>
-              <p className="text-slate-600">Connect activities directly to your goals for clearer progress visualization.</p>
+              <p className="text-black">Connect activities directly to your goals for clearer progress visualization.</p>
             </div>
             <div>
               <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-violet-200 rounded-xl flex items-center justify-center mb-4">
                 <span className="text-2xl">⚡</span>
               </div>
               <h3 className="font-semibold text-black mb-2">Motivation Boost</h3>
-              <p className="text-slate-600">See your achievements across all platforms in one unified dashboard.</p>
+              <p className="text-black">See your achievements across all platforms in one unified dashboard.</p>
             </div>
           </div>
         </div>
 
         {/* Connect Integration Dialog */}
         <ConnectIntegrationDialog 
+          integration={selectedIntegration}
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
+          onConnect={handleConnectSubmit}
         />
       </div>
     </GhibliLayout>
