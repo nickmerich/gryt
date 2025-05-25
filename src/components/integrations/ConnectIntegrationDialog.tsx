@@ -1,200 +1,129 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
+import { ExternalLink, Key, Lock } from 'lucide-react';
 import { IntegrationProvider } from '@/services/integration/types';
-import { HelpCircle, Shield, CheckCircle, Loader } from 'lucide-react';
+import { initiateOAuth } from '@/services/integration/oauthService';
 
 interface ConnectIntegrationDialogProps {
   integration: IntegrationProvider | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConnect: (providerId: string, token: string) => Promise<void>;
+  onConnect: (providerId: string, token: string) => void;
 }
 
 const ConnectIntegrationDialog: React.FC<ConnectIntegrationDialogProps> = ({
   integration,
   open,
   onOpenChange,
-  onConnect
+  onConnect,
 }) => {
   const [apiKey, setApiKey] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!integration) return;
-    
-    setIsConnecting(true);
-    try {
-      await onConnect(integration.id, apiKey);
-      setIsConnected(true);
-      
-      // Show success state briefly before closing
-      setTimeout(() => {
-        onOpenChange(false);
-        setApiKey('');
-        setIsConnecting(false);
-        setIsConnected(false);
-      }, 1500);
-    } catch (error) {
-      console.error('Error connecting integration:', error);
-      setIsConnecting(false);
-    }
-  };
-
-  const handleOAuthConnect = async () => {
-    if (!integration || !integration.authUrl) return;
-    
-    setIsConnecting(true);
-    
-    // Generate a random state parameter to prevent CSRF
-    const state = integration.id;
-    
-    // In a production app, we'd use a real OAuth flow with a proper state parameter
-    // and redirect URI. For this implementation, we'll simulate the OAuth flow.
-    window.location.href = `${integration.authUrl}?state=${state}`;
-  };
 
   if (!integration) return null;
 
-  const isOAuth = integration.authType === 'oauth';
+  const isOAuthProvider = ['strava', 'garmin', 'whoop', 'apple-health', 'duolingo', 'github', 'youtube'].includes(integration.id);
+
+  const handleOAuthConnect = () => {
+    setIsConnecting(true);
+    initiateOAuth(integration.id);
+  };
+
+  const handleApiKeyConnect = () => {
+    if (!apiKey.trim()) return;
+    onConnect(integration.id, apiKey);
+    setApiKey('');
+    onOpenChange(false);
+  };
+
+  const getInstructions = () => {
+    switch (integration.id) {
+      case 'chess-com':
+        return 'Enter your Chess.com username to connect your account.';
+      case 'lichess':
+        return 'Enter your Lichess username to connect your account.';
+      case 'goodreads':
+        return 'Enter your Goodreads user ID or RSS feed URL.';
+      default:
+        return isOAuthProvider 
+          ? `Click the button below to connect your ${integration.name} account.`
+          : 'Enter your API key or username to connect.';
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            Connect {integration.name}
+          <DialogTitle className="flex items-center gap-3">
             <div 
-              className="w-3 h-3 rounded-full" 
-              style={{ backgroundColor: integration.color }}
-            />
+              className="w-10 h-10 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: `${integration.color}20` }}
+            >
+              <span className="text-lg font-medium">{integration.name.substring(0, 1)}</span>
+            </div>
+            Connect {integration.name}
           </DialogTitle>
-          <DialogDescription>
-            We'll securely connect to {integration.name} to help you track progress and goals—no passwords shared. Takes 2 clicks.
-          </DialogDescription>
         </DialogHeader>
-        
-        {isOAuth ? (
-          <div className="space-y-4 pt-4">
-            <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border">
-              <Shield className="h-4 w-4 text-blue-600" />
-              <span className="text-sm text-blue-800">Secure OAuth via {integration.name}. No passwords stored.</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-blue-600" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>OAuth is a secure standard that lets you authorize apps without sharing passwords. You can revoke access anytime from your {integration.name} settings.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            
-            <div className="flex justify-end space-x-2">
-              <Button
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isConnecting}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleOAuthConnect}
-                style={{ backgroundColor: integration.color }}
-                disabled={!integration.authUrl || integration.status === 'coming_soon' || isConnecting}
-                className="min-w-[140px]"
-              >
-                {isConnecting ? (
-                  <div className="flex items-center gap-2">
-                    <Loader className="h-4 w-4 animate-spin" />
-                    Connecting...
-                  </div>
-                ) : isConnected ? (
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4" />
-                    Connected!
-                  </div>
-                ) : integration.status === 'coming_soon' ? (
-                  'Coming Soon'
-                ) : (
-                  `Connect with ${integration.name}`
-                )}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-            <div className="flex items-center gap-2 p-3 bg-green-50 rounded-lg border mb-4">
-              <Shield className="h-4 w-4 text-green-600" />
-              <span className="text-sm text-green-800">API key stored securely and encrypted.</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircle className="h-4 w-4 text-green-600" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>Your API key is encrypted and used only to sync your data. We never store or share your actual account credentials.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="api-key">{integration.name} API Key</Label>
-              <Input
-                id="api-key"
-                type="text"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder={`Enter your ${integration.name} API key`}
-                required
-                disabled={isConnecting || isConnected}
-              />
-            </div>
-            
-            <div className="flex justify-end space-x-2 pt-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isConnecting}
-              >
-                Cancel
-              </Button>
+
+        <div className="space-y-4">
+          <Card className="p-4 bg-gray-50">
+            <p className="text-sm text-gray-600">
+              {getInstructions()}
+            </p>
+          </Card>
+
+          {isOAuthProvider ? (
+            <div className="space-y-3">
               <Button 
-                type="submit" 
-                disabled={!apiKey.trim() || isConnecting || integration.status === 'coming_soon' || isConnected}
+                onClick={handleOAuthConnect}
+                disabled={isConnecting}
+                className="w-full"
                 style={{ backgroundColor: integration.color }}
-                className="min-w-[120px]"
               >
-                {isConnecting ? (
-                  <div className="flex items-center gap-2">
-                    <Loader className="h-4 w-4 animate-spin" />
-                    Connecting...
-                  </div>
-                ) : isConnected ? (
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4" />
-                    Connected!
-                  </div>
-                ) : integration.status === 'coming_soon' ? (
-                  'Coming Soon'
-                ) : (
-                  'Connect'
-                )}
+                <ExternalLink className="w-4 h-4 mr-2" />
+                {isConnecting ? 'Connecting...' : `Connect with ${integration.name}`}
+              </Button>
+              <p className="text-xs text-gray-500 text-center">
+                You'll be redirected to {integration.name} to authorize the connection.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="apiKey" className="flex items-center gap-2">
+                  <Key className="w-4 h-4" />
+                  {integration.id.includes('chess') || integration.id === 'lichess' ? 'Username' : 'API Key'}
+                </Label>
+                <Input
+                  id="apiKey"
+                  type={integration.id.includes('chess') || integration.id === 'lichess' ? 'text' : 'password'}
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder={`Enter your ${integration.id.includes('chess') || integration.id === 'lichess' ? 'username' : 'API key'}`}
+                  className="mt-1"
+                />
+              </div>
+              <Button 
+                onClick={handleApiKeyConnect}
+                disabled={!apiKey.trim()}
+                className="w-full"
+              >
+                Connect {integration.name}
               </Button>
             </div>
-          </form>
-        )}
+          )}
+
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <Lock className="w-3 h-3" />
+            Your credentials are stored securely and can be removed at any time.
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
