@@ -9,9 +9,9 @@ import {
   getAvailableIntegrations,
   getUserIntegrations,
   connectIntegration,
-  disconnectIntegration,
-  handleOAuthCallback
+  disconnectIntegration
 } from '@/services/integration';
+import { handleOAuthCallback } from '@/services/integration/oauthService';
 
 export const useIntegrations = () => {
   const { user } = useAuth();
@@ -69,9 +69,9 @@ export const useIntegrations = () => {
   
   // Mutation for handling OAuth callback
   const oauthCallbackMutation = useMutation({
-    mutationFn: ({ providerId, code }: { providerId: string, code: string }) => {
+    mutationFn: async (searchParams: URLSearchParams) => {
       if (!userId) throw new Error('User must be logged in');
-      return handleOAuthCallback(providerId, code, userId);
+      return handleOAuthCallback(searchParams);
     },
     onSuccess: () => {
       toast.success('Integration connected successfully');
@@ -94,8 +94,8 @@ export const useIntegrations = () => {
   };
   
   // Handle OAuth callback
-  const handleOAuth = async (providerId: string, code: string) => {
-    return oauthCallbackMutation.mutateAsync({ providerId, code });
+  const handleOAuth = async (searchParams: URLSearchParams) => {
+    return oauthCallbackMutation.mutateAsync(searchParams);
   };
 
   // Check if a provider is connected
