@@ -35,3 +35,14 @@ export const handleOAuthCallback = (searchParams: URLSearchParams) => {
     expiresAt: new Date(Date.now() + 3600000).toISOString(),
   });
 };
+
+export const connectToProvider = (providerId: string) => {
+  console.log(`Connecting to provider: ${providerId}`);
+  return initiateOAuth(providerId);
+};
+
+export const disconnectFromProvider = (providerId: string) => {
+  console.log(`Disconnecting from provider: ${providerId}`);
+  // In a real implementation, this would revoke tokens and clean up
+  return Promise.resolve({ success: true });
+};
