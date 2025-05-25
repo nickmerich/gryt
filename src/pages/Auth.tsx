@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import GhibliButton from '@/components/GhibliButton';
-import { Eye, EyeOff, Target, Puzzle, TrendingUp, Link, Users } from 'lucide-react';
+import { Eye, EyeOff, Target, Puzzle, TrendingUp, Link, Users, Sparkles, Zap, Shield } from 'lucide-react';
 import { Navigate, Link as RouterLink, useSearchParams } from 'react-router-dom';
 import PasswordResetForm from '@/components/PasswordResetForm';
 import UpdatePasswordForm from '@/components/UpdatePasswordForm';
@@ -34,7 +35,7 @@ const Auth = () => {
   // Show password update form if in reset mode
   if (isPasswordReset) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background to-gryt-gray/20">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="w-full max-w-md">
           <UpdatePasswordForm />
         </div>
@@ -130,7 +131,7 @@ const Auth = () => {
   // Show password reset form
   if (showPasswordReset) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background to-gryt-gray/20">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="w-full max-w-md">
           <PasswordResetForm onBack={() => setShowPasswordReset(false)} />
         </div>
@@ -139,249 +140,241 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Left side - How Gryt Works */}
-      <div className="md:w-1/2 bg-gradient-to-br from-gryt-dark/95 to-gryt-blue/70 text-white p-8 flex items-center justify-center">
-        {/* ... keep existing code (left side content) */}
-        <div className="max-w-md space-y-8 slide-animation">
-          <div>
-            <h1 className="ghibli-title text-4xl mb-4 text-white">🌱 How <span className="text-gryt-red">Gryt</span> Works</h1>
-            <p className="text-gryt-gray/80 mb-8">Your companion on the path of personal growth and achievement</p>
-          </div>
-          
-          <div className="space-y-6">
-            <div className="flex gap-4 items-start">
-              <div className="mt-1">
-                <Target className="h-6 w-6 text-gryt-red" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gryt-blue/5 to-transparent"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-gryt-blue/10 to-transparent rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-gryt-purple/10 to-transparent rounded-full blur-3xl"></div>
+      
+      <div className="relative min-h-screen flex flex-col lg:flex-row">
+        {/* Left Hero Section */}
+        <div className="lg:w-3/5 flex items-center justify-center p-8 lg:p-16">
+          <div className="max-w-2xl space-y-12 animate-fade-in">
+            {/* Logo and Brand */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-gryt-blue to-gryt-purple rounded-2xl flex items-center justify-center shadow-lg">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-slate-900 via-gryt-blue to-gryt-purple bg-clip-text text-transparent">
+                  Gryt
+                </h1>
               </div>
-              <div>
-                <h3 className="font-medium text-lg">1. Set a Goal That Matters</h3>
-                <p className="text-gryt-gray/80">Big or small. Marathon or mindfulness. Choose what moves you.</p>
-              </div>
-            </div>
-            
-            <div className="flex gap-4 items-start">
-              <div className="mt-1">
-                <Puzzle className="h-6 w-6 text-gryt-red" />
-              </div>
-              <div>
-                <h3 className="font-medium text-lg">2. Break It Into Daily Focus</h3>
-                <p className="text-gryt-gray/80">We help you turn that goal into small, trackable steps — no fluff, no overwhelm.</p>
-              </div>
-            </div>
-            
-            <div className="flex gap-4 items-start">
-              <div className="mt-1">
-                <TrendingUp className="h-6 w-6 text-gryt-red" />
-              </div>
-              <div>
-                <h3 className="font-medium text-lg">3. Track Progress, Build Streaks</h3>
-                <p className="text-gryt-gray/80">Each day you show up, Gryt tracks it. Progress is progress.</p>
+              
+              <div className="space-y-4">
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
+                  Where Goals Meet
+                  <span className="bg-gradient-to-r from-gryt-blue to-gryt-purple bg-clip-text text-transparent"> Achievement</span>
+                </h2>
+                <p className="text-xl text-slate-600 leading-relaxed">
+                  Your AI-powered companion that learns and adapts alongside you on your journey to success.
+                </p>
               </div>
             </div>
             
-            <div className="flex gap-4 items-start">
-              <div className="mt-1">
-                <Link className="h-6 w-6 text-gryt-red" />
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start space-x-4 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-gryt-blue/20 to-gryt-blue/10 rounded-xl flex items-center justify-center">
+                  <Target className="w-6 h-6 text-gryt-blue" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Smart Goal Setting</h3>
+                  <p className="text-sm text-slate-600">AI helps you break down big dreams into achievable milestones</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium text-lg">4. Connect Tools You Already Use</h3>
-                <p className="text-gryt-gray/80">Sync Strava, Duolingo, Chess.com, and more — progress updates automatically.</p>
+              
+              <div className="flex items-start space-x-4 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-gryt-purple/20 to-gryt-purple/10 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-gryt-purple" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Progress Tracking</h3>
+                  <p className="text-sm text-slate-600">Beautiful visualizations that keep you motivated</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-gryt-blue/20 to-gryt-blue/10 rounded-xl flex items-center justify-center">
+                  <Link className="w-6 h-6 text-gryt-blue" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Smart Integrations</h3>
+                  <p className="text-sm text-slate-600">Connect your favorite apps for seamless progress updates</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-gryt-purple/20 to-gryt-purple/10 rounded-xl flex items-center justify-center">
+                  <Users className="w-6 h-6 text-gryt-purple" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900 mb-1">Community Support</h3>
+                  <p className="text-sm text-slate-600">Join circles of like-minded achievers</p>
+                </div>
               </div>
             </div>
             
-            <div className="flex gap-4 items-start">
-              <div className="mt-1">
-                <Users className="h-6 w-6 text-gryt-red" />
+            <div className="flex items-center space-x-4 text-sm text-slate-500">
+              <div className="flex items-center space-x-2">
+                <Shield className="w-4 h-4" />
+                <span>Secure & Private</span>
               </div>
-              <div>
-                <h3 className="font-medium text-lg">5. Join a Circle, Grow Together</h3>
-                <p className="text-gryt-gray/80">Find your crew. Share wins. Stay accountable.</p>
+              <div className="flex items-center space-x-2">
+                <Zap className="w-4 h-4" />
+                <span>AI-Powered</span>
               </div>
             </div>
-          </div>
-          
-          <div className="pt-4">
-            <RouterLink to="/how-gryt-works" className="inline-flex items-center text-gryt-red hover:text-gryt-red/80 font-medium">
-              Learn More
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </RouterLink>
           </div>
         </div>
-      </div>
 
-      {/* Right side - Authentication */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-gradient-to-br from-background to-gryt-gray/20">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8 md:text-left slide-animation">
-            <h2 className="text-3xl font-bold text-gryt-dark dark:text-gryt-gray mb-2">
-              Welcome to <span className="text-gryt-red">Gryt</span>
-            </h2>
-            <p className="text-gryt-blue dark:text-gryt-light text-sm">Your AI-powered goal achievement companion</p>
-          </div>
-          
-          {showEmailConfirmation ? (
-            <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
-              <CardHeader>
-                <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Email Verification</CardTitle>
-                <CardDescription>Please check your email to complete registration</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-center">
-                  A verification link has been sent to your email address. 
-                  Please click on the link to verify your account.
-                </p>
-                <p className="text-center text-sm text-gryt-blue dark:text-gryt-light">
-                  If you don't see the email, please check your spam folder.
-                </p>
-              </CardContent>
-              <CardFooter className="flex justify-center">
-                <GhibliButton 
-                  className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white text-base py-6 font-medium"
-                  glowColor="blue"
-                  onClick={() => {
-                    setShowEmailConfirmation(false);
-                    setEmail('');
-                    setPassword('');
-                  }}
-                >
-                  Back to Login
-                </GhibliButton>
-              </CardFooter>
-            </Card>
-          ) : (
-            <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
-              <CardHeader>
-                <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Authentication</CardTitle>
-                <CardDescription>Sign in to your account or create a new one</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="signin" className="slide-animation">
-                  <TabsList className="grid w-full grid-cols-2 mb-4">
-                    <TabsTrigger value="signin" className="text-base font-medium">Sign In</TabsTrigger>
-                    <TabsTrigger value="signup" className="text-base font-medium">Sign Up</TabsTrigger>
+        {/* Right Auth Section */}
+        <div className="lg:w-2/5 flex items-center justify-center p-8 lg:p-16 bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-sm border-l border-white/20">
+          <div className="w-full max-w-md space-y-8">
+            {showEmailConfirmation ? (
+              <div className="bg-white/90 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-white/20">
+                <div className="text-center space-y-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-2xl flex items-center justify-center mx-auto">
+                    <Sparkles className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Check Your Email</h3>
+                    <p className="text-slate-600">We've sent a verification link to your email address. Click the link to complete your registration.</p>
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      setShowEmailConfirmation(false);
+                      setEmail('');
+                      setPassword('');
+                    }}
+                    className="w-full bg-gradient-to-r from-gryt-blue to-gryt-purple hover:from-gryt-blue/90 hover:to-gryt-purple/90 text-white rounded-2xl h-12 font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Back to Sign In
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white/90 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-white/20">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2">Welcome Back</h3>
+                  <p className="text-slate-600">Sign in to continue your journey</p>
+                </div>
+                
+                <Tabs defaultValue="signin" className="space-y-6">
+                  <TabsList className="grid w-full grid-cols-2 bg-slate-100/80 rounded-2xl p-1">
+                    <TabsTrigger value="signin" className="rounded-xl font-medium">Sign In</TabsTrigger>
+                    <TabsTrigger value="signup" className="rounded-xl font-medium">Sign Up</TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="signin">
-                    <form onSubmit={handleSignIn}>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="email-signin">Email</Label>
-                          <Input
-                            id="email-signin"
-                            type="email"
-                            placeholder="name@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="bg-white/50 dark:bg-gryt-dark/50"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Label htmlFor="password-signin">Password</Label>
-                            <button 
-                              type="button"
-                              onClick={() => setShowPasswordReset(true)}
-                              className="text-sm text-gryt-blue hover:text-gryt-red dark:text-gryt-light dark:hover:text-gryt-red"
-                            >
-                              Forgot password?
-                            </button>
-                          </div>
-                          <div className="relative">
-                            <Input
-                              id="password-signin"
-                              type={showPassword ? "text" : "password"}
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              required
-                              className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
-                            />
-                            <button
-                              type="button"
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
-                              onClick={togglePasswordVisibility}
-                            >
-                              {showPassword ? (
-                                <EyeOff size={18} />
-                              ) : (
-                                <Eye size={18} />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                        <GhibliButton
-                          type="submit"
-                          className="w-full bg-gryt-red hover:bg-gryt-red/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
-                          glowColor="red"
-                          disabled={isLoading}
-                        >
-                          {isLoading ? 'Signing in...' : 'Sign In'}
-                        </GhibliButton>
+                  <TabsContent value="signin" className="space-y-6">
+                    <form onSubmit={handleSignIn} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email-signin" className="text-slate-700 font-medium">Email</Label>
+                        <Input
+                          id="email-signin"
+                          type="email"
+                          placeholder="name@example.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white transition-all duration-200"
+                        />
                       </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="password-signin" className="text-slate-700 font-medium">Password</Label>
+                          <button 
+                            type="button"
+                            onClick={() => setShowPasswordReset(true)}
+                            className="text-sm text-gryt-blue hover:text-gryt-purple transition-colors"
+                          >
+                            Forgot password?
+                          </button>
+                        </div>
+                        <div className="relative">
+                          <Input
+                            id="password-signin"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white pr-12 transition-all duration-200"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-gryt-blue transition-colors"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-gryt-blue to-gryt-purple hover:from-gryt-blue/90 hover:to-gryt-purple/90 text-white rounded-2xl h-12 font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                      >
+                        {isLoading ? 'Signing in...' : 'Sign In'}
+                      </Button>
                     </form>
                   </TabsContent>
                   
-                  <TabsContent value="signup">
-                    <form onSubmit={handleSignUp}>
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="email-signup">Email</Label>
-                          <Input
-                            id="email-signup"
-                            type="email"
-                            placeholder="name@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="bg-white/50 dark:bg-gryt-dark/50"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="password-signup">Password</Label>
-                          <div className="relative">
-                            <Input
-                              id="password-signup"
-                              type={showPassword ? "text" : "password"}
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              required
-                              className="bg-white/50 dark:bg-gryt-dark/50 pr-10"
-                              minLength={6}
-                            />
-                            <button
-                              type="button"
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gryt-dark/60 dark:text-gryt-light/60 hover:text-gryt-blue"
-                              onClick={togglePasswordVisibility}
-                            >
-                              {showPassword ? (
-                                <EyeOff size={18} />
-                              ) : (
-                                <Eye size={18} />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                        <GhibliButton
-                          type="submit"
-                          className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white text-base py-6 font-medium shadow-lg transform hover:scale-[1.02] transition-all duration-200"
-                          glowColor="blue"
-                          disabled={isLoading}
-                        >
-                          {isLoading ? 'Creating account...' : 'Create Account'}
-                        </GhibliButton>
+                  <TabsContent value="signup" className="space-y-6">
+                    <form onSubmit={handleSignUp} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email-signup" className="text-slate-700 font-medium">Email</Label>
+                        <Input
+                          id="email-signup"
+                          type="email"
+                          placeholder="name@example.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white transition-all duration-200"
+                        />
                       </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password-signup" className="text-slate-700 font-medium">Password</Label>
+                        <div className="relative">
+                          <Input
+                            id="password-signup"
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white pr-12 transition-all duration-200"
+                            minLength={6}
+                            placeholder="At least 6 characters"
+                          />
+                          <button
+                            type="button"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-gryt-blue transition-colors"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                          </button>
+                        </div>
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-gryt-purple to-gryt-blue hover:from-gryt-purple/90 hover:to-gryt-blue/90 text-white rounded-2xl h-12 font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                      >
+                        {isLoading ? 'Creating account...' : 'Create Account'}
+                      </Button>
                     </form>
                   </TabsContent>
                 </Tabs>
-              </CardContent>
-              <CardFooter className="flex justify-center text-sm text-gryt-dark/60 dark:text-gryt-light/60">
-                Protected by Supabase Authentication
-              </CardFooter>
-            </Card>
-          )}
+                
+                <div className="text-center text-sm text-slate-500 mt-6">
+                  <div className="flex items-center justify-center space-x-2">
+                    <Shield className="w-4 h-4" />
+                    <span>Protected by Supabase Authentication</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
