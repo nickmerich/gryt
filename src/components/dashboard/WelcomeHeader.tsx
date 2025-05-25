@@ -1,8 +1,8 @@
+
 import { Plus, Sparkles } from 'lucide-react';
-import GhibliButton from '@/components/GhibliButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
-import Button from '@/components/Button';
+import { Button } from '@/components/ui/button';
 
 interface WelcomeHeaderProps {
   onOpenCreateDialog: () => void;
