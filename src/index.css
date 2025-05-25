@@ -157,13 +157,27 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  /* Override any yellow text colors */
+  /* Comprehensive yellow text overrides */
   .text-yellow-600,
   .text-yellow-500,
   .text-yellow-400,
+  .text-yellow-300,
+  .text-yellow-200,
   .text-amber-600,
   .text-amber-500,
-  .text-amber-400 {
+  .text-amber-400,
+  .text-amber-300,
+  .text-amber-200 {
+    @apply text-black !important;
+  }
+
+  /* Override all light colored text that might appear yellow */
+  .text-gray-400,
+  .text-gray-300,
+  .text-gray-200,
+  .text-slate-300,
+  .text-slate-400,
+  .text-slate-200 {
     @apply text-black !important;
   }
 
@@ -173,21 +187,14 @@
     @apply text-slate-500 !important;
   }
 
-  /* Override any remaining yellow or light colored text */
-  .text-gray-400,
-  .text-gray-300,
-  .text-slate-300,
-  .text-slate-400 {
-    @apply text-slate-600 !important;
-  }
-
   /* Ensure form labels are black */
   label {
     @apply text-black !important;
   }
 
   /* Ensure all text in dialogs is black */
-  [role="dialog"] * {
+  [role="dialog"] *,
+  [data-radix-portal] * {
     color: black !important;
   }
 
@@ -196,15 +203,49 @@
     @apply text-black !important;
   }
 
-  /* Target specific Ghibli subtitle class */
-  .ghibli-subtitle {
+  /* Target specific classes that might have yellow text */
+  .ghibli-subtitle,
+  .text-muted-foreground,
+  .text-muted {
     @apply text-black !important;
   }
 
-  /* Override any remaining light text */
+  /* Override any remaining light text including spans and divs */
   .text-gray-500,
-  .text-slate-500 {
-    @apply text-slate-600 !important;
+  .text-slate-500,
+  span.text-gray-500,
+  span.text-slate-500,
+  div.text-gray-500,
+  div.text-slate-500,
+  p.text-gray-500,
+  p.text-slate-500 {
+    @apply text-black !important;
+  }
+
+  /* Catch all for any yellow or light colored text that might still exist */
+  * {
+    color: inherit;
+  }
+
+  /* Specific overrides for components that might have yellow text */
+  .badge,
+  .card,
+  .button {
+    color: inherit;
+  }
+
+  /* Force black text on any element with yellow classes */
+  [class*="yellow"],
+  [class*="amber"] {
+    @apply text-black !important;
+  }
+
+  /* Override any computed styles that might show yellow */
+  .text-yellow-100,
+  .text-yellow-50,
+  .text-amber-100,
+  .text-amber-50 {
+    @apply text-black !important;
   }
 }
 
