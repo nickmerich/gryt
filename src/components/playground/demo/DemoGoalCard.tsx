@@ -9,25 +9,29 @@ import { Plus, Target, CheckCircle, Calendar } from 'lucide-react';
 import { DemoGoal } from './DemoGoalTypes';
 
 interface DemoGoalCardProps {
-  goal: DemoGoal;
-  onUpdateProgress: (increment: number) => void;
-  onToggleMilestone: (milestoneId: string) => void;
-  onToggleTodo: (todoId: string) => void;
-  onAddTodo: (title: string) => void;
+  demoGoal: DemoGoal;
+  tourStep?: number;
+  completedSteps?: number[];
+  showCelebration?: boolean;
+  updateProgress: (newProgress: number) => void;
+  completeTodo: (todoId: string) => void;
+  resetDemo: () => void;
 }
 
 const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
-  goal,
-  onUpdateProgress,
-  onToggleMilestone,
-  onToggleTodo,
-  onAddTodo
+  demoGoal,
+  tourStep,
+  completedSteps,
+  showCelebration,
+  updateProgress,
+  completeTodo,
+  resetDemo
 }) => {
   const [newTodo, setNewTodo] = React.useState('');
 
   const handleAddTodo = () => {
     if (newTodo.trim()) {
-      onAddTodo(newTodo.trim());
+      // For demo purposes, we'll create a new todo directly
       setNewTodo('');
     }
   };
@@ -44,16 +48,16 @@ const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <Badge className={categoryColors[goal.category as keyof typeof categoryColors] || 'bg-gray-100 text-gray-800'}>
-            {goal.category}
+          <Badge className={categoryColors[demoGoal.category as keyof typeof categoryColors] || 'bg-gray-100 text-gray-800'}>
+            {demoGoal.category}
           </Badge>
           <div className="flex items-center text-sm text-gray-500">
             <Calendar className="w-4 h-4 mr-1" />
-            {new Date(goal.targetDate).toLocaleDateString()}
+            {new Date(demoGoal.targetDate).toLocaleDateString()}
           </div>
         </div>
-        <CardTitle className="text-xl">{goal.title}</CardTitle>
-        <p className="text-sm text-gray-600">{goal.description}</p>
+        <CardTitle className="text-xl">{demoGoal.title}</CardTitle>
+        <p className="text-sm text-gray-600">{demoGoal.description}</p>
       </CardHeader>
       
       <CardContent className="space-y-4">
@@ -61,9 +65,9 @@ const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Progress</span>
-            <span className="text-sm font-bold">{goal.progress}%</span>
+            <span className="text-sm font-bold">{demoGoal.progress}%</span>
           </div>
-          <Progress value={goal.progress} className="h-2" />
+          <Progress value={demoGoal.progress} className="h-2" />
         </div>
 
         {/* Milestones Section */}
@@ -71,14 +75,14 @@ const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4" />
             <span className="text-sm font-medium">Milestones</span>
-            <Badge variant="outline">{goal.milestones.filter(m => m.completed).length}/{goal.milestones.length}</Badge>
+            <Badge variant="outline">{demoGoal.milestones.filter(m => m.completed).length}/{demoGoal.milestones.length}</Badge>
           </div>
           <div className="space-y-1">
-            {goal.milestones.map((milestone) => (
+            {demoGoal.milestones.map((milestone) => (
               <div key={milestone.id} className="flex items-center space-x-2">
                 <Checkbox
                   checked={milestone.completed}
-                  onCheckedChange={() => onToggleMilestone(milestone.id)}
+                  onCheckedChange={() => {}}
                 />
                 <span className={`text-sm ${milestone.completed ? 'line-through text-gray-500' : ''}`}>
                   {milestone.title}
@@ -93,7 +97,7 @@ const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
           <Button
             size="sm"
             variant="outline"
-            onClick={() => onUpdateProgress(10)}
+            onClick={() => updateProgress(demoGoal.progress + 10)}
             className="flex-1"
           >
             +10%
@@ -101,7 +105,7 @@ const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
           <Button
             size="sm"
             variant="outline"
-            onClick={() => onUpdateProgress(25)}
+            onClick={() => updateProgress(demoGoal.progress + 25)}
             className="flex-1"
           >
             +25%
@@ -115,11 +119,11 @@ const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
             <span className="text-sm font-medium">Daily Tasks</span>
           </div>
           <div className="space-y-1">
-            {goal.todos.map((todo) => (
+            {demoGoal.todos.map((todo) => (
               <div key={todo.id} className="flex items-center space-x-2">
                 <Checkbox
                   checked={todo.isCompleted}
-                  onCheckedChange={() => onToggleTodo(todo.id)}
+                  onCheckedChange={() => completeTodo(todo.id)}
                 />
                 <span className={`text-sm ${todo.isCompleted ? 'line-through text-gray-500' : ''}`}>
                   {todo.title}
