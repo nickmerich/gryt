@@ -262,8 +262,18 @@ const Auth = () => {
                 
                 <Tabs defaultValue="signin" className="space-y-6">
                   <TabsList className="grid w-full grid-cols-2 bg-slate-100/80 rounded-2xl p-1">
-                    <TabsTrigger value="signin" className="rounded-xl font-medium">Sign In</TabsTrigger>
-                    <TabsTrigger value="signup" className="rounded-xl font-medium">Sign Up</TabsTrigger>
+                    <TabsTrigger 
+                      value="signin" 
+                      className="rounded-xl font-medium data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    >
+                      Sign In
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="signup" 
+                      className="rounded-xl font-medium data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    >
+                      Sign Up
+                    </TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="signin" className="space-y-6">
@@ -277,7 +287,7 @@ const Auth = () => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white transition-all duration-200"
+                          className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white transition-all duration-200 placeholder:text-slate-400 focus:border-black focus:ring-1 focus:ring-black"
                         />
                       </div>
                       <div className="space-y-2">
@@ -298,11 +308,11 @@ const Auth = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white pr-12 transition-all duration-200"
+                            className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white pr-12 transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black"
                           />
                           <button
                             type="button"
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-gryt-blue transition-colors"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-black transition-colors"
                             onClick={togglePasswordVisibility}
                           >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -330,7 +340,7 @@ const Auth = () => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white transition-all duration-200"
+                          className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white transition-all duration-200 placeholder:text-slate-400 focus:border-black focus:ring-1 focus:ring-black"
                         />
                       </div>
                       <div className="space-y-2">
@@ -342,13 +352,13 @@ const Auth = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white pr-12 transition-all duration-200"
+                            className="h-12 rounded-2xl border-slate-200 bg-white/80 focus:bg-white pr-12 transition-all duration-200 placeholder:text-slate-400 focus:border-black focus:ring-1 focus:ring-black"
                             minLength={6}
                             placeholder="At least 6 characters"
                           />
                           <button
                             type="button"
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-gryt-blue transition-colors"
+                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-black transition-colors"
                             onClick={togglePasswordVisibility}
                           >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
