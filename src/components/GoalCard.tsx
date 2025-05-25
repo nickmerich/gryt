@@ -1,15 +1,16 @@
 
 import { useState, useEffect } from 'react';
-import { Calendar, CheckCircle, Target, Flame, Trophy, Edit, ChevronRight } from 'lucide-react';
-import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
 import { Goal } from '@/hooks/useGoals';
 import EditGoalDialog from './EditGoalDialog';
 import { motion } from 'framer-motion';
+import { 
+  GoalCardHeader, 
+  GoalCardProgress, 
+  GoalCardStats, 
+  GoalCardActions 
+} from './goal-card';
 
 interface GoalCardProps {
   goal: Goal;
@@ -89,98 +90,30 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
           <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-black/20 rounded-3xl"></div>
           
           <div className="relative z-10 flex flex-col h-full">
-            <CardHeader className="pb-4">
-              <div className="flex justify-between items-start mb-2">
-                <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm rounded-full px-3 py-1">
-                  {goal.category}
-                </Badge>
-                <div className="flex gap-2">
-                  {isCompleted && <Trophy className="w-5 h-5 text-yellow-300" />}
-                  {!isCompleted && streakCount >= 3 && 
-                    <Badge variant="outline" className="flex items-center gap-1 border-white/30 text-white bg-white/10 backdrop-blur-sm rounded-full">
-                      <Flame className="w-3 h-3 text-orange-300" />
-                      {streakCount}
-                    </Badge>
-                  }
-                  <button 
-                    onClick={() => setIsEditDialogOpen(true)}
-                    className="text-white/70 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
-                    title="Edit goal"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-              <CardTitle className="text-2xl font-bold mb-2 text-white">{goal.title}</CardTitle>
-              <CardDescription className="text-white/90 text-base line-clamp-2">
-                {goal.description}
-              </CardDescription>
-            </CardHeader>
+            <GoalCardHeader
+              title={goal.title}
+              description={goal.description}
+              category={goal.category}
+              isCompleted={isCompleted}
+              streakCount={streakCount}
+              onEditClick={() => setIsEditDialogOpen(true)}
+            />
 
-            <CardContent className="pb-4">
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-base font-medium text-white">Progress</span>
-                <span className="text-xl font-bold text-white">{goal.progress}%</span>
-              </div>
-              <Progress 
-                value={goal.progress} 
-                className="h-3 bg-white/30 rounded-full" 
-                indicatorClassName="bg-white rounded-full" 
-              />
-            </CardContent>
+            <GoalCardProgress progress={goal.progress} />
             
-            {nextMilestone && !isCompleted && (
-              <div className="px-8 py-3">
-                <div className="flex items-center gap-3 text-sm bg-white/10 p-3 rounded-2xl backdrop-blur-sm">
-                  <ChevronRight className="w-4 h-4 text-white/70" />
-                  <span className="font-medium text-white">Next: {nextMilestone.title}</span>
-                </div>
-              </div>
-            )}
-
-            <div className="px-8 pb-3 space-y-3">
-              <div className="flex items-center gap-3 text-sm text-white/90">
-                <Target className="w-4 h-4" />
-                <span className="text-white">{completedMilestonesCount}/{totalMilestonesCount} milestones completed</span>
-              </div>
-
-              <div className="flex items-center gap-3 text-sm">
-                <Calendar className="w-4 h-4 text-white/80" />
-                <span className={`${
-                  daysUntilTarget < 0 ? 'text-red-200' : 
-                  daysUntilTarget < 7 ? 'text-orange-200' : 
-                  'text-white'
-                }`}>
-                  {daysUntilTarget > 0 
-                    ? `${daysUntilTarget} days remaining` 
-                    : daysUntilTarget === 0 
-                    ? 'Due today!' 
-                    : `${Math.abs(daysUntilTarget)} days overdue`
-                  }
-                </span>
-              </div>
-            </div>
+            <GoalCardStats
+              nextMilestone={nextMilestone}
+              completedMilestonesCount={completedMilestonesCount}
+              totalMilestonesCount={totalMilestonesCount}
+              daysUntilTarget={daysUntilTarget}
+              isCompleted={isCompleted}
+            />
             
-            <div className="px-8 pb-4">
-              <p className="text-sm italic text-white/70">{randomQuote}</p>
-            </div>
-
-            <div className="mt-auto border-t border-white/20 p-6 bg-black/10 backdrop-blur-sm rounded-b-3xl">
-              {!isCompleted ? (
-                <Button 
-                  onClick={handleProgressUpdate}
-                  className="w-full bg-white hover:bg-white/90 text-slate-900 rounded-2xl font-medium"
-                  size="default"
-                >
-                  Update Progress (+10%)
-                </Button>
-              ) : (
-                <div className="flex items-center justify-center gap-2 font-medium text-lg text-white">
-                  <CheckCircle className="w-5 h-5 text-yellow-300" />
-                  <span>Goal Completed! 🎉</span>
-                </div>
-              )}
-            </div>
+            <GoalCardActions
+              isCompleted={isCompleted}
+              randomQuote={randomQuote}
+              onProgressUpdate={handleProgressUpdate}
+            />
           </div>
         </div>
       </motion.div>
