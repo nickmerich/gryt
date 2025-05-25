@@ -109,6 +109,7 @@ export const useIntegrations = () => {
 
   return {
     userIntegrations,
+    availableIntegrations: integrationProviders,
     getIntegrationsWithStatus,
     connect,
     disconnect,

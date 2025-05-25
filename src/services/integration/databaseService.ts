@@ -2,6 +2,26 @@
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+export const getUserIntegrations = async (userId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('user_integrations')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', 'active');
+    
+    if (error) {
+      console.error('Error fetching user integrations:', error);
+      throw error;
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Database service error:', error);
+    throw error;
+  }
+};
+
 export const connectIntegration = async (
   providerId: string,
   accessToken: string,
