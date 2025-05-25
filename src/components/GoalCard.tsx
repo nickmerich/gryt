@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
-import ProgressVisualization from './ProgressVisualization';
 import { Goal } from '@/hooks/useGoals';
 import EditGoalDialog from './EditGoalDialog';
 import { motion } from 'framer-motion';
@@ -89,18 +88,6 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
         <div className={`modern-card overflow-hidden bg-gradient-to-br ${gradient} text-white relative rounded-3xl`}>
           <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-black/20 rounded-3xl"></div>
           
-          {/* Goal Image Section */}
-          {goal.imageUrl && (
-            <div className="relative h-48 overflow-hidden">
-              <img
-                src={goal.imageUrl}
-                alt={goal.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-            </div>
-          )}
-          
           <div className="relative z-10 flex flex-col h-full">
             <CardHeader className="pb-4">
               <div className="flex justify-between items-start mb-2">
@@ -129,16 +116,6 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
                 {goal.description}
               </CardDescription>
             </CardHeader>
-            
-            <div className="px-8">
-              <div className="h-20 mb-4 bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                <ProgressVisualization 
-                  goal={goal} 
-                  type={goal.category === 'Health & Fitness' ? 'mountain' : 'tree'} 
-                  size="sm"
-                />
-              </div>
-            </div>
 
             <CardContent className="pb-4">
               <div className="flex justify-between items-center mb-3">
