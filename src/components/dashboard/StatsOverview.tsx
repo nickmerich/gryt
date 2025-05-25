@@ -1,7 +1,7 @@
 
+import { Target, TrendingUp, Calendar, Flame } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import GhibliCard from '@/components/GhibliCard';
 import { Goal } from '@/hooks/useGoals';
 
 interface StatsOverviewProps {
@@ -9,57 +9,65 @@ interface StatsOverviewProps {
 }
 
 const StatsOverview = ({ goals = [] }: StatsOverviewProps) => {
-  const totalGoals = goals?.length || 0;
-  const completedGoals = goals?.filter(goal => goal.progress >= 100).length || 0;
-  const averageProgress = goals?.length ? 
-    Math.round(goals.reduce((sum, goal) => sum + goal.progress, 0) / goals.length) : 0;
-  
-  // Calculate total active streaks (goals updated in the last 24 hours)
-  const today = new Date().toISOString().split('T')[0];
-  const totalActiveStreaks = goals?.filter(goal => {
-    if (!goal.updated_at) return false;
-    const updatedAt = new Date(goal.updated_at).toISOString().split('T')[0];
-    return updatedAt === today;
-  }).length || 0;
+  const totalGoals = goals.length;
+  const completedGoals = goals.filter(goal => goal.progress >= 100).length;
+  const avgProgress = totalGoals > 0 ? Math.round(goals.reduce((sum, goal) => sum + goal.progress, 0) / totalGoals) : 0;
+  const activeGoals = goals.filter(goal => goal.progress < 100).length;
+
+  const stats = [
+    {
+      title: "Total Goals",
+      value: totalGoals,
+      icon: Target,
+      gradient: "from-blue-500 to-indigo-600",
+      description: "Your journey milestones"
+    },
+    {
+      title: "Completed",
+      value: completedGoals,
+      icon: TrendingUp,
+      gradient: "from-green-500 to-emerald-600",
+      description: "Achievements unlocked"
+    },
+    {
+      title: "Average Progress",
+      value: `${avgProgress}%`,
+      icon: Calendar,
+      gradient: "from-purple-500 to-violet-600",
+      description: "Overall momentum"
+    },
+    {
+      title: "Active Goals",
+      value: activeGoals,
+      icon: Flame,
+      gradient: "from-orange-500 to-red-600",
+      description: "Currently pursuing"
+    }
+  ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8">
-      <GhibliCard className="pulse-animation">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Active Goals</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-gryt-blue">{totalGoals}</div>
-        </CardContent>
-      </GhibliCard>
-      
-      <GhibliCard className="pulse-animation">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Completed</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-green-600">{completedGoals}</div>
-        </CardContent>
-      </GhibliCard>
-      
-      <GhibliCard className="pulse-animation">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Active Streaks</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-orange-600">{totalActiveStreaks}</div>
-        </CardContent>
-      </GhibliCard>
-      
-      <GhibliCard className="pulse-animation">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-gryt-dark dark:text-gryt-light">Avg Progress</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-purple-600">{averageProgress}%</div>
-          <Progress value={averageProgress} className="mt-2" indicatorClassName="bg-gryt-red" />
-        </CardContent>
-      </GhibliCard>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {stats.map((stat, index) => (
+        <Card key={stat.title} className="modern-card animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <div className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
+                <stat.icon className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold gradient-text">{stat.value}</div>
+                <CardTitle className="text-lg text-slate-900">{stat.title}</CardTitle>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <p className="text-sm text-slate-600">{stat.description}</p>
+            {stat.title === "Average Progress" && (
+              <Progress value={avgProgress} className="mt-3 h-2" />
+            )}
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };

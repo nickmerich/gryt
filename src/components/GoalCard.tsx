@@ -5,15 +5,12 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@/component
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import GhibliCard from './GhibliCard';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
-import { useTodos } from '@/hooks/useTodos';
 import ProgressVisualization from './ProgressVisualization';
 import { Goal } from '@/hooks/useGoals';
 import EditGoalDialog from './EditGoalDialog';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
 interface GoalCardProps {
   goal: Goal;
@@ -61,7 +58,6 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
     );
   };
 
-  // Random motivational quotes
   const motivationalQuotes = [
     "Every step forward is a victory.",
     "Progress is progress, no matter how small.",
@@ -73,45 +69,57 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
   
   const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
 
+  const categoryGradients = {
+    'Health & Fitness': 'from-green-500 to-emerald-600',
+    'Career': 'from-indigo-500 to-purple-600',
+    'Finance': 'from-yellow-500 to-orange-600',
+    'Education': 'from-blue-500 to-cyan-600',
+    'Personal': 'from-pink-500 to-rose-600'
+  };
+
+  const gradient = categoryGradients[goal.category as keyof typeof categoryGradients] || 'from-indigo-500 to-purple-600';
+
   return (
     <>
-      <div className="group">
-        <div className={`rounded-xl overflow-hidden border shadow-sm transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] bg-gradient-to-r ${
-          goal.category === 'Health & Fitness' ? 'from-green-400 to-teal-500' :
-          goal.category === 'Career' ? 'from-gryt-blue to-gryt-purple' :
-          goal.category === 'Finance' ? 'from-yellow-400 to-orange-500' :
-          'from-pink-400 to-purple-500'
-        } text-white`}>
-          <div className="flex flex-col h-full">
-            <div className="p-6 pb-4">
+      <motion.div 
+        className="group"
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className={`modern-card overflow-hidden bg-gradient-to-br ${gradient} text-white relative`}>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/10 to-black/20"></div>
+          
+          <div className="relative z-10 flex flex-col h-full">
+            <CardHeader className="pb-4">
               <div className="flex justify-between items-start mb-2">
-                <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm rounded-full px-3 py-1">
                   {goal.category}
                 </Badge>
                 <div className="flex gap-2">
                   {isCompleted && <Trophy className="w-5 h-5 text-yellow-300" />}
                   {!isCompleted && streakCount >= 3 && 
-                    <Badge variant="outline" className="flex items-center gap-1 border-white/30 text-white bg-white/10 backdrop-blur-sm">
+                    <Badge variant="outline" className="flex items-center gap-1 border-white/30 text-white bg-white/10 backdrop-blur-sm rounded-full">
                       <Flame className="w-3 h-3 text-orange-300" />
                       {streakCount}
                     </Badge>
                   }
                   <button 
                     onClick={() => setIsEditDialogOpen(true)}
-                    className="text-white/70 hover:text-white transition-colors"
+                    className="text-white/70 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
                     title="Edit goal"
                   >
                     <Edit className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <h3 className="text-xl font-bold mt-2 mb-1">{goal.title}</h3>
-              <p className="text-white/80 text-sm line-clamp-2">{goal.description}</p>
-            </div>
+              <CardTitle className="text-2xl font-bold mb-2">{goal.title}</CardTitle>
+              <CardDescription className="text-white/90 text-base line-clamp-2">
+                {goal.description}
+              </CardDescription>
+            </CardHeader>
             
-            {/* Visualization area */}
-            <div className="px-6">
-              <div className="h-20 mb-2">
+            <div className="px-8">
+              <div className="h-20 mb-4 bg-white/10 rounded-2xl p-4">
                 <ProgressVisualization 
                   goal={goal} 
                   type={goal.category === 'Health & Fitness' ? 'mountain' : 'tree'} 
@@ -120,40 +128,34 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
               </div>
             </div>
 
-            {/* Progress section */}
-            <div className="px-6 pb-2">
-              <div className="flex justify-between items-center mb-1.5">
-                <span className="text-sm font-medium text-white/80">Progress</span>
-                <span className="text-sm font-bold">{goal.progress}%</span>
+            <CardContent className="pb-4">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-base font-medium text-white/90">Progress</span>
+                <span className="text-xl font-bold">{goal.progress}%</span>
               </div>
               <Progress 
                 value={goal.progress} 
-                className="h-2 bg-white/30" 
-                indicatorClassName="bg-white" 
+                className="h-3 bg-white/30 rounded-full" 
+                indicatorClassName="bg-white rounded-full" 
               />
-            </div>
+            </CardContent>
             
-            {/* Next milestone */}
             {nextMilestone && !isCompleted && (
-              <div className="px-6 py-2">
-                <div className="flex items-center gap-2 text-sm bg-white/10 p-2 rounded-md backdrop-blur-sm">
+              <div className="px-8 py-3">
+                <div className="flex items-center gap-3 text-sm bg-white/10 p-3 rounded-2xl backdrop-blur-sm">
                   <ChevronRight className="w-4 h-4 text-white/70" />
                   <span className="font-medium">Next: {nextMilestone.title}</span>
                 </div>
               </div>
             )}
 
-            {/* Milestones summary */}
-            <div className="px-6 pb-2 pt-1">
-              <div className="flex items-center gap-2 text-sm text-white/90">
+            <div className="px-8 pb-3 space-y-3">
+              <div className="flex items-center gap-3 text-sm text-white/90">
                 <Target className="w-4 h-4" />
-                <span>{completedMilestonesCount}/{totalMilestonesCount} milestones</span>
+                <span>{completedMilestonesCount}/{totalMilestonesCount} milestones completed</span>
               </div>
-            </div>
 
-            {/* Target date */}
-            <div className="px-6 pb-2">
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-3 text-sm">
                 <Calendar className="w-4 h-4 text-white/80" />
                 <span className={`${
                   daysUntilTarget < 0 ? 'text-red-200' : 
@@ -170,31 +172,29 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
               </div>
             </div>
             
-            {/* Motivational quote */}
-            <div className="px-6 pb-3">
-              <p className="text-xs italic text-white/70 mt-1">{randomQuote}</p>
+            <div className="px-8 pb-4">
+              <p className="text-sm italic text-white/70">{randomQuote}</p>
             </div>
 
-            {/* Footer */}
-            <div className="mt-auto border-t border-white/20 p-4 bg-black/10 backdrop-blur-sm">
+            <div className="mt-auto border-t border-white/20 p-6 bg-black/10 backdrop-blur-sm">
               {!isCompleted ? (
                 <Button 
                   onClick={handleProgressUpdate}
-                  className="w-full bg-white hover:bg-white/90 text-gryt-blue"
-                  size="sm"
+                  className="w-full bg-white hover:bg-white/90 text-slate-900 rounded-2xl font-medium"
+                  size="default"
                 >
                   Update Progress (+10%)
                 </Button>
               ) : (
-                <div className="flex items-center justify-center gap-2 font-medium">
-                  <CheckCircle className="w-4 h-4 text-yellow-300" />
-                  <span>Goal completed!</span>
+                <div className="flex items-center justify-center gap-2 font-medium text-lg">
+                  <CheckCircle className="w-5 h-5 text-yellow-300" />
+                  <span>Goal Completed! 🎉</span>
                 </div>
               )}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <EditGoalDialog 
         goal={goal}

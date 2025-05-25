@@ -3,13 +3,11 @@ import React from 'react';
 import MainNav from './MainNav';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
-import GrytLogo from './GrytLogo';
+import { Sparkles } from 'lucide-react';
 
 interface GhibliLayoutProps {
   children: React.ReactNode;
-  illustrationType?: 'mountains' | 'forest' | 'landscape' | 'grass' | 'sunset' | 'foggy';
   className?: string;
-  hideIllustration?: boolean;
 }
 
 const GhibliLayout: React.FC<GhibliLayoutProps> = ({ 
@@ -17,30 +15,32 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
   className,
 }) => {
   return (
-    <div className="min-h-screen bg-gryt-gray">
-      <header className="sticky top-0 z-30 w-full backdrop-blur-sm bg-white/90 border-b">
-        <div className="container mx-auto flex justify-between items-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+      <header className="sticky top-0 z-30 w-full backdrop-blur-lg bg-white/80 border-b border-white/20 shadow-sm">
+        <div className="container mx-auto flex justify-between items-center p-6">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center">
-              <GrytLogo size="sm" className="mr-2" />
-              <span className="font-bold text-lg text-gryt-blue">Gryt</span>
+            <Link to="/" className="flex items-center group">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <span className="font-bold text-2xl ml-3 gradient-text">Gryt</span>
             </Link>
-            <nav className="ml-8 hidden md:flex space-x-6">
+            <nav className="ml-12 hidden md:flex space-x-8">
               <Link 
                 to="/" 
-                className="text-gray-600 hover:text-gryt-blue transition-colors"
+                className="text-slate-600 hover:text-indigo-600 transition-colors font-medium"
               >
-                Home
+                Dashboard
               </Link>
               <Link 
                 to="/circles" 
-                className="text-gray-600 hover:text-gryt-blue transition-colors"
+                className="text-slate-600 hover:text-indigo-600 transition-colors font-medium"
               >
                 Goal Circles
               </Link>
               <Link 
                 to="/integrations" 
-                className="text-gray-600 hover:text-gryt-blue transition-colors"
+                className="text-slate-600 hover:text-indigo-600 transition-colors font-medium"
               >
                 Integrations
               </Link>
@@ -52,14 +52,14 @@ const GhibliLayout: React.FC<GhibliLayoutProps> = ({
       
       <main className="flex-1 relative">
         <div className={cn(
-          "relative z-10 container mx-auto py-8 px-4",
+          "relative z-10 container mx-auto py-8 px-6",
           className
         )}>
           {children}
         </div>
       </main>
       
-      <footer className="py-4 px-4 border-t bg-white text-center text-sm text-gryt-blue relative">
+      <footer className="py-8 px-6 border-t border-white/20 bg-white/50 backdrop-blur-sm text-center text-base text-slate-600 relative">
         <div className="container mx-auto relative z-10">
           <p>© {new Date().getFullYear()} Gryt. Journey together, achieve together.</p>
         </div>
