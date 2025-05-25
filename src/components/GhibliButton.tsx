@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button, ButtonProps } from '@/components/ui/button';
@@ -27,7 +28,7 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
     blue: 'before:from-gryt-blue/20 before:to-gryt-blue/5',
     light: 'before:from-gryt-light/20 before:to-gryt-light/5',
     green: 'before:from-green-500/20 before:to-green-500/5',
-    yellow: 'before:from-yellow-500/20 before:to-yellow-500/5',
+    yellow: 'before:from-gryt-purple/20 before:to-gryt-purple/5',
     magical: 'before:from-purple-500/30 before:to-blue-500/30'
   };
 
@@ -84,7 +85,7 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
               {textContent}
             </span>
             <span className={cn(
-              "absolute top-0 left-0 block transition-all duration-300 font-bold text-yellow-300",
+              "absolute top-0 left-0 block transition-all duration-300 font-bold text-gryt-purple",
               isHovered ? "transform translate-y-0 opacity-100" : "transform translate-y-full opacity-0"
             )}>
               {transformText}
@@ -134,11 +135,11 @@ const GhibliButton: React.FC<GhibliButtonProps> = ({
           {/* Lightning effect */}
           <div className="absolute inset-0 rounded-xl overflow-hidden">
             <div className={cn(
-              "absolute top-1 right-3 w-1 h-1 bg-yellow-300 rounded-full opacity-0 transition-all duration-300",
+              "absolute top-1 right-3 w-1 h-1 bg-gryt-purple rounded-full opacity-0 transition-all duration-300",
               isHovered && "opacity-100 animate-ping"
             )}></div>
             <div className={cn(
-              "absolute bottom-2 left-4 w-0.5 h-0.5 bg-yellow-300 rounded-full opacity-0 transition-all duration-400",
+              "absolute bottom-2 left-4 w-0.5 h-0.5 bg-gryt-purple rounded-full opacity-0 transition-all duration-400",
               isHovered && "opacity-100 animate-ping"
             )}></div>
             <div className={cn(
