@@ -1,6 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import type { Database } from '@/integrations/supabase/types';
 
 export interface CalendarEvent {
   id: string;
@@ -34,7 +35,7 @@ class CalendarService {
       if (!userData.user) throw new Error('Not authenticated');
 
       const { error } = await supabase
-        .from('calendar_integrations' as any)
+        .from('calendar_integrations')
         .upsert({
           user_id: userData.user.id,
           provider: 'google',
@@ -53,7 +54,7 @@ class CalendarService {
   async disconnectCalendar(integrationId: string): Promise<void> {
     try {
       const { error } = await supabase
-        .from('calendar_integrations' as any)
+        .from('calendar_integrations')
         .update({ is_active: false })
         .eq('id', integrationId);
 
@@ -117,7 +118,7 @@ class CalendarService {
 
       // Store calendar sync data
       const { error: syncError } = await supabase
-        .from('calendar_syncs' as any)
+        .from('calendar_syncs')
         .upsert({
           goal_id: goalId,
           calendar_id: calendarId,
@@ -139,13 +140,25 @@ class CalendarService {
       if (!userData.user) return [];
 
       const { data, error } = await supabase
-        .from('calendar_integrations' as any)
+        .from('calendar_integrations')
         .select('*')
         .eq('user_id', userData.user.id)
         .eq('is_active', true);
 
       if (error) throw error;
-      return data || [];
+      
+      // Transform the data to match our interface
+      return (data || []).map(integration => ({
+        id: integration.id,
+        user_id: integration.user_id,
+        provider: integration.provider as 'google' | 'ical',
+        calendar_id: integration.calendar_id || undefined,
+        access_token: integration.access_token || undefined,
+        refresh_token: integration.refresh_token || undefined,
+        is_active: integration.is_active,
+        created_at: integration.created_at,
+        updated_at: integration.updated_at
+      }));
     } catch (error) {
       console.error('Error fetching calendar integrations:', error);
       return [];
