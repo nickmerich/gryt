@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Check, Plus, Trash2, Calendar, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
@@ -9,13 +8,15 @@ import { Calendar as CalendarComponent } from './ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTodos, TodoInput } from '@/hooks/useTodos';
+import { useCalendarIntegration } from '@/hooks/useCalendarIntegration';
 
 interface TodoListProps {
   milestoneId: string;
+  goalId?: string;
   className?: string;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ milestoneId, className }) => {
+const TodoList: React.FC<TodoListProps> = ({ milestoneId, goalId, className }) => {
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const {
@@ -25,6 +26,8 @@ const TodoList: React.FC<TodoListProps> = ({ milestoneId, className }) => {
     toggleTodoCompletion,
     deleteTodo
   } = useTodos(milestoneId);
+
+  const { syncGoal } = useCalendarIntegration();
 
   const handleAddTodo = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +43,15 @@ const TodoList: React.FC<TodoListProps> = ({ milestoneId, className }) => {
       await createTodo.mutateAsync(todoInput);
       setNewTodoTitle('');
       setSelectedDate(undefined);
+
+      // Auto-sync to calendar if todo has due date and goalId is provided
+      if (selectedDate && goalId) {
+        try {
+          await syncGoal.mutateAsync({ goalId });
+        } catch (error) {
+          console.error('Failed to sync to calendar:', error);
+        }
+      }
     } catch (error) {
       console.error('Error adding todo:', error);
     }

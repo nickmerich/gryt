@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useMilestones } from '@/hooks/useMilestones';
 import { useStreaks } from '@/hooks/useStreaks';
@@ -110,6 +109,7 @@ const GoalCard = ({ goal, onUpdateProgress, onEditGoal }: GoalCardProps) => {
             />
             
             <GoalCardActions
+              goalId={goal.id}
               isCompleted={isCompleted}
               randomQuote={randomQuote}
               onProgressUpdate={handleProgressUpdate}

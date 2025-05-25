@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMilestones } from '@/hooks/useMilestones';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -9,6 +8,7 @@ import AddMilestoneForm from './milestones/AddMilestoneForm';
 import MilestoneHeader from './milestones/MilestoneHeader';
 import { useMilestoneActions } from '@/hooks/useMilestoneActions';
 import { generateMilestonesAndTasks } from './milestones/MilestoneGenerator';
+import CalendarSettings from '@/components/calendar/CalendarSettings';
 
 interface MilestoneManagerProps {
   goalId: string;
@@ -81,47 +81,52 @@ const MilestoneManager = ({ goalId }: MilestoneManagerProps) => {
   };
 
   return (
-    <div>
-      <CardHeader className="pb-3">
-        <MilestoneHeader 
-          milestones={milestones} 
-          isEmpty={milestones?.length === 0}
-          isPending={createMilestone.isPending}
-          onGenerateMilestones={handleGenerateMilestones}
-          goalDetails={goalDetails}
-        />
-      </CardHeader>
+    <div className="space-y-6">
+      {/* Calendar Integration Section */}
+      <CalendarSettings goalId={goalId} />
 
-      <CardContent>
-        <div className="space-y-6">
-          {/* Milestone List */}
-          <MilestoneList
-            milestones={milestones || []}
-            isLoading={isLoading}
-            expandedMilestoneId={expandedMilestoneId}
-            editingMilestoneId={editingMilestoneId}
-            editingMilestoneTitle={editingMilestoneTitle}
+      <div>
+        <CardHeader className="pb-3">
+          <MilestoneHeader 
+            milestones={milestones} 
+            isEmpty={milestones?.length === 0}
+            isPending={createMilestone.isPending}
             onGenerateMilestones={handleGenerateMilestones}
-            onToggleComplete={handleToggleComplete}
-            onToggleExpand={toggleMilestoneExpansion}
-            onEdit={handleEdit}
-            onSaveEdit={handleSaveEdit}
-            onCancelEdit={handleCancelEdit}
-            onDelete={handleDelete}
-            setEditingMilestoneTitle={setEditingMilestoneTitle}
-            isGenerating={createMilestone.isPending}
             goalDetails={goalDetails}
           />
+        </CardHeader>
 
-          {/* Add new milestone form */}
-          {(!isLoading && (milestones?.length ?? 0) > 0) && (
-            <AddMilestoneForm 
-              isSubmitting={createMilestone.isPending} 
-              onSubmit={handleSubmit} 
+        <CardContent>
+          <div className="space-y-6">
+            {/* Milestone List */}
+            <MilestoneList
+              milestones={milestones || []}
+              isLoading={isLoading}
+              expandedMilestoneId={expandedMilestoneId}
+              editingMilestoneId={editingMilestoneId}
+              editingMilestoneTitle={editingMilestoneTitle}
+              onGenerateMilestones={handleGenerateMilestones}
+              onToggleComplete={handleToggleComplete}
+              onToggleExpand={toggleMilestoneExpansion}
+              onEdit={handleEdit}
+              onSaveEdit={handleSaveEdit}
+              onCancelEdit={handleCancelEdit}
+              onDelete={handleDelete}
+              setEditingMilestoneTitle={setEditingMilestoneTitle}
+              isGenerating={createMilestone.isPending}
+              goalDetails={goalDetails}
             />
-          )}
-        </div>
-      </CardContent>
+
+            {/* Add new milestone form */}
+            {(!isLoading && (milestones?.length ?? 0) > 0) && (
+              <AddMilestoneForm 
+                isSubmitting={createMilestone.isPending} 
+                onSubmit={handleSubmit} 
+              />
+            )}
+          </div>
+        </CardContent>
+      </div>
     </div>
   );
 };
