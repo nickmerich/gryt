@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -190,6 +189,22 @@
   /* Ensure all text in dialogs is black */
   [role="dialog"] * {
     color: black !important;
+  }
+
+  /* Ensure section headers like "Weekly Review" and "Your Goals" are black */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-black !important;
+  }
+
+  /* Target specific Ghibli subtitle class */
+  .ghibli-subtitle {
+    @apply text-black !important;
+  }
+
+  /* Override any remaining light text */
+  .text-gray-500,
+  .text-slate-500 {
+    @apply text-slate-600 !important;
   }
 }
 
