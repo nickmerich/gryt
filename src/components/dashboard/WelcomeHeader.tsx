@@ -1,6 +1,6 @@
 
 import { Plus, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import GhibliButton from '@/components/GhibliButton';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface WelcomeHeaderProps {
@@ -35,14 +35,16 @@ const WelcomeHeader = ({ onOpenCreateDialog }: WelcomeHeaderProps) => {
             </p>
           </div>
         </div>
-        <Button 
+        <GhibliButton 
           onClick={onOpenCreateDialog}
           size="lg"
-          className="modern-button"
+          magical={true}
+          hoverText="Let's go!"
+          className="text-white font-semibold"
         >
           <Plus className="w-5 h-5 mr-2" />
           Create Goal
-        </Button>
+        </GhibliButton>
       </div>
     </div>
   );
