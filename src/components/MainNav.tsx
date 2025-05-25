@@ -38,21 +38,21 @@ const MainNav = () => {
                 className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <span>Home</span>
+                <span>Stats</span>
               </Link>
               <Link
                 to="/circles"
                 className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <span>Goal Circles</span>
+                <span>Goals</span>
               </Link>
               <Link
                 to="/integrations"
                 className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <span>Integrations</span>
+                <span>Sync</span>
               </Link>
             </div>
           </SheetContent>
