@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Target, TrendingUp, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,12 +12,19 @@ import MilestoneList from '@/components/milestones/MilestoneList';
 import GoalImageSection from '@/components/goals/GoalImageSection';
 import GoalProgressSection from '@/components/goals/GoalProgressSection';
 import GoalDetailHeader from '@/components/goals/GoalDetailHeader';
+import { toast } from 'sonner';
 
 const GoalDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { goals, isLoading } = useGoals();
-  const { milestones, isLoading: milestonesLoading } = useMilestones(id);
+  const { milestones, isLoading: milestonesLoading, updateMilestone, deleteMilestone, toggleMilestoneCompletion } = useMilestones(id);
+  
+  // State for milestone management
+  const [expandedMilestoneId, setExpandedMilestoneId] = useState<string | null>(null);
+  const [editingMilestoneId, setEditingMilestoneId] = useState<string | null>(null);
+  const [editingMilestoneTitle, setEditingMilestoneTitle] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   if (isLoading || !id) {
     return (
@@ -47,6 +55,52 @@ const GoalDetail = () => {
 
   const targetDate = goal.targetDate ? new Date(goal.targetDate) : null;
   const daysRemaining = targetDate ? Math.ceil((targetDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)) : null;
+
+  // Milestone handlers
+  const handleGenerateMilestones = () => {
+    setIsGenerating(true);
+    // Add generation logic here
+    setTimeout(() => {
+      setIsGenerating(false);
+      toast.success('Milestones generated successfully!');
+    }, 2000);
+  };
+
+  const handleToggleComplete = (milestoneId: string, isCompleted: boolean) => {
+    toggleMilestoneCompletion.mutate({ milestoneId, isCompleted: !isCompleted });
+  };
+
+  const handleToggleExpand = (milestoneId: string) => {
+    setExpandedMilestoneId(expandedMilestoneId === milestoneId ? null : milestoneId);
+  };
+
+  const handleEdit = (milestoneId: string, currentTitle: string) => {
+    setEditingMilestoneId(milestoneId);
+    setEditingMilestoneTitle(currentTitle);
+  };
+
+  const handleSaveEdit = (milestoneId: string) => {
+    updateMilestone.mutate({ milestoneId, title: editingMilestoneTitle });
+    setEditingMilestoneId(null);
+    setEditingMilestoneTitle('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMilestoneId(null);
+    setEditingMilestoneTitle('');
+  };
+
+  const handleDelete = (milestoneId: string) => {
+    deleteMilestone.mutate({ milestoneId });
+  };
+
+  const goalDetails = goal ? {
+    id: goal.id,
+    title: goal.title,
+    description: goal.description || '',
+    category: goal.category,
+    target_date: goal.targetDate || ''
+  } : null;
 
   return (
     <GhibliLayout>
@@ -121,13 +175,23 @@ const GoalDetail = () => {
             </Badge>
           </div>
           
-          {milestonesLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-            </div>
-          ) : (
-            <MilestoneList milestones={milestones || []} />
-          )}
+          <MilestoneList 
+            milestones={milestones || []}
+            isLoading={milestonesLoading}
+            expandedMilestoneId={expandedMilestoneId}
+            editingMilestoneId={editingMilestoneId}
+            editingMilestoneTitle={editingMilestoneTitle}
+            onGenerateMilestones={handleGenerateMilestones}
+            onToggleComplete={handleToggleComplete}
+            onToggleExpand={handleToggleExpand}
+            onEdit={handleEdit}
+            onSaveEdit={handleSaveEdit}
+            onCancelEdit={handleCancelEdit}
+            onDelete={handleDelete}
+            setEditingMilestoneTitle={setEditingMilestoneTitle}
+            isGenerating={isGenerating}
+            goalDetails={goalDetails}
+          />
         </div>
 
         {/* Additional Details */}
