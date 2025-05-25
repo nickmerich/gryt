@@ -54,12 +54,12 @@ const CreatePostForm = ({ onSubmit, goals }: CreatePostFormProps) => {
         
         <div>
           <label className="text-sm text-gray-700 mb-1 block">Related Goal (Optional)</label>
-          <Select value={goalId || ""} onValueChange={setGoalId}>
+          <Select value={goalId || "none"} onValueChange={(value) => setGoalId(value === "none" ? undefined : value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a goal" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">No specific goal</SelectItem>
+              <SelectItem value="none">No specific goal</SelectItem>
               {goals.map((goal) => (
                 <SelectItem key={goal.id} value={goal.id}>
                   {goal.title}
