@@ -7,4 +7,4 @@ export type GoalRow = Database['public']['Tables']['goals']['Row'] & {
 };
 
 // Re-export the Goal type from our centralized types
-export { Goal, mapGoalRowToGoal } from '@/types/goal';
+export type { Goal, mapGoalRowToGoal } from '@/types/goal';
