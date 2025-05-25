@@ -40,10 +40,14 @@ const Dashboard = () => {
     });
   };
 
+  const handleCreateGoal = (goalInput: any) => {
+    createGoal.mutate(goalInput);
+  };
+
   return (
     <GhibliLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <WelcomeHeader />
+        <WelcomeHeader onOpenCreateDialog={() => setIsCreateDialogOpen(true)} />
         
         <Tabs defaultValue="overview" className="mt-8">
           <TabsList className="grid w-full grid-cols-3">
@@ -63,7 +67,7 @@ const Dashboard = () => {
                   onUpdateGoalProgress={handleUpdateProgress}
                   onEditGoal={handleEditGoal}
                 />
-                <WeeklyReview />
+                <WeeklyReview goals={goals} isLoading={isLoading} />
               </div>
               <div className="space-y-8">
                 <IntegrationsModule />
@@ -90,7 +94,7 @@ const Dashboard = () => {
         <CreateGoalDialog
           open={isCreateDialogOpen}
           onOpenChange={setIsCreateDialogOpen}
-          onCreateGoal={createGoal}
+          onCreateGoal={handleCreateGoal}
         />
       </div>
     </GhibliLayout>

@@ -8,7 +8,7 @@ export interface GoalPrediction {
   goal_id: string;
   completion_probability: number;
   predicted_completion_date?: string;
-  risk_factors?: any[];
+  risk_factors?: any; // Changed from any[] to any to match Json type from database
   confidence_score: number;
   calculation_date: string;
   created_at: string;
