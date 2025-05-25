@@ -1,55 +1,109 @@
 
-import React, { useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import GhibliLayout from '@/components/GhibliLayout';
+import { Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { handleOAuthCallback } from '@/services/integration/oauthService';
 
 const IntegrationCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [provider, setProvider] = useState<string>('');
 
   useEffect(() => {
-    const provider = searchParams.get('provider');
-    const error = searchParams.get('error');
-    const code = searchParams.get('code');
+    const processCallback = async () => {
+      try {
+        const result = await handleOAuthCallback(searchParams);
+        setProvider(result.provider);
+        setStatus('success');
+        toast.success(`Successfully connected to ${result.provider}!`);
+        
+        // Redirect to integrations page after a short delay
+        setTimeout(() => {
+          navigate('/integrations');
+        }, 2000);
+      } catch (error) {
+        console.error('OAuth callback error:', error);
+        setStatus('error');
+        toast.error('Failed to complete integration. Please try again.');
+      }
+    };
 
-    if (error) {
-      toast.error(`Integration failed: ${error}`);
-      navigate('/integrations');
-      return;
-    }
-
-    if (code && provider) {
-      // Handle successful OAuth callback
-      toast.success(`Successfully connected to ${provider}!`);
-      
-      // Store the integration data (this would typically involve an API call)
-      const integrationData = {
-        provider,
-        code,
-        connectedAt: new Date().toISOString(),
-      };
-      
-      // Store in localStorage for now (in a real app, this would be stored in the database)
-      const existingIntegrations = JSON.parse(localStorage.getItem('userIntegrations') || '[]');
-      const updatedIntegrations = [...existingIntegrations, integrationData];
-      localStorage.setItem('userIntegrations', JSON.stringify(updatedIntegrations));
-      
-      navigate('/integrations');
-    } else {
-      toast.error('Invalid integration callback');
-      navigate('/integrations');
-    }
+    processCallback();
   }, [searchParams, navigate]);
 
-  return (
-    <GhibliLayout className="flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-        <h2 className="text-xl font-semibold text-black mb-2">Processing Integration</h2>
-        <p className="text-slate-600">Please wait while we connect your account...</p>
+  const handleRetry = () => {
+    navigate('/integrations');
+  };
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+              <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
+            </div>
+            <CardTitle>Connecting Integration</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600">
+              Please wait while we complete your integration setup...
+            </p>
+          </CardContent>
+        </Card>
       </div>
-    </GhibliLayout>
+    );
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <CheckCircle className="h-8 w-8 text-green-600" />
+            </div>
+            <CardTitle>Integration Successful!</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-gray-600">
+              Your {provider} integration has been connected successfully.
+            </p>
+            <p className="text-sm text-gray-500">
+              Redirecting you back to integrations...
+            </p>
+            <Button onClick={() => navigate('/integrations')} className="w-full">
+              Go to Integrations
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <XCircle className="h-8 w-8 text-red-600" />
+          </div>
+          <CardTitle>Integration Failed</CardTitle>
+        </CardHeader>
+        <CardContent className="text-center space-y-4">
+          <p className="text-gray-600">
+            We couldn't complete your integration setup. Please try again.
+          </p>
+          <Button onClick={handleRetry} className="w-full">
+            Back to Integrations
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

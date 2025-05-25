@@ -1,54 +1,34 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { UserIntegration } from "./types";
+export const initiateOAuth = (provider: string, redirectUri?: string) => {
+  // Use the existing integration callback route instead of non-existent API routes
+  const baseUrl = window.location.origin;
+  const callbackUrl = redirectUri || `${baseUrl}/integration-callback`;
+  
+  // For demo purposes, simulate the OAuth flow
+  const authUrl = `${callbackUrl}?provider=${provider}&code=demo_code_${Date.now()}&state=${provider}`;
+  
+  console.log(`Initiating OAuth for ${provider} with callback: ${callbackUrl}`);
+  
+  // Redirect to the integration callback page with mock parameters
+  window.location.href = authUrl;
+};
 
-// Function to handle OAuth callback and store token
-export const handleOAuthCallback = async (
-  providerId: string, 
-  code: string, 
-  userId: string
-): Promise<UserIntegration | null> => {
-  try {
-    // In a real implementation, this would exchange the code for tokens
-    // with the provider's OAuth service
-    console.log(`Exchanging code for ${providerId} tokens...`);
-    
-    // For demo purposes, we'll simulate a successful token exchange
-    const mockTokenResponse = {
-      access_token: `mock_${providerId}_token_${Date.now()}`,
-      refresh_token: `mock_${providerId}_refresh_${Date.now()}`,
-      expires_in: 3600
-    };
-    
-    const expiresAt = new Date();
-    expiresAt.setSeconds(expiresAt.getSeconds() + mockTokenResponse.expires_in);
-    
-    // Store the tokens in our database
-    const { data, error } = await supabase
-      .from('user_integrations')
-      .insert({
-        user_id: userId,
-        provider_id: providerId,
-        access_token: mockTokenResponse.access_token,
-        refresh_token: mockTokenResponse.refresh_token,
-        token_expires_at: expiresAt.toISOString(),
-        status: 'active'
-      })
-      .select()
-      .single();
-      
-    if (error) {
-      console.error('Error storing OAuth tokens:', error);
-      throw error;
-    }
-    
-    // Ensure we return data with the correct types
-    return {
-      ...data,
-      status: (data.status as 'active' | 'expired' | 'error')
-    } as UserIntegration;
-  } catch (err) {
-    console.error('OAuth callback handling failed:', err);
-    return null;
+export const handleOAuthCallback = (searchParams: URLSearchParams) => {
+  const provider = searchParams.get('provider');
+  const code = searchParams.get('code');
+  const state = searchParams.get('state');
+  
+  console.log('OAuth callback received:', { provider, code, state });
+  
+  if (!provider || !code) {
+    throw new Error('Missing required OAuth parameters');
   }
+  
+  // Return mock success data
+  return {
+    provider,
+    accessToken: `mock_token_${Date.now()}`,
+    refreshToken: `mock_refresh_${Date.now()}`,
+    expiresAt: new Date(Date.now() + 3600000).toISOString(),
+  };
 };
