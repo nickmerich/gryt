@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { Goal, GoalRow, mapGoalRowToGoal } from "@/types/goal";
+import { mapGoalRowToGoal } from "@/types/goal";
 import { GoalInput, EditGoalInput } from "./types";
 
 export const useGoalMutations = () => {
@@ -73,7 +73,7 @@ export const useGoalMutations = () => {
   });
 
   const updateGoal = useMutation({
-    mutationFn: async ({ goalId, updates }: { goalId: string; updates: Partial<GoalRow> }) => {
+    mutationFn: async ({ goalId, updates }: { goalId: string; updates: Partial<any> }) => {
       const { data, error } = await supabase
         .from("goals")
         .update(updates)

@@ -1,127 +1,150 @@
 
 import React from 'react';
-import { CheckCircle, RotateCcw } from 'lucide-react';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import GhibliButton from '@/components/GhibliButton';
-import GhibliCard from '@/components/GhibliCard';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { Plus, Target, CheckCircle, Calendar } from 'lucide-react';
 import { DemoGoal } from './DemoGoalTypes';
 
 interface DemoGoalCardProps {
-  demoGoal: DemoGoal;
-  tourStep: number;
-  completedSteps: number[];
-  showCelebration: boolean;
-  updateProgress: () => void;
-  completeTodo: (id: string) => void;
-  resetDemo: () => void;
+  goal: DemoGoal;
+  onUpdateProgress: (increment: number) => void;
+  onToggleMilestone: (milestoneId: string) => void;
+  onToggleTodo: (todoId: string) => void;
+  onAddTodo: (title: string) => void;
 }
 
-const DemoGoalCard: React.FC<DemoGoalCardProps> = ({ 
-  demoGoal, 
-  tourStep, 
-  completedSteps, 
-  showCelebration, 
-  updateProgress, 
-  completeTodo, 
-  resetDemo 
+const DemoGoalCard: React.FC<DemoGoalCardProps> = ({
+  goal,
+  onUpdateProgress,
+  onToggleMilestone,
+  onToggleTodo,
+  onAddTodo
 }) => {
+  const [newTodo, setNewTodo] = React.useState('');
+
+  const handleAddTodo = () => {
+    if (newTodo.trim()) {
+      onAddTodo(newTodo.trim());
+      setNewTodo('');
+    }
+  };
+
+  const categoryColors = {
+    'Health & Fitness': 'bg-green-100 text-green-800',
+    'Career': 'bg-blue-100 text-blue-800',
+    'Finance': 'bg-yellow-100 text-yellow-800',
+    'Education': 'bg-purple-100 text-purple-800',
+    'Personal': 'bg-pink-100 text-pink-800'
+  };
+
   return (
-    <GhibliCard glow={showCelebration} illustrationOpacity={0.04} illustration="mountains">
-      <CardHeader className="pb-2 relative">
-        {showCelebration && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-bounce text-6xl">🎉</div>
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <Badge className={categoryColors[goal.category as keyof typeof categoryColors] || 'bg-gray-100 text-gray-800'}>
+            {goal.category}
+          </Badge>
+          <div className="flex items-center text-sm text-gray-500">
+            <Calendar className="w-4 h-4 mr-1" />
+            {new Date(goal.targetDate).toLocaleDateString()}
           </div>
-        )}
-        <Badge className="bg-green-100 text-green-800 mb-2">{demoGoal.category}</Badge>
-        <CardTitle>{demoGoal.title}</CardTitle>
-        <p className="text-gray-600 mt-1">{demoGoal.description}</p>
+        </div>
+        <CardTitle className="text-xl">{goal.title}</CardTitle>
+        <p className="text-sm text-gray-600">{goal.description}</p>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Progress bar */}
-        <div>
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium">Overall Progress</span>
-            <span className="text-sm font-semibold text-gryt-blue">{demoGoal.progress}%</span>
+      
+      <CardContent className="space-y-4">
+        {/* Progress Section */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Progress</span>
+            <span className="text-sm font-bold">{goal.progress}%</span>
           </div>
-          <Progress value={demoGoal.progress} className="h-2" 
-            indicatorClassName="bg-gradient-to-r from-gryt-red to-gryt-blue" />
+          <Progress value={goal.progress} className="h-2" />
         </div>
 
-        {/* Milestones */}
-        <div>
-          <h3 className="font-semibold mb-3">Milestones</h3>
-          <div className="space-y-2">
-            {demoGoal.milestones.map((milestone) => (
-              <div key={milestone.id} className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${milestone.isCompleted ? 'bg-gryt-blue' : 'bg-gray-300'}`} />
-                <span className={milestone.isCompleted ? 'text-gryt-blue line-through' : ''}>
+        {/* Milestones Section */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Target className="w-4 h-4" />
+            <span className="text-sm font-medium">Milestones</span>
+            <Badge variant="outline">{goal.milestones.filter(m => m.completed).length}/{goal.milestones.length}</Badge>
+          </div>
+          <div className="space-y-1">
+            {goal.milestones.map((milestone) => (
+              <div key={milestone.id} className="flex items-center space-x-2">
+                <Checkbox
+                  checked={milestone.completed}
+                  onCheckedChange={() => onToggleMilestone(milestone.id)}
+                />
+                <span className={`text-sm ${milestone.completed ? 'line-through text-gray-500' : ''}`}>
                   {milestone.title}
                 </span>
-                {milestone.isCompleted && (
-                  <CheckCircle className="w-4 h-4 text-gryt-blue ml-auto" />
-                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Daily Tasks */}
-        <div>
-          <h3 className="font-semibold mb-3">Daily Tasks</h3>
-          <div className="space-y-2">
-            {demoGoal.todos.map((todo) => (
-              <div 
-                key={todo.id} 
-                className={`flex items-center gap-2 p-2 rounded-md ${tourStep === 3 && !completedSteps.includes(3) ? 'bg-blue-50 border border-blue-200 pulse-animation' : ''}`}
-                onClick={() => tourStep === 3 && completeTodo(todo.id)}
-              >
-                <div className={`w-4 h-4 rounded border cursor-pointer flex items-center justify-center ${todo.isCompleted ? 'bg-blue-500 border-blue-500' : 'border-gray-300'}`}>
-                  {todo.isCompleted && <CheckCircle className="w-3 h-3 text-white" />}
-                </div>
-                <span className={todo.isCompleted ? 'line-through text-gray-500' : ''}>
+        {/* Quick Actions */}
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onUpdateProgress(10)}
+            className="flex-1"
+          >
+            +10%
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onUpdateProgress(25)}
+            className="flex-1"
+          >
+            +25%
+          </Button>
+        </div>
+
+        {/* Daily Todos Section */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-4 h-4" />
+            <span className="text-sm font-medium">Daily Tasks</span>
+          </div>
+          <div className="space-y-1">
+            {goal.todos.map((todo) => (
+              <div key={todo.id} className="flex items-center space-x-2">
+                <Checkbox
+                  checked={todo.isCompleted}
+                  onCheckedChange={() => onToggleTodo(todo.id)}
+                />
+                <span className={`text-sm ${todo.isCompleted ? 'line-through text-gray-500' : ''}`}>
                   {todo.title}
                 </span>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Action Button */}
-        <div className="pt-4">
-          {tourStep === 1 && (
-            <GhibliButton 
-              onClick={updateProgress}
-              className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white pulse-animation"
-              glowColor="blue"
-            >
-              Update Progress (+20%)
-            </GhibliButton>
-          )}
-          {tourStep === 2 && (
-            <GhibliButton 
-              onClick={updateProgress}
-              className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white pulse-animation"
-              glowColor="blue"
-            >
-              Complete First Milestone
-            </GhibliButton>
-          )}
-          {tourStep === 4 && (
-            <GhibliButton 
-              onClick={resetDemo}
-              className="w-full bg-gryt-red hover:bg-gryt-red/90 text-white"
-              glowColor="red"
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Reset Demo
-            </GhibliButton>
-          )}
+          
+          {/* Add Todo */}
+          <div className="flex items-center space-x-2 mt-2">
+            <input
+              type="text"
+              placeholder="Add a task..."
+              value={newTodo}
+              onChange={(e) => setNewTodo(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTodo()}
+              className="flex-1 px-2 py-1 text-sm border rounded"
+            />
+            <Button size="sm" onClick={handleAddTodo}>
+              <Plus className="w-3 h-3" />
+            </Button>
+          </div>
         </div>
       </CardContent>
-    </GhibliCard>
+    </Card>
   );
 };
 
