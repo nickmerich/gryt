@@ -10,8 +10,10 @@ export const initiateOAuth = (provider: string, redirectUri?: string) => {
   // In a real app, this would redirect to the provider's OAuth URL
   const authUrl = `${callbackUrl}?provider=${provider}&code=demo_code_${Date.now()}&state=${provider}`;
   
-  // Redirect to the integration callback page with mock success parameters
-  window.location.href = authUrl;
+  // Small delay to show the connecting state, then redirect
+  setTimeout(() => {
+    window.location.href = authUrl;
+  }, 500);
 };
 
 export const handleOAuthCallback = (searchParams: URLSearchParams) => {

@@ -6,18 +6,24 @@ import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { handleOAuthCallback } from '@/services/integration/oauthService';
+import { useIntegrations } from '@/hooks/useIntegrations';
 
 const IntegrationCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [provider, setProvider] = useState<string>('');
+  const { connect } = useIntegrations();
 
   useEffect(() => {
     const processCallback = async () => {
       try {
         const result = await handleOAuthCallback(searchParams);
         setProvider(result.provider);
+        
+        // Actually connect the integration using the mock token
+        await connect(result.provider, result.accessToken);
+        
         setStatus('success');
         toast.success(`Successfully connected to ${result.provider}!`);
         
@@ -33,7 +39,7 @@ const IntegrationCallback = () => {
     };
 
     processCallback();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, connect]);
 
   const handleRetry = () => {
     navigate('/integrations');
