@@ -15,6 +15,12 @@ const GrytLogo = ({ className, size = 'md' }: GrytLogoProps) => {
     lg: 'w-16 h-16'
   };
 
+  const iconSize = {
+    sm: '1rem',
+    md: '1.25rem', 
+    lg: '2rem'
+  };
+
   return (
     <div 
       className={cn(
@@ -32,11 +38,27 @@ const GrytLogo = ({ className, size = 'md' }: GrytLogoProps) => {
         </div>
       </div>
 
-      {/* The G letter with upward energy styling */}
-      <div className="relative text-white font-bold transform translate-y-[1px]" style={{ 
-        fontSize: size === 'sm' ? '1.5rem' : size === 'md' ? '1.75rem' : '2.5rem'
-      }}>
-        G
+      {/* Strong Arm SVG Icon */}
+      <div className="relative text-white" style={{ fontSize: iconSize[size] }}>
+        <svg 
+          width={iconSize[size]} 
+          height={iconSize[size]} 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+          className="text-white"
+        >
+          {/* Strong Arm/Bicep Icon */}
+          <path d="M6 12c0-4 2-6 4-6s4 2 4 6" />
+          <path d="M14 12v6a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-6" />
+          <circle cx="10" cy="8" r="2" />
+          <path d="M18 12c0-2-1-4-3-4" />
+          <path d="M15 8c1-1 2-1 3 0" />
+        </svg>
+        
         {/* Progress indicator - subtle upward arrow */}
         <div className="absolute -bottom-1 -right-1 w-[30%] h-[30%] border-t-2 border-r-2 border-white/90 transform rotate-45 rounded-tr-sm"></div>
       </div>
