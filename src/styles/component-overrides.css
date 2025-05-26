@@ -37,6 +37,80 @@
     color: #8B5CF6 !important;
   }
 
+  /* COMPREHENSIVE CTA AND BUTTON OVERRIDES */
+  
+  /* All button elements with white text */
+  button .text-white,
+  .button .text-white,
+  [type="button"] .text-white,
+  [type="submit"] .text-white,
+  [type="reset"] .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Button variants and states */
+  button[class*="text-white"],
+  .button[class*="text-white"],
+  [type="button"][class*="text-white"],
+  [type="submit"][class*="text-white"],
+  [type="reset"][class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Shadcn/UI Button component overrides */
+  .inline-flex.items-center.justify-center .text-white,
+  .inline-flex[class*="text-white"],
+  [class*="buttonVariants"] .text-white,
+  [class*="buttonVariants"][class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Gryt-specific button classes */
+  .ghibli-button .text-white,
+  .ghibli-button[class*="text-white"],
+  .modern-button .text-white,
+  .modern-button[class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* CTA-specific selectors */
+  .cta .text-white,
+  .cta[class*="text-white"],
+  [class*="cta"] .text-white,
+  [class*="cta"][class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Link buttons and anchor CTAs */
+  a[class*="button"] .text-white,
+  a[class*="button"][class*="text-white"],
+  a[role="button"] .text-white,
+  a[role="button"][class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Gradient button text overrides */
+  .bg-gradient-to-r .text-white,
+  .bg-gradient-to-l .text-white,
+  .bg-gradient-to-t .text-white,
+  .bg-gradient-to-b .text-white,
+  .bg-gradient-to-br .text-white,
+  .bg-gradient-to-bl .text-white,
+  .bg-gradient-to-tr .text-white,
+  .bg-gradient-to-tl .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Interactive elements with white text */
+  [role="button"] .text-white,
+  [role="button"][class*="text-white"],
+  .clickable .text-white,
+  .clickable[class*="text-white"],
+  .interactive .text-white,
+  .interactive[class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
   /* Badge components */
   .badge,
   .badge * {
@@ -73,11 +147,6 @@
   .button [class*="yellow"],
   .button [class*="amber"] {
     color: #000000 !important;
-  }
-
-  .button .text-white,
-  button .text-white {
-    color: #8B5CF6 !important;
   }
 
   /* Select and dropdown text */
@@ -163,5 +232,39 @@
   /* Specific component overrides */
   .ghibli-subtitle {
     color: #000000 !important;
+  }
+
+  /* COMPREHENSIVE WHITE TEXT OVERRIDES FOR ALL POSSIBLE CTA SCENARIOS */
+  
+  /* Target any element that might be a CTA with white text */
+  *[class*="primary"] .text-white,
+  *[class*="primary"][class*="text-white"],
+  *[class*="secondary"] .text-white,
+  *[class*="secondary"][class*="text-white"],
+  *[class*="action"] .text-white,
+  *[class*="action"][class*="text-white"],
+  *[class*="submit"] .text-white,
+  *[class*="submit"][class*="text-white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Ensure all white text in any interactive element becomes purple */
+  *[onclick] .text-white,
+  *[onclick][class*="text-white"],
+  .cursor-pointer .text-white,
+  .cursor-pointer[class*="text-white"],
+  .hover\:bg- .text-white,
+  .hover\:shadow- .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Catch any remaining white text in common CTA patterns */
+  .flex.items-center.justify-center .text-white,
+  .flex.items-center.justify-center[class*="text-white"],
+  .rounded .text-white,
+  .rounded-xl .text-white,
+  .rounded-2xl .text-white,
+  .rounded-full .text-white {
+    color: #8B5CF6 !important;
   }
 }
