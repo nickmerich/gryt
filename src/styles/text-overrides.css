@@ -5,11 +5,11 @@
   /* Core text color tokens for gradient blue system */
   :root {
     --text-primary: #0B1120;
-    --text-secondary: #64748B;
-    --text-muted: #94A3B8;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
     --text-inverse: #FFFFFF;
-    --text-soft-blue: #B0C4FF;
-    --text-placeholder: #94A3B8;
+    --text-soft-blue: #3A5AFF;
+    --text-placeholder: #64748B;
   }
 
   /* Dark mode text adjustments */
@@ -28,7 +28,8 @@
   }
 
   p, span, div, li, td, th {
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
+    font-weight: 500;
   }
 
   /* Form elements with improved visibility */
@@ -43,8 +44,16 @@
   textarea::placeholder,
   select::placeholder {
     color: var(--text-placeholder) !important;
-    font-weight: 400;
-    opacity: 0.7;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  /* Input field text with high contrast */
+  input,
+  textarea,
+  select {
+    color: var(--text-primary) !important;
+    font-weight: 600;
   }
 
   /* Dark background text */
@@ -52,14 +61,19 @@
   [data-theme="dark"] *,
   .dark,
   .dark * {
-    color: var(--text-inverse);
+    color: var(--text-inverse) !important;
   }
 
   /* Input field focus states for blue theme */
+  input:focus,
+  textarea:focus {
+    color: var(--text-primary) !important;
+  }
+
   input:focus::placeholder,
   textarea:focus::placeholder {
     color: var(--text-soft-blue) !important;
-    opacity: 0.6;
+    opacity: 0.7;
   }
 
   /* Secondary text with adequate contrast */
@@ -68,13 +82,14 @@
   .help-text,
   .description {
     color: var(--text-secondary) !important;
+    font-weight: 500;
   }
 
   /* Button text should always be high contrast */
   button,
   .btn,
   [role="button"] {
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.025em;
   }
 
@@ -82,7 +97,7 @@
   button:disabled,
   .btn:disabled,
   [role="button"]:disabled {
-    opacity: 0.6;
+    opacity: 0.7;
   }
 
   button:disabled *,
@@ -90,12 +105,14 @@
   [role="button"]:disabled * {
     color: inherit !important;
     opacity: 1 !important;
+    font-weight: 600;
   }
 
   /* Blue theme specific text utilities */
   .text-on-gradient {
     color: white !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
   }
 
   .text-gradient-blue {
@@ -110,48 +127,77 @@
   .chat-bubble-user {
     background: linear-gradient(135deg, #3A5AFF, #7EA4FF) !important;
     color: white !important;
+    font-weight: 600;
   }
 
   .chat-bubble-ai {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(234, 241, 255, 0.95)) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 255, 0.98)) !important;
     color: #0B1120 !important;
-    border: 1px solid rgba(58, 90, 255, 0.15);
+    border: 1px solid rgba(58, 90, 255, 0.2);
+    font-weight: 500;
   }
 
   /* Modal and dialog improvements for blue theme */
   [role="dialog"],
   [data-radix-portal] {
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
+  }
+
+  [role="dialog"] *,
+  [data-radix-portal] * {
+    color: inherit !important;
   }
 
   /* Ensure links work with blue theme */
   a {
-    color: #3A5AFF;
+    color: #3A5AFF !important;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     transition: color 0.2s ease;
   }
 
   a:hover {
-    color: #7EA4FF;
+    color: #7EA4FF !important;
     text-decoration: underline;
   }
 
   /* High contrast utility classes for blue theme */
   .text-high-contrast {
     color: var(--text-primary) !important;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .text-inverse-high-contrast {
     color: var(--text-inverse) !important;
-    font-weight: 600;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   /* Soft blue text for secondary information */
   .text-soft-blue {
     color: var(--text-soft-blue) !important;
+    font-weight: 600;
+  }
+
+  /* Auth page specific improvements */
+  .auth-form,
+  .auth-form *,
+  .auth-container,
+  .auth-container * {
+    color: var(--text-primary) !important;
+  }
+
+  .auth-form input,
+  .auth-container input {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .auth-form input::placeholder,
+  .auth-container input::placeholder {
+    color: var(--text-placeholder) !important;
+    opacity: 0.8;
     font-weight: 500;
   }
 
@@ -164,6 +210,19 @@
     color: var(--text-primary) !important;
   }
 
+  /* Card and form improvements */
+  .card,
+  .form-group,
+  .input-group {
+    color: var(--text-primary) !important;
+  }
+
+  .card *,
+  .form-group *,
+  .input-group * {
+    color: inherit !important;
+  }
+
   /* Gradient text effects */
   .text-shimmer {
     background: linear-gradient(90deg, #3A5AFF, #7EA4FF, #3A5AFF);
@@ -172,6 +231,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: shimmer 2s linear infinite;
+    font-weight: 700;
   }
 
   @keyframes shimmer {
