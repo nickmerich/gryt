@@ -1,0 +1,20 @@
+
+@layer base {
+  /* MONOCHROME TEXT SYSTEM - COLOR TOKENS */
+  
+  /* Core monochrome text color tokens */
+  :root {
+    --text-primary: 0 0 0; /* Pure Black */
+    --text-secondary: 115 115 115; /* Medium Gray */
+    --text-muted: 163 163 163; /* Light Gray */
+    --text-inverse: 255 255 255; /* Pure White */
+  }
+
+  /* Dark mode text adjustments */
+  .dark {
+    --text-primary: 255 255 255; /* Pure White */
+    --text-secondary: 212 212 212; /* Light Gray */
+    --text-muted: 163 163 163; /* Medium Gray */
+    --text-inverse: 0 0 0; /* Pure Black */
+  }
+}

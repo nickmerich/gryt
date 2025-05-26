@@ -1,0 +1,18 @@
+
+@layer base {
+  /* MONOCHROME LINK TEXT STYLING */
+  
+  /* Links with monochrome styling */
+  a {
+    color: hsl(var(--text-primary)) !important;
+    text-decoration: underline;
+    font-weight: 600;
+    opacity: 1 !important;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: hsl(var(--text-secondary)) !important;
+    text-decoration: underline;
+  }
+}

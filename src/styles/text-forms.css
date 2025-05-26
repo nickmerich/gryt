@@ -1,0 +1,33 @@
+
+@layer base {
+  /* MONOCHROME FORM TEXT STYLING */
+  
+  /* Form elements with crisp monochrome text */
+  label,
+  .form-label {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 700 !important;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    opacity: 1 !important;
+  }
+
+  /* Input fields - Clean monochrome */
+  input,
+  textarea,
+  select {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+    background-color: transparent;
+  }
+
+  /* Placeholder text - Gray */
+  input::placeholder,
+  textarea::placeholder,
+  select::placeholder {
+    color: hsl(var(--text-muted)) !important;
+    font-weight: 400;
+    opacity: 0.8 !important;
+  }
+}

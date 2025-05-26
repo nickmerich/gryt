@@ -1,0 +1,122 @@
+
+@layer base {
+  /* MONOCHROME BUTTON TEXT STYLING - MAXIMUM LEGIBILITY */
+  
+  /* Base button text styling */
+  button,
+  .btn,
+  [role="button"],
+  .ui-button,
+  .button,
+  .Button {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 700 !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.025em !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+
+  /* Force correct text color on ALL button content */
+  button *,
+  .btn *,
+  [role="button"] *,
+  .ui-button *,
+  .button *,
+  .Button * {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+
+  /* Button variants with monochrome styling */
+  button[data-variant="default"],
+  button[data-variant="primary"],
+  .btn-primary,
+  .button-primary,
+  .Button[data-variant="default"] {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  button[data-variant="outline"],
+  .btn-outline,
+  .button-outline,
+  .Button[data-variant="outline"] {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 700 !important;
+  }
+
+  button[data-variant="outline"] *,
+  .btn-outline *,
+  .button-outline *,
+  .Button[data-variant="outline"] * {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 700 !important;
+  }
+
+  button[data-variant="ghost"],
+  .btn-ghost,
+  .button-ghost,
+  .Button[data-variant="ghost"] {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 600 !important;
+  }
+
+  button[data-variant="ghost"] *,
+  .btn-ghost *,
+  .button-ghost *,
+  .Button[data-variant="ghost"] * {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 600 !important;
+  }
+
+  button[data-variant="secondary"],
+  .btn-secondary,
+  .button-secondary,
+  .Button[data-variant="secondary"] {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 700 !important;
+  }
+
+  /* Disabled button text */
+  button:disabled,
+  .btn:disabled,
+  [role="button"]:disabled,
+  .Button:disabled {
+    color: hsl(var(--text-inverse)) !important;
+    opacity: 0.6 !important;
+    font-weight: 700 !important;
+  }
+
+  button:disabled *,
+  .btn:disabled *,
+  [role="button"]:disabled *,
+  .Button:disabled * {
+    color: hsl(var(--text-inverse)) !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Button hover states - maintain legibility */
+  button:hover,
+  .btn:hover,
+  [role="button"]:hover,
+  .Button:hover {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 800 !important;
+  }
+
+  button:hover *,
+  .btn:hover *,
+  [role="button"]:hover *,
+  .Button:hover * {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 800 !important;
+  }
+}

@@ -1,0 +1,23 @@
+
+@layer base {
+  /* MONOCHROME TEXT UTILITY CLASSES */
+  
+  /* High contrast utility classes */
+  .text-high-contrast {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+  }
+
+  .text-inverse-high-contrast {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+  }
+
+  .text-monochrome-muted {
+    color: hsl(var(--text-muted)) !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+  }
+}

@@ -1,5 +1,11 @@
 
 /* This file now serves as a lightweight entry point for all override styles */
 @import './color-overrides.css';
-@import './text-overrides.css';
+@import './text-tokens.css';
+@import './text-headers.css';
+@import './text-body.css';
+@import './text-forms.css';
+@import './text-buttons.css';
+@import './text-links.css';
+@import './text-utilities.css';
 @import './component-overrides.css';
