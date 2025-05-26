@@ -21,19 +21,19 @@ const GhibliCard: React.FC<GhibliCardProps> = ({
   variant = 'default',
   ...props 
 }) => {
-  // Apply variant-specific styles
+  // Apply variant-specific styles - all monochrome
   const variantStyles = {
     default: '',
-    goal: 'border-l-4 border-l-gryt-blue',
-    streak: 'border-l-4 border-l-gryt-red streak-pulse',
-    success: 'border-green-400/30 bg-gradient-to-br from-white to-green-50 dark:from-gryt-dark dark:to-gryt-dark/80'
+    goal: 'border-l-4 border-l-foreground',
+    streak: 'border-l-4 border-l-muted-foreground',
+    success: 'border-2 border-foreground bg-background'
   };
 
   return (
     <Card 
       className={cn(
-        'ghibli-card overflow-hidden relative',
-        glow && 'relative after:absolute after:inset-0 after:rounded-xl after:shadow-md after:shadow-gryt-blue/10',
+        'overflow-hidden relative bg-background border-2 border-border',
+        glow && 'shadow-lg',
         variantStyles[variant],
         className
       )}

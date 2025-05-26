@@ -63,18 +63,18 @@ const PasswordResetForm: React.FC<PasswordResetFormProps> = ({ onBack }) => {
 
   if (isEmailSent) {
     return (
-      <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
+      <Card className="border-2 border-border bg-background">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-12 h-12 bg-gryt-blue/10 rounded-full flex items-center justify-center">
-            <Mail className="h-6 w-6 text-gryt-blue" />
+          <div className="mx-auto mb-4 w-12 h-12 bg-muted rounded-full flex items-center justify-center border-2 border-border">
+            <Mail className="h-6 w-6 text-foreground" />
           </div>
-          <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Check Your Email</CardTitle>
-          <CardDescription>
-            We've sent a password reset link to <strong>{email}</strong>
+          <CardTitle className="text-xl font-bold text-foreground">Check Your Email</CardTitle>
+          <CardDescription className="text-muted-foreground">
+            We've sent a password reset link to <strong className="text-foreground">{email}</strong>
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-center text-sm text-gryt-dark/60 dark:text-gryt-light/60">
+          <p className="text-center text-sm text-muted-foreground">
             Click the link in the email to reset your password. The link will expire in 24 hours.
           </p>
           <div className="space-y-2">
@@ -92,7 +92,7 @@ const PasswordResetForm: React.FC<PasswordResetFormProps> = ({ onBack }) => {
                 setIsEmailSent(false);
                 setEmail('');
               }}
-              className="w-full text-gryt-blue hover:text-gryt-blue/80"
+              className="w-full"
             >
               Try Different Email
             </Button>
@@ -103,17 +103,17 @@ const PasswordResetForm: React.FC<PasswordResetFormProps> = ({ onBack }) => {
   }
 
   return (
-    <Card className="ghibli-card shadow-lg border-2 border-gryt-gray/20 dark:border-gryt-blue/20">
+    <Card className="border-2 border-border bg-background">
       <CardHeader>
-        <CardTitle className="text-xl font-medium text-gryt-dark dark:text-gryt-gray">Reset Password</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-xl font-bold text-foreground">Reset Password</CardTitle>
+        <CardDescription className="text-muted-foreground">
           Enter your email address and we'll send you a link to reset your password
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handlePasswordReset} className="space-y-4">
           {formError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2 text-sm text-red-600">
+            <div className="p-3 bg-muted border-2 border-foreground rounded-md flex items-center gap-2 text-sm text-foreground">
               <AlertTriangle size={16} />
               {formError}
             </div>
@@ -127,13 +127,13 @@ const PasswordResetForm: React.FC<PasswordResetFormProps> = ({ onBack }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-white/50 dark:bg-gryt-dark/50"
+              className="bg-background"
             />
           </div>
           <div className="space-y-2">
             <Button
               type="submit"
-              className="w-full bg-gryt-blue hover:bg-gryt-blue/90 text-white"
+              className="w-full"
               disabled={isLoading}
             >
               {isLoading ? 'Sending...' : 'Send Reset Link'}

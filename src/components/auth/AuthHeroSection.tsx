@@ -5,9 +5,9 @@ import { CheckCircle, TrendingUp, Star } from 'lucide-react';
 const AuthHeroSection: React.FC = () => {
   return (
     <div className="lg:w-3/5 flex items-center justify-center p-8 lg:p-16 min-h-screen bg-background">
-      <div className="max-w-2xl mx-auto text-center space-y-12 animate-fade-in">
+      <div className="max-w-2xl mx-auto text-center space-y-12">
         {/* Header Badge - Monochrome Style */}
-        <div className="inline-flex items-center px-6 py-3 bg-muted border-2 border-border rounded-lg">
+        <div className="inline-flex items-center px-6 py-3 bg-background border-2 border-border rounded-lg">
           <span className="w-8 h-8 bg-foreground text-background rounded-lg flex items-center justify-center text-sm font-bold mr-4">
             01
           </span>
@@ -26,7 +26,7 @@ const AuthHeroSection: React.FC = () => {
 
         {/* CTA Button - Monochrome Design */}
         <div className="pt-4">
-          <button className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-lg min-w-[280px] text-background rounded-lg bg-foreground border-2 border-foreground transition-all duration-300 ease-out hover:bg-muted-foreground hover:border-muted-foreground hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] animate-slide-up overflow-hidden">
+          <button className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-lg min-w-[280px] text-background rounded-lg bg-foreground border-2 border-foreground transition-all duration-300 ease-out hover:bg-muted-foreground hover:border-muted-foreground hover:-translate-y-1 hover:scale-[1.02] active:scale-[0.98] overflow-hidden">
             {/* Button content */}
             <span className="relative z-10 tracking-wide">Try the Playground →</span>
           </button>
@@ -37,7 +37,7 @@ const AuthHeroSection: React.FC = () => {
           <div className="relative w-full max-w-lg mx-auto">
             <div className="aspect-square bg-background rounded-lg overflow-hidden relative border-2 border-border">
               {/* Monochrome overlay pattern */}
-              <div className="absolute inset-0 bg-muted/50"></div>
+              <div className="absolute inset-0 bg-muted"></div>
               
               {/* Performance Dashboard Elements */}
               <div className="absolute inset-0 flex items-center justify-center">
