@@ -2,7 +2,7 @@
 @layer base {
   /* MASCULINE PERFORMANCE COLOR SYSTEM OVERRIDES */
   
-  /* Remove any yellow/amber text utilities - convert to appropriate contrast */
+  /* Override any remaining light text colors to use design system */
   .text-yellow-50,
   .text-yellow-100,
   .text-yellow-200,
@@ -26,12 +26,12 @@
     color: hsl(var(--warning)) !important;
   }
 
-  /* White text utilities - convert to high contrast */
+  /* White text utilities - convert to design system */
   .text-white {
     color: hsl(var(--primary-foreground)) !important;
   }
 
-  /* Light gray utilities - ensure sufficient contrast */
+  /* Light gray utilities - ensure design system consistency */
   .text-gray-100,
   .text-gray-200,
   .text-gray-300,
@@ -43,7 +43,7 @@
     color: hsl(var(--muted-foreground)) !important;
   }
 
-  /* Performance-focused brand colors */
+  /* Performance-focused brand colors using CSS variables */
   .text-gryt-navy {
     color: hsl(var(--primary)) !important;
   }
@@ -56,7 +56,7 @@
     color: hsl(var(--accent)) !important;
   }
 
-  /* Background overrides for brand consistency */
+  /* Background overrides using design system */
   .bg-gryt-navy {
     background-color: hsl(var(--primary)) !important;
     color: hsl(var(--primary-foreground)) !important;
@@ -72,95 +72,86 @@
     color: hsl(var(--accent-foreground)) !important;
   }
 
-  /* High-performance button variants */
+  /* High-performance masculine button variants */
   .btn-signal {
     background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary-hover)) 100%);
     color: hsl(var(--secondary-foreground));
-    border: none;
+    border: 2px solid hsl(var(--secondary) / 0.2);
     font-weight: 600;
     letter-spacing: -0.025em;
     transition: all 0.15s ease-out;
-    box-shadow: 0 8px 16px -4px rgba(239, 68, 68, 0.25);
+    box-shadow: 0 8px 16px -4px hsl(var(--secondary) / 0.25);
+    border-radius: 0.375rem;
   }
 
   .btn-signal:hover {
     background: linear-gradient(135deg, hsl(var(--secondary-hover)) 0%, hsl(var(--secondary-active)) 100%);
     transform: translateY(-1px);
-    box-shadow: 0 12px 20px -4px rgba(239, 68, 68, 0.35);
+    box-shadow: 0 12px 20px -4px hsl(var(--secondary) / 0.35);
+    border-color: hsl(var(--secondary));
   }
 
   .btn-navy {
     background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-hover)) 100%);
     color: hsl(var(--primary-foreground));
-    border: none;
+    border: 2px solid hsl(var(--primary) / 0.2);
     font-weight: 600;
     letter-spacing: -0.025em;
     transition: all 0.15s ease-out;
-    box-shadow: 0 8px 16px -4px rgba(30, 41, 59, 0.25);
+    box-shadow: 0 8px 16px -4px hsl(var(--primary) / 0.25);
+    border-radius: 0.375rem;
   }
 
   .btn-navy:hover {
     background: linear-gradient(135deg, hsl(var(--primary-hover)) 0%, hsl(var(--primary-active)) 100%);
     transform: translateY(-1px);
-    box-shadow: 0 12px 20px -4px rgba(30, 41, 59, 0.35);
-  }
-
-  /* State indicators with performance aesthetic */
-  .status-success {
-    background-color: hsl(var(--success));
-    color: hsl(var(--success-foreground));
-    box-shadow: 0 4px 8px -2px rgba(46, 204, 113, 0.25);
-  }
-
-  .status-warning {
-    background-color: hsl(var(--warning));
-    color: hsl(var(--warning-foreground));
-    box-shadow: 0 4px 8px -2px rgba(243, 156, 18, 0.25);
-  }
-
-  .status-error {
-    background-color: hsl(var(--error));
-    color: hsl(var(--error-foreground));
-    box-shadow: 0 4px 8px -2px rgba(231, 76, 60, 0.25);
-  }
-
-  /* Masculine card styling */
-  .performance-card {
-    background-color: hsl(var(--card));
-    border: 2px solid hsl(var(--card-border));
-    border-radius: 0.5rem; /* Minimal rounding */
-    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease-out;
-    position: relative;
-  }
-
-  .performance-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
-    border-radius: 0.5rem 0.5rem 0 0;
-  }
-
-  .performance-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 24px -4px rgba(0, 0, 0, 0.15), 0 8px 8px -4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 20px -4px hsl(var(--primary) / 0.35);
     border-color: hsl(var(--primary));
   }
 
-  /* Override any remaining light text colors */
+  /* Override computed styles to use design system */
+  *[style*="color: yellow"],
+  *[style*="color: #ffff"],
+  *[style*="color: #fef08a"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: rgb(254, 240, 138)"],
+  *[style*="color: rgb(251, 191, 36)"] {
+    color: hsl(var(--warning)) !important;
+  }
+
   *[style*="color: white"],
   *[style*="color: #fff"],
-  *[style*="color: #ffffff"] {
+  *[style*="color: #ffffff"],
+  *[style*="color: rgb(255, 255, 255)"] {
     color: hsl(var(--primary-foreground)) !important;
   }
 
-  *[style*="color: yellow"],
-  *[style*="color: #ffff"],
-  *[style*="color: amber"] {
-    color: hsl(var(--warning)) !important;
+  /* Performance animations using design system */
+  @keyframes performance-glow {
+    '0%, 100%': { box-shadow: '0 0 5px hsl(var(--secondary) / 0.3)' },
+    '50%': { box-shadow: '0 0 20px hsl(var(--secondary) / 0.6)' }
+  }
+
+  .animate-performance-glow {
+    animation: performance-glow 2s ease-in-out infinite;
+  }
+
+  /* Floating animation for hero elements */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-gentle-pulse {
+    animation: gentle-pulse 2s ease-in-out infinite;
   }
 }

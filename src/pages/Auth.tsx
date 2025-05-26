@@ -54,7 +54,7 @@ const Auth = () => {
         <AuthHeroSection />
 
         {/* Right Auth Section */}
-        <div className="lg:w-2/5 flex items-center justify-center p-8 lg:p-16 bg-card/80 backdrop-blur-sm border-l border-card-border">
+        <div className="lg:w-2/5 flex items-center justify-center p-8 lg:p-16 bg-card/95 backdrop-blur-sm border-l-2 border-card-border">
           <div className="w-full max-w-md space-y-8">
             {showEmailConfirmation ? (
               <EmailConfirmationView 
