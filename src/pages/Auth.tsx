@@ -27,7 +27,7 @@ const Auth = () => {
   // Show password update form if in reset mode
   if (isPasswordReset) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-orange-50 via-amber-50 to-white">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background via-background-subtle to-background-muted">
         <div className="w-full max-w-md">
           <UpdatePasswordForm />
         </div>
@@ -38,7 +38,7 @@ const Auth = () => {
   // Show password reset form
   if (showPasswordReset) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-orange-50 via-amber-50 to-white">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background via-background-subtle to-background-muted">
         <div className="w-full max-w-md">
           <PasswordResetForm onBack={() => setShowPasswordReset(false)} />
         </div>
@@ -47,14 +47,14 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background-subtle to-background-muted overflow-hidden">
       <AuthBackground />
       
       <div className="relative min-h-screen flex flex-col lg:flex-row">
         <AuthHeroSection />
 
         {/* Right Auth Section */}
-        <div className="lg:w-2/5 flex items-center justify-center p-8 lg:p-16 bg-white/80 backdrop-blur-sm border-l border-orange-100/50">
+        <div className="lg:w-2/5 flex items-center justify-center p-8 lg:p-16 bg-card/80 backdrop-blur-sm border-l border-card-border">
           <div className="w-full max-w-md space-y-8">
             {showEmailConfirmation ? (
               <EmailConfirmationView 

@@ -3,177 +3,143 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Inter font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 @layer base {
   :root {
-    /* Masculine Color System - Light Mode */
-    --background: 245 247 250;
-    --background-subtle: 241 245 249;
-    --background-muted: 226 232 240;
-    --foreground: 15 17 21;
-    --foreground-muted: 71 85 105;
-
-    /* Primary Colors - Deep Confident Blue */
-    --primary: 26 31 54; /* #1A1F36 */
-    --primary-foreground: 255 255 255;
-    --primary-hover: 34 40 68;
-    --primary-active: 20 25 45;
-    --primary-disabled: 148 163 184;
-
-    /* Secondary Colors - Strong Red-Orange Accent */
-    --secondary: 255 60 56; /* #FF3C38 */
-    --secondary-foreground: 255 255 255;
-    --secondary-hover: 230 50 46;
-    --secondary-active: 204 40 36;
-    --secondary-disabled: 203 213 225;
-
-    /* Neutral Colors - Gunmetal to Cool Gray */
-    --neutral-50: 248 250 252;
-    --neutral-100: 241 245 249;
-    --neutral-200: 226 232 240;
-    --neutral-300: 203 213 225;
-    --neutral-400: 148 163 184;
-    --neutral-500: 100 116 139;
-    --neutral-600: 71 85 105;
-    --neutral-700: 51 65 85;
-    --neutral-800: 30 41 59;
-    --neutral-900: 15 23 42;
-
-    /* Semantic Colors - Performance Driven */
-    --success: 39 174 96; /* #27AE60 Emerald Green */
+    /* Light mode - Masculine performance theme */
+    --background: 248 249 250;           /* gryt-slate-50 */
+    --background-subtle: 241 243 244;    /* gryt-slate-100 */
+    --background-muted: 232 234 237;     /* gryt-slate-200 */
+    --foreground: 17 24 39;              /* gryt-slate-950 */
+    --foreground-muted: 95 99 104;       /* gryt-slate-600 */
+    
+    /* Primary - Deep navy for authority */
+    --primary: 30 41 59;                 /* gryt-navy-800 */
+    --primary-foreground: 248 250 252;   /* gryt-navy-50 */
+    --primary-hover: 15 23 42;           /* gryt-navy-900 */
+    --primary-active: 2 6 23;            /* gryt-navy-950 */
+    --primary-disabled: 100 116 139;     /* gryt-navy-500 */
+    
+    /* Secondary - Signal red for performance */
+    --secondary: 239 68 68;              /* gryt-signal-500 */
+    --secondary-foreground: 254 242 242; /* gryt-signal-50 */
+    --secondary-hover: 220 38 38;        /* gryt-signal-600 */
+    --secondary-active: 185 28 28;       /* gryt-signal-700 */
+    --secondary-disabled: 248 113 113;   /* gryt-signal-400 */
+    
+    /* Accent - Steel blue alternative */
+    --accent: 30 64 175;                 /* gryt-steel-800 */
+    --accent-foreground: 239 246 255;    /* gryt-steel-50 */
+    
+    /* States */
+    --success: 46 204 113;               /* states-success */
     --success-foreground: 255 255 255;
-    --success-hover: 33 150 83;
-    --success-background: 220 252 231;
-
-    --warning: 225 176 0; /* #E1B000 Brass Yellow */
-    --warning-foreground: 15 17 21;
-    --warning-hover: 198 154 0;
-    --warning-background: 254 243 199;
-
-    --error: 192 57 43; /* #C0392B Crimson Red */
+    --success-hover: 39 174 96;
+    --success-background: 240 253 244;
+    
+    --warning: 243 156 18;               /* states-warning */
+    --warning-foreground: 255 255 255;
+    --warning-hover: 217 119 6;
+    --warning-background: 255 251 235;
+    
+    --error: 231 76 60;                  /* states-error */
     --error-foreground: 255 255 255;
-    --error-hover: 169 50 38;
-    --error-background: 254 226 226;
-
+    --error-hover: 196 48 43;
+    --error-background: 254 242 242;
+    
     /* UI Elements */
     --card: 255 255 255;
-    --card-foreground: 15 17 21;
-    --card-border: 226 232 240;
-
-    --popover: 255 255 255;
-    --popover-foreground: 15 17 21;
-
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
-
-    --accent: 46 50 57; /* #2E3239 Cards */
-    --accent-foreground: 255 255 255;
-
-    --border: 226 232 240;
-    --border-subtle: 241 245 249;
+    --card-foreground: 32 33 35;         /* gryt-slate-900 */
+    --card-border: 218 220 224;          /* gryt-slate-300 */
+    
     --input: 255 255 255;
-    --ring: 26 31 54;
-
-    --radius: 0.5rem;
-
-    /* Shadows - Soft and Minimal */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-
+    --border: 189 193 198;               /* gryt-slate-400 */
+    --border-subtle: 232 234 237;        /* gryt-slate-200 */
+    --ring: 30 41 59;                    /* gryt-navy-800 */
+    
+    --muted: 241 243 244;                /* gryt-slate-100 */
+    --muted-foreground: 95 99 104;       /* gryt-slate-600 */
+    
+    --popover: 255 255 255;
+    --popover-foreground: 32 33 35;      /* gryt-slate-900 */
+    
     /* Sidebar */
-    --sidebar-background: 255 255 255;
-    --sidebar-foreground: 15 17 21;
-    --sidebar-primary: 26 31 54;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 248 250 252;
-    --sidebar-accent-foreground: 15 17 21;
-    --sidebar-border: 226 232 240;
-    --sidebar-ring: 26 31 54;
+    --sidebar-background: 248 249 250;   /* gryt-slate-50 */
+    --sidebar-foreground: 32 33 35;      /* gryt-slate-900 */
+    --sidebar-primary: 30 41 59;         /* gryt-navy-800 */
+    --sidebar-primary-foreground: 248 250 252; /* gryt-navy-50 */
+    --sidebar-accent: 241 243 244;       /* gryt-slate-100 */
+    --sidebar-accent-foreground: 32 33 35; /* gryt-slate-900 */
+    --sidebar-border: 218 220 224;       /* gryt-slate-300 */
+    --sidebar-ring: 30 41 59;            /* gryt-navy-800 */
   }
 
   .dark {
-    /* Masculine Color System - Dark Mode */
-    --background: 15 17 21; /* #0F1115 Background */
-    --background-subtle: 20 23 28;
-    --background-muted: 30 35 42;
-    --foreground: 248 250 252;
-    --foreground-muted: 159 166 178;
-
-    /* Primary Colors - Lighter for dark mode */
-    --primary: 59 130 246; /* Brighter blue for dark backgrounds */
-    --primary-foreground: 15 17 21;
-    --primary-hover: 37 99 235;
-    --primary-active: 29 78 216;
-    --primary-disabled: 71 85 105;
-
-    /* Secondary Colors - Red-Orange Accent */
-    --secondary: 255 60 56; /* #FF3C38 */
-    --secondary-foreground: 255 255 255;
-    --secondary-hover: 230 50 46;
-    --secondary-active: 204 40 36;
-    --secondary-disabled: 71 85 105;
-
-    /* Neutral Colors - Dark Gunmetal Range */
-    --neutral-50: 15 17 21;
-    --neutral-100: 20 23 28;
-    --neutral-200: 30 35 42;
-    --neutral-300: 46 50 57; /* #2E3239 Cards */
-    --neutral-400: 71 85 105;
-    --neutral-500: 100 116 139;
-    --neutral-600: 148 163 184;
-    --neutral-700: 203 213 225;
-    --neutral-800: 226 232 240;
-    --neutral-900: 248 250 252;
-
-    /* Semantic Colors - Dark Mode Adjusted */
-    --success: 52 211 153; /* Brighter emerald for dark mode */
-    --success-foreground: 15 17 21;
+    /* Dark mode - Performance dashboard aesthetic */
+    --background: 2 6 23;                /* gryt-navy-950 */
+    --background-subtle: 15 23 42;       /* gryt-navy-900 */
+    --background-muted: 30 41 59;        /* gryt-navy-800 */
+    --foreground: 248 250 252;           /* gryt-navy-50 */
+    --foreground-muted: 148 163 184;     /* gryt-navy-400 */
+    
+    /* Primary remains navy but lighter in dark mode */
+    --primary: 71 85 105;                /* gryt-navy-600 */
+    --primary-foreground: 248 250 252;   /* gryt-navy-50 */
+    --primary-hover: 100 116 139;        /* gryt-navy-500 */
+    --primary-active: 148 163 184;       /* gryt-navy-400 */
+    --primary-disabled: 51 65 85;        /* gryt-navy-700 */
+    
+    /* Secondary - Signal red pops in dark mode */
+    --secondary: 239 68 68;              /* gryt-signal-500 */
+    --secondary-foreground: 254 242 242; /* gryt-signal-50 */
+    --secondary-hover: 248 113 113;      /* gryt-signal-400 */
+    --secondary-active: 252 165 165;     /* gryt-signal-300 */
+    --secondary-disabled: 153 27 27;     /* gryt-signal-800 */
+    
+    /* Accent - Steel blue for contrast */
+    --accent: 37 99 235;                 /* gryt-steel-600 */
+    --accent-foreground: 239 246 255;    /* gryt-steel-50 */
+    
+    /* States adjusted for dark mode */
+    --success: 46 204 113;
+    --success-foreground: 255 255 255;
     --success-hover: 34 197 94;
-    --success-background: 20 83 45;
-
-    --warning: 251 191 36; /* Brighter brass for dark mode */
-    --warning-foreground: 15 17 21;
-    --warning-hover: 245 158 11;
+    --success-background: 5 46 22;
+    
+    --warning: 245 158 11;
+    --warning-foreground: 255 255 255;
+    --warning-hover: 217 119 6;
     --warning-background: 69 26 3;
-
-    --error: 248 113 113; /* Brighter crimson for dark mode */
-    --error-foreground: 15 17 21;
-    --error-hover: 239 68 68;
+    
+    --error: 239 68 68;
+    --error-foreground: 255 255 255;
+    --error-hover: 248 113 113;
     --error-background: 69 10 10;
-
-    /* UI Elements */
-    --card: 46 50 57; /* #2E3239 Cards */
-    --card-foreground: 248 250 252;
-    --card-border: 71 85 105;
-
-    --popover: 46 50 57;
-    --popover-foreground: 248 250 252;
-
-    --muted: 30 35 42;
-    --muted-foreground: 159 166 178; /* #9FA6B2 Muted Text */
-
-    --accent: 71 85 105;
-    --accent-foreground: 248 250 252;
-
-    --border: 71 85 105;
-    --border-subtle: 46 50 57;
-    --input: 46 50 57;
-    --ring: 59 130 246;
-
-    /* Sidebar Dark Mode */
-    --sidebar-background: 15 17 21;
-    --sidebar-foreground: 248 250 252;
-    --sidebar-primary: 59 130 246;
-    --sidebar-primary-foreground: 15 17 21;
-    --sidebar-accent: 30 35 42;
-    --sidebar-accent-foreground: 248 250 252;
-    --sidebar-border: 71 85 105;
-    --sidebar-ring: 59 130 246;
+    
+    /* UI Elements for dark mode */
+    --card: 15 23 42;                    /* gryt-navy-900 */
+    --card-foreground: 248 250 252;      /* gryt-navy-50 */
+    --card-border: 51 65 85;             /* gryt-navy-700 */
+    
+    --input: 30 41 59;                   /* gryt-navy-800 */
+    --border: 51 65 85;                  /* gryt-navy-700 */
+    --border-subtle: 30 41 59;           /* gryt-navy-800 */
+    --ring: 100 116 139;                 /* gryt-navy-500 */
+    
+    --muted: 30 41 59;                   /* gryt-navy-800 */
+    --muted-foreground: 148 163 184;     /* gryt-navy-400 */
+    
+    --popover: 15 23 42;                 /* gryt-navy-900 */
+    --popover-foreground: 248 250 252;   /* gryt-navy-50 */
+    
+    /* Sidebar for dark mode */
+    --sidebar-background: 2 6 23;        /* gryt-navy-950 */
+    --sidebar-foreground: 248 250 252;   /* gryt-navy-50 */
+    --sidebar-primary: 71 85 105;        /* gryt-navy-600 */
+    --sidebar-primary-foreground: 248 250 252; /* gryt-navy-50 */
+    --sidebar-accent: 30 41 59;          /* gryt-navy-800 */
+    --sidebar-accent-foreground: 248 250 252; /* gryt-navy-50 */
+    --sidebar-border: 51 65 85;          /* gryt-navy-700 */
+    --sidebar-ring: 100 116 139;         /* gryt-navy-500 */
   }
 }
 
@@ -181,128 +147,61 @@
   * {
     @apply border-border;
   }
-
+  
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-weight: 400;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
 
-  /* Modern Typography System */
-  h1, .h1 {
-    font-size: 2.25rem; /* 36px */
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.025em;
+  /* Performance-focused typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
     color: hsl(var(--foreground));
   }
 
-  h2, .h2 {
-    font-size: 1.75rem; /* 28px */
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -0.025em;
-    color: hsl(var(--foreground));
+  h1 {
+    @apply text-3xl lg:text-4xl;
   }
 
-  h3, .h3 {
-    font-size: 1.375rem; /* 22px */
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -0.025em;
-    color: hsl(var(--foreground));
+  h2 {
+    @apply text-2xl lg:text-3xl;
   }
 
-  h4, .h4 {
-    font-size: 1.125rem; /* 18px */
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -0.025em;
-    color: hsl(var(--foreground));
+  h3 {
+    @apply text-xl lg:text-2xl;
   }
 
-  h5, .h5 {
-    font-size: 1rem; /* 16px */
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -0.025em;
-    color: hsl(var(--foreground));
+  /* High contrast for accessibility */
+  .high-contrast {
+    @apply text-foreground;
   }
 
-  h6, .h6 {
-    font-size: 0.875rem; /* 14px */
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -0.025em;
-    color: hsl(var(--foreground));
+  .medium-contrast {
+    @apply text-muted-foreground;
   }
 
-  p, .body {
-    font-size: 1rem; /* 16px */
-    font-weight: 400;
-    line-height: 1.6;
-    color: hsl(var(--foreground));
-    max-width: 65ch;
+  /* Performance button styles */
+  .btn-performance {
+    @apply bg-primary hover:bg-primary-hover active:bg-primary-active;
+    @apply text-primary-foreground font-semibold;
+    @apply transition-all duration-150 ease-out;
+    @apply shadow-performance;
   }
 
-  .body-lg {
-    font-size: 1.125rem; /* 18px */
-    font-weight: 400;
-    line-height: 1.6;
-    color: hsl(var(--foreground));
-    max-width: 65ch;
+  .btn-accent {
+    @apply bg-secondary hover:bg-secondary-hover active:bg-secondary-active;
+    @apply text-secondary-foreground font-semibold;
+    @apply transition-all duration-150 ease-out;
+    @apply shadow-lg;
   }
 
-  .body-sm, small {
-    font-size: 0.875rem; /* 14px */
-    font-weight: 400;
-    line-height: 1.5;
-    color: hsl(var(--muted-foreground));
+  /* Sharp, minimal rounding for masculine aesthetic */
+  .masculine-rounded {
+    @apply rounded-md;
   }
 
-  .body-xs {
-    font-size: 0.75rem; /* 12px */
-    font-weight: 400;
-    line-height: 1.4;
-    color: hsl(var(--muted-foreground));
-  }
-
-  /* Button Typography */
-  button, .button {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-  }
-
-  /* Form Elements Typography */
-  input, textarea, select {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-weight: 400;
-    line-height: 1.5;
-  }
-
-  label {
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.4;
-    color: hsl(var(--foreground));
-  }
-
-  /* Responsive Typography */
-  @media (max-width: 768px) {
-    h1, .h1 {
-      font-size: 1.875rem; /* 30px on mobile */
-    }
-    
-    h2, .h2 {
-      font-size: 1.5rem; /* 24px on mobile */
-    }
-    
-    h3, .h3 {
-      font-size: 1.25rem; /* 20px on mobile */
-    }
+  .masculine-rounded-lg {
+    @apply rounded-lg;
   }
 }

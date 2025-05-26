@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -140,41 +139,41 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-orange-100/30">
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-slate-900 mb-3 tracking-tight">Welcome to Gryt</h1>
-        <p className="text-lg text-slate-700 font-medium">Start your journey to achieving your goals</p>
+    <div className="bg-card/95 backdrop-blur-lg rounded-lg p-8 shadow-xl border-2 border-card-border">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">Welcome to Gryt</h1>
+        <p className="text-lg text-muted-foreground font-medium">Start your journey to achieving your goals</p>
       </div>
       
       {authError && (
-        <div className="mb-8 p-5 bg-red-50 border-2 border-red-200 rounded-2xl flex items-start gap-4">
-          <AlertCircle className="w-6 h-6 text-red-600 mt-0.5 flex-shrink-0" />
-          <div className="text-sm text-red-800 font-medium leading-relaxed">
+        <div className="mb-6 p-4 bg-error-background border-2 border-error/20 rounded-md flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-error mt-0.5 flex-shrink-0" />
+          <div className="text-sm text-error font-medium leading-relaxed">
             {authError}
           </div>
         </div>
       )}
       
-      <Tabs defaultValue="signin" className="space-y-8">
-        <TabsList className="grid w-full grid-cols-2 bg-slate-50 rounded-2xl p-2 h-14 relative">
+      <Tabs defaultValue="signin" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2 bg-muted rounded-md p-1 h-12 relative">
           <TabsTrigger 
             value="signin" 
-            className="rounded-xl font-semibold text-base h-10 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-lg text-slate-600 transition-all duration-300 relative z-10"
+            className="rounded-md font-semibold text-base h-10 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-md text-muted-foreground transition-all duration-200 relative z-10"
           >
             Sign In
           </TabsTrigger>
           <TabsTrigger 
             value="signup" 
-            className="rounded-xl font-semibold text-base h-10 data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-lg text-slate-600 transition-all duration-300 relative z-10"
+            className="rounded-md font-semibold text-base h-10 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-md text-muted-foreground transition-all duration-200 relative z-10"
           >
             Sign Up
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="signin" className="space-y-6 mt-8">
-          <form onSubmit={handleSignIn} className="space-y-6">
-            <div className="space-y-3">
-              <Label htmlFor="email-signin" className="text-slate-800 font-semibold text-base">Email Address</Label>
+        <TabsContent value="signin" className="space-y-4 mt-6">
+          <form onSubmit={handleSignIn} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email-signin" className="text-foreground font-semibold text-base">Email Address</Label>
               <Input
                 id="email-signin"
                 type="email"
@@ -183,16 +182,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className="h-14 rounded-2xl border-2 border-slate-200 bg-white focus:bg-white transition-all duration-200 placeholder:text-slate-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 text-base font-medium"
+                className="h-12 text-base font-medium"
               />
             </div>
-            <div className="space-y-3">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password-signin" className="text-slate-800 font-semibold text-base">Password</Label>
+                <Label htmlFor="password-signin" className="text-foreground font-semibold text-base">Password</Label>
                 <button 
                   type="button"
                   onClick={onPasswordReset}
-                  className="text-sm text-orange-600 hover:text-orange-700 transition-colors font-medium underline underline-offset-2"
+                  className="text-sm text-primary hover:text-primary-hover transition-colors font-medium underline underline-offset-2"
                   disabled={isLoading}
                 >
                   Forgot password?
@@ -207,11 +206,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
                   required
                   disabled={isLoading}
                   placeholder="Enter your password"
-                  className="h-14 rounded-2xl border-2 border-slate-200 bg-white focus:bg-white pr-14 transition-all duration-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 text-base font-medium placeholder:text-slate-500"
+                  className="h-12 pr-12 text-base font-medium"
                 />
                 <button
                   type="button"
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors disabled:opacity-50 p-1"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 p-1"
                   onClick={togglePasswordVisibility}
                   disabled={isLoading}
                   aria-label={showPassword ? "Hide password" : "Show password"}
@@ -223,17 +222,19 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl h-14 font-bold text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none border-0"
+              variant="default"
+              size="lg"
+              className="w-full font-bold text-base"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
         </TabsContent>
         
-        <TabsContent value="signup" className="space-y-6 mt-8">
-          <form onSubmit={handleSignUp} className="space-y-6">
-            <div className="space-y-3">
-              <Label htmlFor="email-signup" className="text-slate-800 font-semibold text-base">Email Address</Label>
+        <TabsContent value="signup" className="space-y-4 mt-6">
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email-signup" className="text-foreground font-semibold text-base">Email Address</Label>
               <Input
                 id="email-signup"
                 type="email"
@@ -242,11 +243,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className="h-14 rounded-2xl border-2 border-slate-200 bg-white focus:bg-white transition-all duration-200 placeholder:text-slate-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 text-base font-medium"
+                className="h-12 text-base font-medium"
               />
             </div>
-            <div className="space-y-3">
-              <Label htmlFor="password-signup" className="text-slate-800 font-semibold text-base">Password</Label>
+            <div className="space-y-2">
+              <Label htmlFor="password-signup" className="text-foreground font-semibold text-base">Password</Label>
               <div className="relative">
                 <Input
                   id="password-signup"
@@ -255,13 +256,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={isLoading}
-                  className="h-14 rounded-2xl border-2 border-slate-200 bg-white focus:bg-white pr-14 transition-all duration-200 placeholder:text-slate-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 text-base font-medium"
+                  className="h-12 pr-12 text-base font-medium"
                   minLength={6}
                   placeholder="At least 6 characters"
                 />
                 <button
                   type="button"
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors disabled:opacity-50 p-1"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 p-1"
                   onClick={togglePasswordVisibility}
                   disabled={isLoading}
                   aria-label={showPassword ? "Hide password" : "Show password"}
@@ -273,7 +274,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl h-14 font-bold text-base shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none border-0"
+              variant="secondary"
+              size="lg"
+              className="w-full font-bold text-base"
             >
               {isLoading ? 'Creating account...' : 'Create Account'}
             </Button>
@@ -281,7 +284,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onPasswordReset }) => {
         </TabsContent>
       </Tabs>
       
-      <div className="text-center text-sm text-slate-600 mt-8">
+      <div className="text-center text-sm text-muted-foreground mt-6">
         <div className="flex items-center justify-center space-x-2">
           <Shield className="w-4 h-4" />
           <span className="font-medium">Secure authentication powered by Supabase</span>

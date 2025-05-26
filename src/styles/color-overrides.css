@@ -1,8 +1,8 @@
 
 @layer base {
-  /* MASCULINE COLOR SYSTEM OVERRIDES */
+  /* MASCULINE PERFORMANCE COLOR SYSTEM OVERRIDES */
   
-  /* Target all yellow and amber text utilities - convert to foreground */
+  /* Remove any yellow/amber text utilities - convert to appropriate contrast */
   .text-yellow-50,
   .text-yellow-100,
   .text-yellow-200,
@@ -23,15 +23,15 @@
   .text-amber-700,
   .text-amber-800,
   .text-amber-900 {
-    color: hsl(var(--foreground)) !important;
+    color: hsl(var(--warning)) !important;
   }
 
-  /* Target all white text utilities - convert to secondary accent */
+  /* White text utilities - convert to high contrast */
   .text-white {
-    color: hsl(var(--secondary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
   }
 
-  /* Target all light colored text that might appear too light */
+  /* Light gray utilities - ensure sufficient contrast */
   .text-gray-100,
   .text-gray-200,
   .text-gray-300,
@@ -39,102 +39,128 @@
   .text-slate-100,
   .text-slate-200,
   .text-slate-300,
-  .text-slate-400,
-  .text-stone-100,
-  .text-stone-200,
-  .text-stone-300,
-  .text-stone-400,
-  .text-neutral-100,
-  .text-neutral-200,
-  .text-neutral-300,
-  .text-neutral-400,
-  .text-zinc-100,
-  .text-zinc-200,
-  .text-zinc-300,
-  .text-zinc-400 {
+  .text-slate-400 {
     color: hsl(var(--muted-foreground)) !important;
   }
 
-  /* Override muted text colors */
-  .text-muted,
-  .text-muted-foreground {
-    color: hsl(var(--muted-foreground)) !important;
-  }
-
-  /* Ensure gryt colors align with masculine theme */
-  .text-gryt-yellow {
-    color: hsl(var(--warning)) !important;
-  }
-
-  .text-gryt-blue {
+  /* Performance-focused brand colors */
+  .text-gryt-navy {
     color: hsl(var(--primary)) !important;
   }
 
-  .text-gryt-red {
+  .text-gryt-signal {
     color: hsl(var(--secondary)) !important;
   }
 
-  .text-gryt-green {
-    color: hsl(var(--success)) !important;
+  .text-gryt-steel {
+    color: hsl(var(--accent)) !important;
   }
 
-  /* Catch-all for any class containing yellow, amber */
-  [class*="yellow"]:not([class*="bg-yellow"]):not([class*="border-yellow"]):not([class*="ring-yellow"]):not([class*="shadow-yellow"]) {
-    color: hsl(var(--warning)) !important;
-  }
-
-  [class*="amber"]:not([class*="bg-amber"]):not([class*="border-amber"]):not([class*="ring-amber"]):not([class*="shadow-amber"]) {
-    color: hsl(var(--warning)) !important;
-  }
-
-  /* Override background colors for better contrast */
-  .bg-gryt-blue {
+  /* Background overrides for brand consistency */
+  .bg-gryt-navy {
     background-color: hsl(var(--primary)) !important;
     color: hsl(var(--primary-foreground)) !important;
   }
 
-  .bg-gryt-red {
+  .bg-gryt-signal {
     background-color: hsl(var(--secondary)) !important;
     color: hsl(var(--secondary-foreground)) !important;
   }
 
-  .bg-gryt-green {
-    background-color: hsl(var(--success)) !important;
-    color: hsl(var(--success-foreground)) !important;
+  .bg-gryt-steel {
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
   }
 
-  .bg-gryt-yellow {
-    background-color: hsl(var(--warning)) !important;
-    color: hsl(var(--warning-foreground)) !important;
-  }
-
-  /* Performance-focused button styles */
-  .btn-performance {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-hover)) 100%);
-    color: hsl(var(--primary-foreground));
-    border: 2px solid transparent;
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .btn-performance:hover {
-    background: linear-gradient(135deg, hsl(var(--primary-hover)) 0%, hsl(var(--primary-active)) 100%);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .btn-accent {
+  /* High-performance button variants */
+  .btn-signal {
     background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary-hover)) 100%);
     color: hsl(var(--secondary-foreground));
+    border: none;
     font-weight: 600;
     letter-spacing: -0.025em;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.15s ease-out;
+    box-shadow: 0 8px 16px -4px rgba(239, 68, 68, 0.25);
   }
 
-  .btn-accent:hover {
+  .btn-signal:hover {
     background: linear-gradient(135deg, hsl(var(--secondary-hover)) 0%, hsl(var(--secondary-active)) 100%);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px -4px rgba(239, 68, 68, 0.35);
+  }
+
+  .btn-navy {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-hover)) 100%);
+    color: hsl(var(--primary-foreground));
+    border: none;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    transition: all 0.15s ease-out;
+    box-shadow: 0 8px 16px -4px rgba(30, 41, 59, 0.25);
+  }
+
+  .btn-navy:hover {
+    background: linear-gradient(135deg, hsl(var(--primary-hover)) 0%, hsl(var(--primary-active)) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 20px -4px rgba(30, 41, 59, 0.35);
+  }
+
+  /* State indicators with performance aesthetic */
+  .status-success {
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
+    box-shadow: 0 4px 8px -2px rgba(46, 204, 113, 0.25);
+  }
+
+  .status-warning {
+    background-color: hsl(var(--warning));
+    color: hsl(var(--warning-foreground));
+    box-shadow: 0 4px 8px -2px rgba(243, 156, 18, 0.25);
+  }
+
+  .status-error {
+    background-color: hsl(var(--error));
+    color: hsl(var(--error-foreground));
+    box-shadow: 0 4px 8px -2px rgba(231, 76, 60, 0.25);
+  }
+
+  /* Masculine card styling */
+  .performance-card {
+    background-color: hsl(var(--card));
+    border: 2px solid hsl(var(--card-border));
+    border-radius: 0.5rem; /* Minimal rounding */
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-out;
+    position: relative;
+  }
+
+  .performance-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .performance-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 24px -4px rgba(0, 0, 0, 0.15), 0 8px 8px -4px rgba(0, 0, 0, 0.1);
+    border-color: hsl(var(--primary));
+  }
+
+  /* Override any remaining light text colors */
+  *[style*="color: white"],
+  *[style*="color: #fff"],
+  *[style*="color: #ffffff"] {
+    color: hsl(var(--primary-foreground)) !important;
+  }
+
+  *[style*="color: yellow"],
+  *[style*="color: #ffff"],
+  *[style*="color: amber"] {
+    color: hsl(var(--warning)) !important;
   }
 }
