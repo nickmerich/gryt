@@ -6,24 +6,24 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-base font-semibold ring-offset-background transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-base font-bold ring-offset-background transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 tracking-wide uppercase text-sm letter-spacing-wider",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-lg hover:bg-primary-hover hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5",
-        destructive: "bg-error text-error-foreground shadow-lg hover:bg-error-hover hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5",
-        outline: "border-2 border-border bg-background shadow-md hover:bg-accent hover:text-accent-foreground hover:border-primary hover:shadow-lg transform hover:scale-[1.01]",
-        secondary: "bg-secondary text-secondary-foreground shadow-lg hover:bg-secondary-hover hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        success: "bg-success text-success-foreground shadow-lg hover:bg-success-hover hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5",
-        warning: "bg-warning text-warning-foreground shadow-lg hover:bg-warning-hover hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5",
+        default: "bg-primary text-primary-foreground shadow-performance hover:bg-primary-hover hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5 border-2 border-primary/20",
+        destructive: "bg-error text-error-foreground shadow-performance hover:bg-error-hover hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5 border-2 border-error/20",
+        outline: "border-2 border-border bg-card shadow-md hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-performance transform hover:scale-[1.01] font-bold",
+        secondary: "bg-secondary text-secondary-foreground shadow-performance hover:bg-secondary-hover hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5 border-2 border-secondary/20",
+        ghost: "hover:bg-accent hover:text-accent-foreground font-bold",
+        link: "text-primary underline-offset-4 hover:underline font-bold",
+        success: "bg-success text-success-foreground shadow-performance hover:bg-success-hover hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5 border-2 border-success/20",
+        warning: "bg-warning text-warning-foreground shadow-performance hover:bg-warning-hover hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] hover:-translate-y-0.5 border-2 border-warning/20",
       },
       size: {
-        default: "h-12 px-6 py-3 rounded-md",
-        sm: "h-10 px-4 py-2 text-sm rounded-md",
-        lg: "h-14 px-8 py-4 text-lg rounded-lg",
-        icon: "h-12 w-12 rounded-md",
+        default: "h-12 px-6 py-3 rounded-sm",
+        sm: "h-10 px-4 py-2 text-xs rounded-sm",
+        lg: "h-14 px-8 py-4 text-base rounded-sm",
+        icon: "h-12 w-12 rounded-sm",
       },
     },
     defaultVariants: {

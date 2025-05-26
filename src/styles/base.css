@@ -4,204 +4,200 @@
 @tailwind utilities;
 
 @layer base {
+  /* BLUE + BLACK MASCULINE COLOR SYSTEM */
   :root {
-    /* Light mode - Masculine performance theme */
-    --background: 248 249 250;           /* gryt-slate-50 */
-    --background-subtle: 241 243 244;    /* gryt-slate-100 */
-    --background-muted: 232 234 237;     /* gryt-slate-200 */
-    --foreground: 17 24 39;              /* gryt-slate-950 */
-    --foreground-muted: 95 99 104;       /* gryt-slate-600 */
+    /* == CORE BRAND COLORS == */
+    /* Primary - Deep Blue (Energy + Focus) */
+    --primary: 217 91 77; /* #1D4ED8 Strong Blue */
+    --primary-foreground: 255 255 255; /* White */
+    --primary-hover: 30 58 138; /* #1E3A8A Deep Navy */
+    --primary-active: 30 64 175; /* Slightly lighter for active state */
+    --primary-disabled: 71 85 105; /* Muted version */
+
+    /* Secondary - Electric Blue Accent */
+    --secondary: 59 130 246; /* #3B82F6 Electric Blue */
+    --secondary-foreground: 255 255 255; /* White */
+    --secondary-hover: 96 165 250; /* #60A5FA Hover/glow variant */
+    --secondary-active: 37 99 235; /* Slightly darker for active */
+    --secondary-disabled: 71 85 105; /* Muted version */
+
+    /* Accent - Royal Blue */
+    --accent: 96 165 250; /* #60A5FA */
+    --accent-foreground: 17 24 39; /* Dark text on light accent */
+
+    /* == BACKGROUNDS == */
+    /* Jet Black & Slate Hierarchy */
+    --background: 10 10 10; /* #0A0A0A App background */
+    --background-subtle: 17 24 39; /* #111827 Elevated sections */
+    --background-muted: 31 41 55; /* #1F2937 Lightened surfaces */
+
+    /* Card system */
+    --card: 17 24 39; /* #111827 */
+    --card-foreground: 255 255 255; /* White */
+    --card-border: 55 65 81; /* #374151 Subtle border */
+
+    /* == TEXT & GRAYSCALE == */
+    --foreground: 255 255 255; /* #FFFFFF Primary text */
+    --foreground-muted: 156 163 175; /* #9CA3AF */
     
-    /* Primary - Deep navy for authority */
-    --primary: 30 41 59;                 /* gryt-navy-800 */
-    --primary-foreground: 248 250 252;   /* gryt-navy-50 */
-    --primary-hover: 15 23 42;           /* gryt-navy-900 */
-    --primary-active: 2 6 23;            /* gryt-navy-950 */
-    --primary-disabled: 100 116 139;     /* gryt-navy-500 */
-    
-    /* Secondary - Signal red for performance */
-    --secondary: 239 68 68;              /* gryt-signal-500 */
-    --secondary-foreground: 254 242 242; /* gryt-signal-50 */
-    --secondary-hover: 220 38 38;        /* gryt-signal-600 */
-    --secondary-active: 185 28 28;       /* gryt-signal-700 */
-    --secondary-disabled: 248 113 113;   /* gryt-signal-400 */
-    
-    /* Accent - Steel blue alternative */
-    --accent: 30 64 175;                 /* gryt-steel-800 */
-    --accent-foreground: 239 246 255;    /* gryt-steel-50 */
-    
-    /* States */
-    --success: 46 204 113;               /* states-success */
+    --muted: 31 41 55; /* #1F2937 */
+    --muted-foreground: 203 213 225; /* #CBD5E1 Muted/secondary */
+
+    /* == SEMANTIC STATES == */
+    /* Success - Bold Green */
+    --success: 34 197 94; /* #22C55E */
     --success-foreground: 255 255 255;
-    --success-hover: 39 174 96;
-    --success-background: 240 253 244;
-    
-    --warning: 243 156 18;               /* states-warning */
-    --warning-foreground: 255 255 255;
-    --warning-hover: 217 119 6;
-    --warning-background: 255 251 235;
-    
-    --error: 231 76 60;                  /* states-error */
+    --success-hover: 22 163 74;
+    --success-background: 5 46 22; /* Dark green background */
+
+    /* Warning - Military Gold */
+    --warning: 234 179 8; /* #EAB308 */
+    --warning-foreground: 17 24 39; /* Dark text */
+    --warning-hover: 202 138 4;
+    --warning-background: 69 26 3; /* Dark amber background */
+
+    /* Error - Bold Crimson */
+    --error: 239 68 68; /* #EF4444 */
     --error-foreground: 255 255 255;
-    --error-hover: 196 48 43;
-    --error-background: 254 242 242;
+    --error-hover: 220 38 38;
+    --error-background: 69 10 10; /* Dark red background */
+
+    /* == UI SYSTEM COLORS == */
+    --border: 55 65 81; /* #374151 Sharp, defined borders */
+    --border-subtle: 31 41 55; /* #1F2937 Subtle dividers */
+    --input: 31 41 55; /* #1F2937 Input backgrounds */
+    --ring: 59 130 246; /* #3B82F6 Focus rings */
+
+    /* Popover and overlay system */
+    --popover: 17 24 39; /* #111827 */
+    --popover-foreground: 255 255 255;
+
+    /* Sidebar system */
+    --sidebar-background: 10 10 10; /* #0A0A0A */
+    --sidebar-foreground: 255 255 255;
+    --sidebar-primary: 217 91 77; /* #1D4ED8 */
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 31 41 55; /* #1F2937 */
+    --sidebar-accent-foreground: 203 213 225; /* #CBD5E1 */
+    --sidebar-border: 55 65 81; /* #374151 */
+    --sidebar-ring: 59 130 246; /* #3B82F6 */
+
+    /* == DESIGN SYSTEM VARIABLES == */
+    --radius: 0.25rem; /* Minimal rounding for sharp, tactical feel */
     
-    /* UI Elements */
-    --card: 255 255 255;
-    --card-foreground: 32 33 35;         /* gryt-slate-900 */
-    --card-border: 218 220 224;          /* gryt-slate-300 */
-    
-    --input: 255 255 255;
-    --border: 189 193 198;               /* gryt-slate-400 */
-    --border-subtle: 232 234 237;        /* gryt-slate-200 */
-    --ring: 30 41 59;                    /* gryt-navy-800 */
-    
-    --muted: 241 243 244;                /* gryt-slate-100 */
-    --muted-foreground: 95 99 104;       /* gryt-slate-600 */
-    
+    /* Performance shadows */
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+    --shadow-performance: 0 8px 16px -4px rgba(29, 78, 216, 0.15), 0 4px 6px -2px rgba(29, 78, 216, 0.1);
+  }
+
+  /* == LIGHT MODE OVERRIDES == */
+  .light {
+    /* Swap to light backgrounds while keeping blue palette */
+    --background: 248 250 252; /* #F8FAFC Light background */
+    --background-subtle: 241 245 249; /* #F1F5F9 */
+    --background-muted: 226 232 240; /* #E2E8F0 */
+
+    /* Card system for light mode */
+    --card: 255 255 255; /* White cards */
+    --card-foreground: 15 23 42; /* #0F172A Dark text */
+    --card-border: 226 232 240; /* #E2E8F0 */
+
+    /* Text adjustments for light mode */
+    --foreground: 15 23 42; /* #0F172A Primary dark text */
+    --foreground-muted: 100 116 139; /* #64748B */
+    --muted: 241 245 249; /* #F1F5F9 */
+    --muted-foreground: 100 116 139; /* #64748B */
+
+    /* UI adjustments */
+    --border: 226 232 240; /* #E2E8F0 */
+    --border-subtle: 241 245 249; /* #F1F5F9 */
+    --input: 255 255 255; /* White inputs */
+
+    /* Popover adjustments */
     --popover: 255 255 255;
-    --popover-foreground: 32 33 35;      /* gryt-slate-900 */
+    --popover-foreground: 15 23 42; /* #0F172A */
+
+    /* Keep primary blues consistent in light mode */
+    /* Primary, secondary, accent colors remain the same for brand consistency */
     
-    /* Sidebar */
-    --sidebar-background: 248 249 250;   /* gryt-slate-50 */
-    --sidebar-foreground: 32 33 35;      /* gryt-slate-900 */
-    --sidebar-primary: 30 41 59;         /* gryt-navy-800 */
-    --sidebar-primary-foreground: 248 250 252; /* gryt-navy-50 */
-    --sidebar-accent: 241 243 244;       /* gryt-slate-100 */
-    --sidebar-accent-foreground: 32 33 35; /* gryt-slate-900 */
-    --sidebar-border: 218 220 224;       /* gryt-slate-300 */
-    --sidebar-ring: 30 41 59;            /* gryt-navy-800 */
+    /* Lighter shadows for light mode */
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
-  .dark {
-    /* Dark mode - Performance dashboard aesthetic */
-    --background: 2 6 23;                /* gryt-navy-950 */
-    --background-subtle: 15 23 42;       /* gryt-navy-900 */
-    --background-muted: 30 41 59;        /* gryt-navy-800 */
-    --foreground: 248 250 252;           /* gryt-navy-50 */
-    --foreground-muted: 148 163 184;     /* gryt-navy-400 */
-    
-    /* Primary remains navy but lighter in dark mode */
-    --primary: 71 85 105;                /* gryt-navy-600 */
-    --primary-foreground: 248 250 252;   /* gryt-navy-50 */
-    --primary-hover: 100 116 139;        /* gryt-navy-500 */
-    --primary-active: 148 163 184;       /* gryt-navy-400 */
-    --primary-disabled: 51 65 85;        /* gryt-navy-700 */
-    
-    /* Secondary - Signal red pops in dark mode */
-    --secondary: 239 68 68;              /* gryt-signal-500 */
-    --secondary-foreground: 254 242 242; /* gryt-signal-50 */
-    --secondary-hover: 248 113 113;      /* gryt-signal-400 */
-    --secondary-active: 252 165 165;     /* gryt-signal-300 */
-    --secondary-disabled: 153 27 27;     /* gryt-signal-800 */
-    
-    /* Accent - Steel blue for contrast */
-    --accent: 37 99 235;                 /* gryt-steel-600 */
-    --accent-foreground: 239 246 255;    /* gryt-steel-50 */
-    
-    /* States adjusted for dark mode */
-    --success: 46 204 113;
-    --success-foreground: 255 255 255;
-    --success-hover: 34 197 94;
-    --success-background: 5 46 22;
-    
-    --warning: 245 158 11;
-    --warning-foreground: 255 255 255;
-    --warning-hover: 217 119 6;
-    --warning-background: 69 26 3;
-    
-    --error: 239 68 68;
-    --error-foreground: 255 255 255;
-    --error-hover: 248 113 113;
-    --error-background: 69 10 10;
-    
-    /* UI Elements for dark mode */
-    --card: 15 23 42;                    /* gryt-navy-900 */
-    --card-foreground: 248 250 252;      /* gryt-navy-50 */
-    --card-border: 51 65 85;             /* gryt-navy-700 */
-    
-    --input: 30 41 59;                   /* gryt-navy-800 */
-    --border: 51 65 85;                  /* gryt-navy-700 */
-    --border-subtle: 30 41 59;           /* gryt-navy-800 */
-    --ring: 100 116 139;                 /* gryt-navy-500 */
-    
-    --muted: 30 41 59;                   /* gryt-navy-800 */
-    --muted-foreground: 148 163 184;     /* gryt-navy-400 */
-    
-    --popover: 15 23 42;                 /* gryt-navy-900 */
-    --popover-foreground: 248 250 252;   /* gryt-navy-50 */
-    
-    /* Sidebar for dark mode */
-    --sidebar-background: 2 6 23;        /* gryt-navy-950 */
-    --sidebar-foreground: 248 250 252;   /* gryt-navy-50 */
-    --sidebar-primary: 71 85 105;        /* gryt-navy-600 */
-    --sidebar-primary-foreground: 248 250 252; /* gryt-navy-50 */
-    --sidebar-accent: 30 41 59;          /* gryt-navy-800 */
-    --sidebar-accent-foreground: 248 250 252; /* gryt-navy-50 */
-    --sidebar-border: 51 65 85;          /* gryt-navy-700 */
-    --sidebar-ring: 100 116 139;         /* gryt-navy-500 */
-  }
-}
-
-@layer base {
+  /* == BASE ELEMENT STYLING == */
   * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    border-color: hsl(var(--border));
   }
 
-  /* Performance-focused typography */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography hierarchy for masculine design */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    color: hsl(var(--foreground));
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    color: hsl(var(--foreground));
+    line-height: 1.6;
+  }
+
+  /* Form element styling */
+  input, textarea, select {
     color: hsl(var(--foreground));
   }
 
-  h1 {
-    @apply text-3xl lg:text-4xl;
+  input::placeholder,
+  textarea::placeholder {
+    color: hsl(var(--muted-foreground));
   }
 
-  h2 {
-    @apply text-2xl lg:text-3xl;
+  /* Focus ring system */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 
-  h3 {
-    @apply text-xl lg:text-2xl;
+  /* Selection styling */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary-foreground));
   }
 
-  /* High contrast for accessibility */
-  .high-contrast {
-    @apply text-foreground;
+  /* Scrollbar styling for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
 
-  .medium-contrast {
-    @apply text-muted-foreground;
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background-muted));
   }
 
-  /* Performance button styles */
-  .btn-performance {
-    @apply bg-primary hover:bg-primary-hover active:bg-primary-active;
-    @apply text-primary-foreground font-semibold;
-    @apply transition-all duration-150 ease-out;
-    @apply shadow-performance;
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 0.25rem;
   }
 
-  .btn-accent {
-    @apply bg-secondary hover:bg-secondary-hover active:bg-secondary-active;
-    @apply text-secondary-foreground font-semibold;
-    @apply transition-all duration-150 ease-out;
-    @apply shadow-lg;
-  }
-
-  /* Sharp, minimal rounding for masculine aesthetic */
-  .masculine-rounded {
-    @apply rounded-md;
-  }
-
-  .masculine-rounded-lg {
-    @apply rounded-lg;
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
   }
 }

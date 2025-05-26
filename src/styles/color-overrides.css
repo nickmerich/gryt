@@ -1,8 +1,9 @@
 
 @layer base {
-  /* MASCULINE PERFORMANCE COLOR SYSTEM OVERRIDES */
+  /* BLUE + BLACK MASCULINE COLOR SYSTEM OVERRIDES */
   
-  /* Override any remaining light text colors to use design system */
+  /* == TACTICAL COLOR ENFORCEMENT == */
+  /* Override any light/yellow colors to use the masculine system */
   .text-yellow-50,
   .text-yellow-100,
   .text-yellow-200,
@@ -26,12 +27,12 @@
     color: hsl(var(--warning)) !important;
   }
 
-  /* White text utilities - convert to design system */
+  /* White text enforcement */
   .text-white {
-    color: hsl(var(--primary-foreground)) !important;
+    color: hsl(var(--foreground)) !important;
   }
 
-  /* Light gray utilities - ensure design system consistency */
+  /* Gray utilities to use design system */
   .text-gray-100,
   .text-gray-200,
   .text-gray-300,
@@ -43,73 +44,115 @@
     color: hsl(var(--muted-foreground)) !important;
   }
 
-  /* Performance-focused brand colors using CSS variables */
-  .text-gryt-navy {
+  /* == TACTICAL BRAND COLORS == */
+  .text-tactical-primary {
     color: hsl(var(--primary)) !important;
   }
 
-  .text-gryt-signal {
+  .text-tactical-secondary {
     color: hsl(var(--secondary)) !important;
   }
 
-  .text-gryt-steel {
+  .text-tactical-accent {
     color: hsl(var(--accent)) !important;
   }
 
-  /* Background overrides using design system */
-  .bg-gryt-navy {
+  /* Background variants */
+  .bg-tactical-primary {
     background-color: hsl(var(--primary)) !important;
     color: hsl(var(--primary-foreground)) !important;
   }
 
-  .bg-gryt-signal {
+  .bg-tactical-secondary {
     background-color: hsl(var(--secondary)) !important;
     color: hsl(var(--secondary-foreground)) !important;
   }
 
-  .bg-gryt-steel {
+  .bg-tactical-accent {
     background-color: hsl(var(--accent)) !important;
     color: hsl(var(--accent-foreground)) !important;
   }
 
-  /* High-performance masculine button variants */
-  .btn-signal {
-    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary-hover)) 100%);
+  /* == PERFORMANCE BUTTON VARIANTS == */
+  .btn-tactical-primary {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border: 2px solid hsl(var(--primary) / 0.2);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    transition: all 0.15s ease-out;
+    box-shadow: var(--shadow-performance);
+    border-radius: var(--radius);
+  }
+
+  .btn-tactical-primary:hover {
+    background: hsl(var(--primary-hover));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+    border-color: hsl(var(--primary));
+  }
+
+  .btn-tactical-secondary {
+    background: hsl(var(--secondary));
     color: hsl(var(--secondary-foreground));
     border: 2px solid hsl(var(--secondary) / 0.2);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.025em;
     transition: all 0.15s ease-out;
     box-shadow: 0 8px 16px -4px hsl(var(--secondary) / 0.25);
-    border-radius: 0.375rem;
+    border-radius: var(--radius);
   }
 
-  .btn-signal:hover {
-    background: linear-gradient(135deg, hsl(var(--secondary-hover)) 0%, hsl(var(--secondary-active)) 100%);
+  .btn-tactical-secondary:hover {
+    background: hsl(var(--secondary-hover));
     transform: translateY(-1px);
     box-shadow: 0 12px 20px -4px hsl(var(--secondary) / 0.35);
     border-color: hsl(var(--secondary));
   }
 
-  .btn-navy {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-hover)) 100%);
-    color: hsl(var(--primary-foreground));
-    border: 2px solid hsl(var(--primary) / 0.2);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    transition: all 0.15s ease-out;
-    box-shadow: 0 8px 16px -4px hsl(var(--primary) / 0.25);
-    border-radius: 0.375rem;
+  /* == TACTICAL CARD VARIANTS == */
+  .card-tactical {
+    background: hsl(var(--card));
+    border: 2px solid hsl(var(--card-border));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    transition: all 0.2s ease-in-out;
   }
 
-  .btn-navy:hover {
-    background: linear-gradient(135deg, hsl(var(--primary-hover)) 0%, hsl(var(--primary-active)) 100%);
+  .card-tactical:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: hsl(var(--primary));
     transform: translateY(-1px);
-    box-shadow: 0 12px 20px -4px hsl(var(--primary) / 0.35);
+  }
+
+  .card-tactical-elevated {
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--background-subtle)) 100%);
+    border: 2px solid hsl(var(--primary) / 0.2);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-performance);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-tactical-elevated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  }
+
+  .card-tactical-elevated:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-2px);
     border-color: hsl(var(--primary));
   }
 
-  /* Override computed styles to use design system */
+  /* == OVERRIDE LEGACY COLORS == */
+  /* Remove any computed light colors */
   *[style*="color: yellow"],
   *[style*="color: #ffff"],
   *[style*="color: #fef08a"],
@@ -123,39 +166,88 @@
   *[style*="color: #fff"],
   *[style*="color: #ffffff"],
   *[style*="color: rgb(255, 255, 255)"] {
-    color: hsl(var(--primary-foreground)) !important;
+    color: hsl(var(--foreground)) !important;
   }
 
-  /* Performance animations using design system */
-  @keyframes performance-glow {
+  /* Override computed hex colors */
+  *[style*="color: #fde047"],
+  *[style*="color: #facc15"],
+  *[style*="color: #eab308"],
+  *[style*="color: #ca8a04"],
+  *[style*="color: #a16207"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: #f59e0b"],
+  *[style*="color: #d97706"] {
+    color: hsl(var(--warning)) !important;
+  }
+
+  /* == PERFORMANCE ANIMATIONS == */
+  @keyframes tactical-glow {
     0%, 100% { 
-      box-shadow: 0 0 5px hsl(var(--secondary) / 0.3);
+      box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
     }
     50% { 
-      box-shadow: 0 0 20px hsl(var(--secondary) / 0.6);
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.6);
     }
   }
 
-  .animate-performance-glow {
-    animation: performance-glow 2s ease-in-out infinite;
+  .animate-tactical-glow {
+    animation: tactical-glow 2s ease-in-out infinite;
   }
 
   /* Floating animation for hero elements */
-  @keyframes float {
+  @keyframes tactical-float {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
 
-  @keyframes gentle-pulse {
+  @keyframes tactical-pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+    50% { opacity: 0.8; }
   }
 
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  .animate-tactical-float {
+    animation: tactical-float 3s ease-in-out infinite;
   }
 
-  .animate-gentle-pulse {
-    animation: gentle-pulse 2s ease-in-out infinite;
+  .animate-tactical-pulse {
+    animation: tactical-pulse 2s ease-in-out infinite;
+  }
+
+  /* == STATUS INDICATORS == */
+  .status-tactical-success {
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
+  }
+
+  .status-tactical-warning {
+    background-color: hsl(var(--warning));
+    color: hsl(var(--warning-foreground));
+  }
+
+  .status-tactical-error {
+    background-color: hsl(var(--error));
+    color: hsl(var(--error-foreground));
+  }
+
+  /* Badge variants for tactical theme */
+  .badge-tactical-primary {
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+    border: 2px solid hsl(var(--primary) / 0.2);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .badge-tactical-secondary {
+    background-color: hsl(var(--secondary) / 0.1);
+    color: hsl(var(--secondary));
+    border: 2px solid hsl(var(--secondary) / 0.2);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 }
