@@ -1,23 +1,17 @@
 
 import React from 'react';
-import { Sparkles, Target, TrendingUp, Link, Users, Shield, Zap } from 'lucide-react';
+import { Target, TrendingUp, Link, Users, Shield, Zap } from 'lucide-react';
 
 const AuthHeroSection: React.FC = () => {
   return (
     <div className="lg:w-3/5 flex items-center justify-center p-8 lg:p-16">
       <div className="max-w-2xl space-y-12 animate-fade-in">
-        {/* Logo and Brand */}
+        {/* Brand - Bold Text Only */}
         <div className="space-y-6">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-gryt-blue to-gryt-purple rounded-2xl flex items-center justify-center shadow-lg">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-slate-900 via-gryt-blue to-gryt-purple bg-clip-text text-transparent">
+          <div className="space-y-4">
+            <h1 className="text-6xl lg:text-7xl font-black bg-gradient-to-r from-slate-900 via-gryt-blue to-gryt-purple bg-clip-text text-transparent tracking-tight">
               Gryt
             </h1>
-          </div>
-          
-          <div className="space-y-4">
             <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
               Where Goals Meet
               <span className="bg-gradient-to-r from-gryt-blue to-gryt-purple bg-clip-text text-transparent"> Achievement</span>
