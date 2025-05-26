@@ -2,26 +2,151 @@
 @layer base {
   /* Modern Design System Components */
   .modern-card {
-    @apply bg-white/80 backdrop-blur-sm rounded-3xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300;
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--card-border));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .modern-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: hsl(var(--border));
   }
 
   .modern-button {
-    @apply bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-2xl px-8 py-4 font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02];
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: calc(var(--radius) - 2px);
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease-in-out;
+    border: none;
+    cursor: pointer;
+  }
+
+  .modern-button:hover {
+    background-color: hsl(var(--primary-hover));
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+
+  .modern-button:active {
+    background-color: hsl(var(--primary-active));
+    transform: translateY(0);
+  }
+
+  .modern-button:disabled {
+    background-color: hsl(var(--primary-disabled));
+    cursor: not-allowed;
+    transform: none;
   }
 
   .modern-input {
-    @apply h-14 rounded-2xl border border-slate-200 bg-white/80 focus:bg-white px-4 text-base transition-all duration-200 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100;
+    background-color: hsl(var(--input));
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) - 2px);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease-in-out;
+    color: hsl(var(--foreground));
   }
 
-  .gradient-text {
-    @apply text-black;
+  .modern-input:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+  }
+
+  .modern-input::placeholder {
+    color: hsl(var(--muted-foreground));
   }
 
   .feature-card {
-    @apply p-8 bg-white/60 backdrop-blur-sm rounded-3xl border border-white/20 shadow-sm hover:shadow-lg transition-all duration-300 hover:transform hover:scale-[1.02];
+    padding: 1.5rem;
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--card-border));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .feature-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 
   .icon-container {
-    @apply w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mb-6;
+    width: 3rem;
+    height: 3rem;
+    background-color: hsl(var(--accent));
+    border-radius: calc(var(--radius) - 2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  /* Success styles */
+  .success-button {
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
+  }
+
+  .success-button:hover {
+    background-color: hsl(var(--success-hover));
+  }
+
+  /* Warning styles */
+  .warning-button {
+    background-color: hsl(var(--warning));
+    color: hsl(var(--warning-foreground));
+  }
+
+  .warning-button:hover {
+    background-color: hsl(var(--warning-hover));
+  }
+
+  /* Error/Destructive styles */
+  .error-button {
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+  }
+
+  .error-button:hover {
+    background-color: hsl(var(--destructive-hover));
+  }
+
+  /* Badge variants */
+  .badge-primary {
+    background-color: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.2);
+  }
+
+  .badge-secondary {
+    background-color: hsl(var(--secondary) / 0.1);
+    color: hsl(var(--secondary));
+    border: 1px solid hsl(var(--secondary) / 0.2);
+  }
+
+  .badge-success {
+    background-color: hsl(var(--success-background));
+    color: hsl(var(--success));
+    border: 1px solid hsl(var(--success) / 0.2);
+  }
+
+  .badge-warning {
+    background-color: hsl(var(--warning-background));
+    color: hsl(var(--warning));
+    border: 1px solid hsl(var(--warning) / 0.2);
+  }
+
+  .badge-error {
+    background-color: hsl(var(--error-background));
+    color: hsl(var(--destructive));
+    border: 1px solid hsl(var(--destructive) / 0.2);
   }
 }

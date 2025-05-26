@@ -2,7 +2,7 @@
 @layer base {
   /* COMPONENT-SPECIFIC OVERRIDES */
 
-  /* Dialog and modal content - convert white text to purple */
+  /* Dialog and modal content */
   [role="dialog"],
   [role="dialog"] *,
   [data-radix-portal],
@@ -28,87 +28,13 @@
   [data-radix-portal] p,
   [data-radix-portal] span,
   [data-radix-portal] div {
-    color: #000000 !important;
+    color: hsl(var(--foreground)) !important;
   }
 
-  /* Convert white text in dialogs to purple */
-  [role="dialog"] .text-white,
-  [data-radix-portal] .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* COMPREHENSIVE CTA AND BUTTON OVERRIDES */
-  
-  /* All button elements with white text */
-  button .text-white,
-  .button .text-white,
-  [type="button"] .text-white,
-  [type="submit"] .text-white,
-  [type="reset"] .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Button variants and states */
-  button[class*="text-white"],
-  .button[class*="text-white"],
-  [type="button"][class*="text-white"],
-  [type="submit"][class*="text-white"],
-  [type="reset"][class*="text-white"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* Shadcn/UI Button component overrides */
-  .inline-flex.items-center.justify-center .text-white,
-  .inline-flex[class*="text-white"],
-  [class*="buttonVariants"] .text-white,
-  [class*="buttonVariants"][class*="text-white"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* Gryt-specific button classes */
-  .ghibli-button .text-white,
-  .ghibli-button[class*="text-white"],
-  .modern-button .text-white,
-  .modern-button[class*="text-white"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* CTA-specific selectors */
-  .cta .text-white,
-  .cta[class*="text-white"],
-  [class*="cta"] .text-white,
-  [class*="cta"][class*="text-white"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* Link buttons and anchor CTAs */
-  a[class*="button"] .text-white,
-  a[class*="button"][class*="text-white"],
-  a[role="button"] .text-white,
-  a[role="button"][class*="text-white"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* Gradient button text overrides */
-  .bg-gradient-to-r .text-white,
-  .bg-gradient-to-l .text-white,
-  .bg-gradient-to-t .text-white,
-  .bg-gradient-to-b .text-white,
-  .bg-gradient-to-br .text-white,
-  .bg-gradient-to-bl .text-white,
-  .bg-gradient-to-tr .text-white,
-  .bg-gradient-to-tl .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Interactive elements with white text */
-  [role="button"] .text-white,
-  [role="button"][class*="text-white"],
-  .clickable .text-white,
-  .clickable[class*="text-white"],
-  .interactive .text-white,
-  .interactive[class*="text-white"] {
-    color: #8B5CF6 !important;
+  /* Modal overlay */
+  [data-radix-portal] [data-overlay] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(4px) !important;
   }
 
   /* Badge components */
@@ -117,8 +43,16 @@
     color: inherit;
   }
 
-  .badge .text-white {
-    color: #8B5CF6 !important;
+  .badge h1,
+  .badge h2,
+  .badge h3,
+  .badge h4,
+  .badge h5,
+  .badge h6,
+  .badge p,
+  .badge span,
+  .badge div {
+    color: hsl(var(--foreground)) !important;
   }
 
   /* Card components */
@@ -136,17 +70,7 @@
   .card p,
   .card span,
   .card div {
-    color: #000000 !important;
-  }
-
-  .card .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Button text overrides */
-  .button [class*="yellow"],
-  .button [class*="amber"] {
-    color: #000000 !important;
+    color: hsl(var(--card-foreground)) !important;
   }
 
   /* Select and dropdown text */
@@ -154,12 +78,7 @@
   [role="option"] *,
   [role="listbox"],
   [role="listbox"] * {
-    color: #000000 !important;
-  }
-
-  [role="option"] .text-white,
-  [role="listbox"] .text-white {
-    color: #8B5CF6 !important;
+    color: hsl(var(--foreground)) !important;
   }
 
   /* Toast and notification text */
@@ -188,83 +107,40 @@
   [role="alert"] p,
   [role="alert"] span,
   [role="alert"] div {
-    color: #000000 !important;
+    color: hsl(var(--foreground)) !important;
   }
 
-  [role="status"] .text-white,
-  [role="alert"] .text-white {
-    color: #8B5CF6 !important;
+  /* Override any remaining computed styles */
+  *[style*="color: yellow"],
+  *[style*="color: #ffff"],
+  *[style*="color: #fef08a"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: rgb(254, 240, 138)"],
+  *[style*="color: rgb(251, 191, 36)"] {
+    color: hsl(var(--foreground)) !important;
   }
 
-  /* Navigation and menu items */
-  nav .text-white,
-  .nav .text-white,
-  .navigation .text-white {
-    color: #8B5CF6 !important;
+  *[style*="color: white"],
+  *[style*="color: #fff"],
+  *[style*="color: #ffffff"],
+  *[style*="color: rgb(255, 255, 255)"] {
+    color: hsl(var(--secondary)) !important;
   }
 
-  /* Sidebar text */
-  .sidebar .text-white,
-  [data-sidebar] .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Progress components */
-  .progress .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Tab components */
-  .tabs .text-white,
-  [role="tab"] .text-white,
-  [role="tabpanel"] .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Override any remaining light text in specific UI components */
-  .dropdown-menu .text-white,
-  .popover .text-white,
-  .tooltip .text-white,
-  .modal .text-white {
-    color: #8B5CF6 !important;
+  /* Override computed hex colors */
+  *[style*="color: #fde047"],
+  *[style*="color: #facc15"],
+  *[style*="color: #eab308"],
+  *[style*="color: #ca8a04"],
+  *[style*="color: #a16207"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: #f59e0b"],
+  *[style*="color: #d97706"] {
+    color: hsl(var(--foreground)) !important;
   }
 
   /* Specific component overrides */
   .ghibli-subtitle {
-    color: #000000 !important;
-  }
-
-  /* COMPREHENSIVE WHITE TEXT OVERRIDES FOR ALL POSSIBLE CTA SCENARIOS */
-  
-  /* Target any element that might be a CTA with white text */
-  *[class*="primary"] .text-white,
-  *[class*="primary"][class*="text-white"],
-  *[class*="secondary"] .text-white,
-  *[class*="secondary"][class*="text-white"],
-  *[class*="action"] .text-white,
-  *[class*="action"][class*="text-white"],
-  *[class*="submit"] .text-white,
-  *[class*="submit"][class*="text-white"] {
-    color: #8B5CF6 !important;
-  }
-
-  /* Ensure all white text in any interactive element becomes purple */
-  *[onclick] .text-white,
-  *[onclick][class*="text-white"],
-  .cursor-pointer .text-white,
-  .cursor-pointer[class*="text-white"],
-  .hover\:bg- .text-white,
-  .hover\:shadow- .text-white {
-    color: #8B5CF6 !important;
-  }
-
-  /* Catch any remaining white text in common CTA patterns */
-  .flex.items-center.justify-center .text-white,
-  .flex.items-center.justify-center[class*="text-white"],
-  .rounded .text-white,
-  .rounded-xl .text-white,
-  .rounded-2xl .text-white,
-  .rounded-full .text-white {
-    color: #8B5CF6 !important;
+    color: hsl(var(--foreground)) !important;
   }
 }

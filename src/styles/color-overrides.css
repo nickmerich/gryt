@@ -1,6 +1,6 @@
 
 @layer base {
-  /* BASIC COLOR UTILITY OVERRIDES */
+  /* MODERN COLOR UTILITY OVERRIDES */
   
   /* Target all yellow and amber text utilities */
   .text-yellow-50,
@@ -23,15 +23,15 @@
   .text-amber-700,
   .text-amber-800,
   .text-amber-900 {
-    color: #000000 !important;
+    color: hsl(var(--foreground)) !important;
   }
 
   /* Target all white text utilities */
   .text-white {
-    color: #8B5CF6 !important; /* Purple for white text */
+    color: hsl(var(--secondary)) !important;
   }
 
-  /* Target all light colored text that might appear yellow or too light */
+  /* Target all light colored text that might appear too light */
   .text-gray-100,
   .text-gray-200,
   .text-gray-300,
@@ -52,30 +52,26 @@
   .text-zinc-200,
   .text-zinc-300,
   .text-zinc-400 {
-    color: #000000 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
 
   /* Override muted text colors */
   .text-muted,
   .text-muted-foreground {
-    color: #000000 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
 
   /* Ensure gryt-yellow color is overridden */
   .text-gryt-yellow {
-    color: #000000 !important;
+    color: hsl(var(--foreground)) !important;
   }
 
-  /* Catch-all for any class containing yellow, amber, or white */
+  /* Catch-all for any class containing yellow, amber */
   [class*="yellow"]:not([class*="bg-yellow"]):not([class*="border-yellow"]):not([class*="ring-yellow"]):not([class*="shadow-yellow"]) {
-    color: #000000 !important;
+    color: hsl(var(--foreground)) !important;
   }
 
   [class*="amber"]:not([class*="bg-amber"]):not([class*="border-amber"]):not([class*="ring-amber"]):not([class*="shadow-amber"]) {
-    color: #000000 !important;
-  }
-
-  *[class*="white"]:not([class*="bg-"]):not([class*="border-"]):not([class*="ring-"]):not([class*="shadow-"]):not([class*="placeholder-"]) {
-    color: #8B5CF6 !important;
+    color: hsl(var(--foreground)) !important;
   }
 }

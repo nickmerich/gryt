@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,23 +18,93 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+				inter: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+			},
+			fontWeight: {
+				normal: '400',
+				medium: '500',
+				semibold: '600',
+				bold: '700',
+			},
+			fontSize: {
+				'xs': ['0.75rem', { lineHeight: '1.4' }],
+				'sm': ['0.875rem', { lineHeight: '1.5' }],
+				'base': ['1rem', { lineHeight: '1.6' }],
+				'lg': ['1.125rem', { lineHeight: '1.6' }],
+				'xl': ['1.25rem', { lineHeight: '1.4' }],
+				'2xl': ['1.5rem', { lineHeight: '1.3' }],
+				'3xl': ['1.875rem', { lineHeight: '1.2' }],
+				'4xl': ['2.25rem', { lineHeight: '1.2' }],
+				'5xl': ['3rem', { lineHeight: '1.1' }],
+				'6xl': ['3.75rem', { lineHeight: '1.1' }],
+			},
+			letterSpacing: {
+				tighter: '-0.05em',
+				tight: '-0.025em',
+				normal: '0',
+				wide: '0.025em',
+				wider: '0.05em',
+				widest: '0.1em',
+			},
+			lineHeight: {
+				'3': '.75rem',
+				'4': '1rem',
+				'5': '1.25rem',
+				'6': '1.5rem',
+				'7': '1.75rem',
+				'8': '2rem',
+				'9': '2.25rem',
+				'10': '2.5rem',
+				'none': '1',
+				'tight': '1.25',
+				'snug': '1.375',
+				'normal': '1.5',
+				'relaxed': '1.625',
+				'loose': '2',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
+				'border-subtle': 'hsl(var(--border-subtle))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
+				'background-subtle': 'hsl(var(--background-subtle))',
+				'background-muted': 'hsl(var(--background-muted))',
 				foreground: 'hsl(var(--foreground))',
+				'foreground-muted': 'hsl(var(--foreground-muted))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					hover: 'hsl(var(--primary-hover))',
+					active: 'hsl(var(--primary-active))',
+					disabled: 'hsl(var(--primary-disabled))',
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					foreground: 'hsl(var(--secondary-foreground))',
+					hover: 'hsl(var(--secondary-hover))',
+					active: 'hsl(var(--secondary-active))',
+					disabled: 'hsl(var(--secondary-disabled))',
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
+					DEFAULT: 'hsl(var(--error))',
+					foreground: 'hsl(var(--error-foreground))',
+					hover: 'hsl(var(--error-hover))',
+					background: 'hsl(var(--error-background))',
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))',
+					hover: 'hsl(var(--success-hover))',
+					background: 'hsl(var(--success-background))',
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))',
+					hover: 'hsl(var(--warning-hover))',
+					background: 'hsl(var(--warning-background))',
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -51,7 +120,8 @@ export default {
 				},
 				card: {
 					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					foreground: 'hsl(var(--card-foreground))',
+					border: 'hsl(var(--card-border))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -63,23 +133,37 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				brown: {
-					200: '#d2b48c',
-					600: '#8b4513',
-					800: '#5d4037'
+				neutral: {
+					50: 'hsl(var(--neutral-50))',
+					100: 'hsl(var(--neutral-100))',
+					200: 'hsl(var(--neutral-200))',
+					300: 'hsl(var(--neutral-300))',
+					400: 'hsl(var(--neutral-400))',
+					500: 'hsl(var(--neutral-500))',
+					600: 'hsl(var(--neutral-600))',
+					700: 'hsl(var(--neutral-700))',
+					800: 'hsl(var(--neutral-800))',
+					900: 'hsl(var(--neutral-900))',
 				},
-				// Updated Gryt App colors to match the new design system
+				// Keep legacy gryt colors for compatibility
 				gryt: {
-					red: '#F15B6C',     // Updated to a softer red from image
-					blue: '#3B82F6',    // Updated to friendly blue (#3B82F6) from design system
-					gray: '#FAFAFA',    // Updated to soft off-white background color
-					dark: '#000000',    // Changed from slate to pure black for better legibility
-					light: '#E7F1FF',   // Light blue background from banner
-					purple: '#8B5CF6',  // Updated purple accent color
-					green: '#22C55E',   // Progress color
-					yellow: '#000000',  // Changed yellow to black for legibility
-					success: '#10B981', // Success color
+					red: '#F15B6C',
+					blue: 'hsl(var(--primary))',
+					gray: 'hsl(var(--neutral-100))',
+					dark: 'hsl(var(--foreground))',
+					light: 'hsl(var(--background-subtle))',
+					purple: 'hsl(var(--secondary))',
+					green: 'hsl(var(--success))',
+					yellow: 'hsl(var(--foreground))',
+					success: 'hsl(var(--success))',
 				}
+			},
+			boxShadow: {
+				'sm': 'var(--shadow-sm)',
+				'DEFAULT': 'var(--shadow)',
+				'md': 'var(--shadow-md)',
+				'lg': 'var(--shadow-lg)',
+				'xl': 'var(--shadow-xl)',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -124,8 +208,8 @@ export default {
 					'100%': { backgroundPosition: '468px 0' }
 				},
 				'glow-pulse': {
-					'0%, 100%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
-					'50%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.8)' }
+					'0%, 100%': { boxShadow: '0 0 5px hsl(var(--primary) / 0.5)' },
+					'50%': { boxShadow: '0 0 20px hsl(var(--primary) / 0.8)' }
 				}
 			},
 			animation: {
@@ -137,7 +221,6 @@ export default {
 				'shimmer': 'shimmer 2.5s linear infinite',
 				'glow-pulse': 'glow-pulse 2s ease-in-out infinite'
 			},
-			// Add background blur for frosted UI
 			backdropFilter: {
 				'none': 'none',
 				'blur': 'blur(20px)',
