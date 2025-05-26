@@ -1,3 +1,4 @@
+
 import React from 'react';
 import IntegrationCard from './IntegrationCard';
 import { IntegrationProvider } from '@/services/integration/types';
@@ -17,14 +18,14 @@ const IntegrationsGrid: React.FC<IntegrationsGridProps> = ({
 }) => {
   if (integrations.length === 0) {
     return (
-      <div className="text-center py-16">
-        <p className="text-gray-500">{emptyMessage}</p>
+      <div className="text-center py-24">
+        <p className="text-xl text-slate-500 font-medium">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {integrations.map(integration => (
         <IntegrationCard
           key={integration.id}
