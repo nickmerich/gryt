@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -145,17 +146,33 @@ export default {
 					800: 'hsl(var(--neutral-800))',
 					900: 'hsl(var(--neutral-900))',
 				},
-				// Keep legacy gryt colors for compatibility
+				// Masculine performance palette
+				gunmetal: {
+					50: '#F8FAFC',
+					100: '#F1F5F9',
+					200: '#E2E8F0',
+					300: '#CBD5E1',
+					400: '#94A3B8',
+					500: '#64748B',
+					600: '#475569',
+					700: '#334155',
+					800: '#1E293B',
+					900: '#0F172A',
+				},
+				// Updated Gryt colors for masculine theme
 				gryt: {
-					red: '#F15B6C',
-					blue: 'hsl(var(--primary))',
-					gray: 'hsl(var(--neutral-100))',
-					dark: 'hsl(var(--foreground))',
-					light: 'hsl(var(--background-subtle))',
-					purple: 'hsl(var(--secondary))',
-					green: 'hsl(var(--success))',
-					yellow: 'hsl(var(--foreground))',
-					success: 'hsl(var(--success))',
+					red: '#FF3C38',     // Strong red-orange accent
+					blue: '#1A1F36',    // Deep confident blue primary
+					gray: '#2E3239',    // Gunmetal cards
+					dark: '#0F1115',    // Background dark
+					light: '#F5F7FA',   // Light background
+					purple: '#8B5CF6',  // Keep purple for legacy
+					green: '#27AE60',   // Emerald success
+					yellow: '#E1B000',  // Brass warning
+					success: '#27AE60', // Emerald green
+					crimson: '#C0392B', // Crimson error
+					brass: '#E1B000',   // Brass yellow
+					stealth: '#9FA6B2', // Muted text
 				}
 			},
 			boxShadow: {

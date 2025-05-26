@@ -1,8 +1,8 @@
 
 @layer base {
-  /* MODERN COLOR UTILITY OVERRIDES */
+  /* MASCULINE COLOR SYSTEM OVERRIDES */
   
-  /* Target all yellow and amber text utilities */
+  /* Target all yellow and amber text utilities - convert to foreground */
   .text-yellow-50,
   .text-yellow-100,
   .text-yellow-200,
@@ -26,7 +26,7 @@
     color: hsl(var(--foreground)) !important;
   }
 
-  /* Target all white text utilities */
+  /* Target all white text utilities - convert to secondary accent */
   .text-white {
     color: hsl(var(--secondary)) !important;
   }
@@ -61,17 +61,80 @@
     color: hsl(var(--muted-foreground)) !important;
   }
 
-  /* Ensure gryt-yellow color is overridden */
+  /* Ensure gryt colors align with masculine theme */
   .text-gryt-yellow {
-    color: hsl(var(--foreground)) !important;
+    color: hsl(var(--warning)) !important;
+  }
+
+  .text-gryt-blue {
+    color: hsl(var(--primary)) !important;
+  }
+
+  .text-gryt-red {
+    color: hsl(var(--secondary)) !important;
+  }
+
+  .text-gryt-green {
+    color: hsl(var(--success)) !important;
   }
 
   /* Catch-all for any class containing yellow, amber */
   [class*="yellow"]:not([class*="bg-yellow"]):not([class*="border-yellow"]):not([class*="ring-yellow"]):not([class*="shadow-yellow"]) {
-    color: hsl(var(--foreground)) !important;
+    color: hsl(var(--warning)) !important;
   }
 
   [class*="amber"]:not([class*="bg-amber"]):not([class*="border-amber"]):not([class*="ring-amber"]):not([class*="shadow-amber"]) {
-    color: hsl(var(--foreground)) !important;
+    color: hsl(var(--warning)) !important;
+  }
+
+  /* Override background colors for better contrast */
+  .bg-gryt-blue {
+    background-color: hsl(var(--primary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+  }
+
+  .bg-gryt-red {
+    background-color: hsl(var(--secondary)) !important;
+    color: hsl(var(--secondary-foreground)) !important;
+  }
+
+  .bg-gryt-green {
+    background-color: hsl(var(--success)) !important;
+    color: hsl(var(--success-foreground)) !important;
+  }
+
+  .bg-gryt-yellow {
+    background-color: hsl(var(--warning)) !important;
+    color: hsl(var(--warning-foreground)) !important;
+  }
+
+  /* Performance-focused button styles */
+  .btn-performance {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-hover)) 100%);
+    color: hsl(var(--primary-foreground));
+    border: 2px solid transparent;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-performance:hover {
+    background: linear-gradient(135deg, hsl(var(--primary-hover)) 0%, hsl(var(--primary-active)) 100%);
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-accent {
+    background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary-hover)) 100%);
+    color: hsl(var(--secondary-foreground));
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-accent:hover {
+    background: linear-gradient(135deg, hsl(var(--secondary-hover)) 0%, hsl(var(--secondary-active)) 100%);
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: var(--shadow-lg);
   }
 }

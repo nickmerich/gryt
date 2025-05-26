@@ -8,28 +8,28 @@
 
 @layer base {
   :root {
-    /* Modern Color System - Light Mode */
-    --background: 255 255 255;
-    --background-subtle: 250 250 250;
-    --background-muted: 245 245 245;
-    --foreground: 15 23 42;
-    --foreground-muted: 100 116 139;
+    /* Masculine Color System - Light Mode */
+    --background: 245 247 250;
+    --background-subtle: 241 245 249;
+    --background-muted: 226 232 240;
+    --foreground: 15 17 21;
+    --foreground-muted: 71 85 105;
 
-    /* Primary Colors - Blue */
-    --primary: 58 134 255; /* #3A86FF */
+    /* Primary Colors - Deep Confident Blue */
+    --primary: 26 31 54; /* #1A1F36 */
     --primary-foreground: 255 255 255;
-    --primary-hover: 45 117 230;
-    --primary-active: 35 100 200;
-    --primary-disabled: 186 206 255;
+    --primary-hover: 34 40 68;
+    --primary-active: 20 25 45;
+    --primary-disabled: 148 163 184;
 
-    /* Secondary Colors - Purple */
-    --secondary: 139 92 246; /* #8B5CF6 */
+    /* Secondary Colors - Strong Red-Orange Accent */
+    --secondary: 255 60 56; /* #FF3C38 */
     --secondary-foreground: 255 255 255;
-    --secondary-hover: 124 58 237;
-    --secondary-active: 109 40 217;
-    --secondary-disabled: 196 181 253;
+    --secondary-hover: 230 50 46;
+    --secondary-active: 204 40 36;
+    --secondary-disabled: 203 213 225;
 
-    /* Neutral Colors */
+    /* Neutral Colors - Gunmetal to Cool Gray */
     --neutral-50: 248 250 252;
     --neutral-100: 241 245 249;
     --neutral-200: 226 232 240;
@@ -41,139 +41,139 @@
     --neutral-800: 30 41 59;
     --neutral-900: 15 23 42;
 
-    /* Semantic Colors */
-    --success: 34 197 94; /* #22C55E */
+    /* Semantic Colors - Performance Driven */
+    --success: 39 174 96; /* #27AE60 Emerald Green */
     --success-foreground: 255 255 255;
-    --success-hover: 21 128 61;
+    --success-hover: 33 150 83;
     --success-background: 220 252 231;
 
-    --warning: 245 158 11; /* #F59E0B */
-    --warning-foreground: 15 23 42;
-    --warning-hover: 217 119 6;
+    --warning: 225 176 0; /* #E1B000 Brass Yellow */
+    --warning-foreground: 15 17 21;
+    --warning-hover: 198 154 0;
     --warning-background: 254 243 199;
 
-    --error: 239 68 68; /* #EF4444 */
+    --error: 192 57 43; /* #C0392B Crimson Red */
     --error-foreground: 255 255 255;
-    --error-hover: 220 38 38;
+    --error-hover: 169 50 38;
     --error-background: 254 226 226;
 
     /* UI Elements */
     --card: 255 255 255;
-    --card-foreground: 15 23 42;
+    --card-foreground: 15 17 21;
     --card-border: 226 232 240;
 
     --popover: 255 255 255;
-    --popover-foreground: 15 23 42;
+    --popover-foreground: 15 17 21;
 
     --muted: 248 250 252;
     --muted-foreground: 100 116 139;
 
-    --accent: 241 245 249;
-    --accent-foreground: 15 23 42;
+    --accent: 46 50 57; /* #2E3239 Cards */
+    --accent-foreground: 255 255 255;
 
     --border: 226 232 240;
     --border-subtle: 241 245 249;
     --input: 255 255 255;
-    --ring: 58 134 255;
+    --ring: 26 31 54;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Shadows */
+    /* Shadows - Soft and Minimal */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
-    /* Sidebar (keeping existing values) */
+    /* Sidebar */
     --sidebar-background: 255 255 255;
-    --sidebar-foreground: 15 23 42;
-    --sidebar-primary: 58 134 255;
+    --sidebar-foreground: 15 17 21;
+    --sidebar-primary: 26 31 54;
     --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 241 245 249;
-    --sidebar-accent-foreground: 15 23 42;
+    --sidebar-accent: 248 250 252;
+    --sidebar-accent-foreground: 15 17 21;
     --sidebar-border: 226 232 240;
-    --sidebar-ring: 58 134 255;
+    --sidebar-ring: 26 31 54;
   }
 
   .dark {
-    /* Dark Mode Color System */
-    --background: 9 9 11;
-    --background-subtle: 17 17 19;
-    --background-muted: 24 24 27;
-    --foreground: 250 250 250;
-    --foreground-muted: 161 161 170;
+    /* Masculine Color System - Dark Mode */
+    --background: 15 17 21; /* #0F1115 Background */
+    --background-subtle: 20 23 28;
+    --background-muted: 30 35 42;
+    --foreground: 248 250 252;
+    --foreground-muted: 159 166 178;
 
-    /* Primary Colors - Blue (adjusted for dark) */
-    --primary: 96 165 250; /* Lighter blue for dark mode */
-    --primary-foreground: 9 9 11;
-    --primary-hover: 59 130 246;
-    --primary-active: 37 99 235;
-    --primary-disabled: 30 41 59;
+    /* Primary Colors - Lighter for dark mode */
+    --primary: 59 130 246; /* Brighter blue for dark backgrounds */
+    --primary-foreground: 15 17 21;
+    --primary-hover: 37 99 235;
+    --primary-active: 29 78 216;
+    --primary-disabled: 71 85 105;
 
-    /* Secondary Colors - Purple (adjusted for dark) */
-    --secondary: 168 85 247;
-    --secondary-foreground: 9 9 11;
-    --secondary-hover: 147 51 234;
-    --secondary-active: 126 34 206;
-    --secondary-disabled: 39 39 42;
+    /* Secondary Colors - Red-Orange Accent */
+    --secondary: 255 60 56; /* #FF3C38 */
+    --secondary-foreground: 255 255 255;
+    --secondary-hover: 230 50 46;
+    --secondary-active: 204 40 36;
+    --secondary-disabled: 71 85 105;
 
-    /* Neutral Colors */
-    --neutral-50: 9 9 11;
-    --neutral-100: 17 17 19;
-    --neutral-200: 24 24 27;
-    --neutral-300: 39 39 42;
-    --neutral-400: 63 63 70;
-    --neutral-500: 113 113 122;
-    --neutral-600: 161 161 170;
-    --neutral-700: 212 212 216;
-    --neutral-800: 228 228 231;
-    --neutral-900: 250 250 250;
+    /* Neutral Colors - Dark Gunmetal Range */
+    --neutral-50: 15 17 21;
+    --neutral-100: 20 23 28;
+    --neutral-200: 30 35 42;
+    --neutral-300: 46 50 57; /* #2E3239 Cards */
+    --neutral-400: 71 85 105;
+    --neutral-500: 100 116 139;
+    --neutral-600: 148 163 184;
+    --neutral-700: 203 213 225;
+    --neutral-800: 226 232 240;
+    --neutral-900: 248 250 252;
 
-    /* Semantic Colors (adjusted for dark) */
-    --success: 74 222 128;
-    --success-foreground: 9 9 11;
+    /* Semantic Colors - Dark Mode Adjusted */
+    --success: 52 211 153; /* Brighter emerald for dark mode */
+    --success-foreground: 15 17 21;
     --success-hover: 34 197 94;
     --success-background: 20 83 45;
 
-    --warning: 251 191 36;
-    --warning-foreground: 9 9 11;
+    --warning: 251 191 36; /* Brighter brass for dark mode */
+    --warning-foreground: 15 17 21;
     --warning-hover: 245 158 11;
     --warning-background: 69 26 3;
 
-    --error: 248 113 113;
-    --error-foreground: 9 9 11;
+    --error: 248 113 113; /* Brighter crimson for dark mode */
+    --error-foreground: 15 17 21;
     --error-hover: 239 68 68;
     --error-background: 69 10 10;
 
     /* UI Elements */
-    --card: 17 17 19;
-    --card-foreground: 250 250 250;
-    --card-border: 39 39 42;
+    --card: 46 50 57; /* #2E3239 Cards */
+    --card-foreground: 248 250 252;
+    --card-border: 71 85 105;
 
-    --popover: 17 17 19;
-    --popover-foreground: 250 250 250;
+    --popover: 46 50 57;
+    --popover-foreground: 248 250 252;
 
-    --muted: 24 24 27;
-    --muted-foreground: 161 161 170;
+    --muted: 30 35 42;
+    --muted-foreground: 159 166 178; /* #9FA6B2 Muted Text */
 
-    --accent: 39 39 42;
-    --accent-foreground: 250 250 250;
+    --accent: 71 85 105;
+    --accent-foreground: 248 250 252;
 
-    --border: 39 39 42;
-    --border-subtle: 24 24 27;
-    --input: 24 24 27;
-    --ring: 96 165 250;
+    --border: 71 85 105;
+    --border-subtle: 46 50 57;
+    --input: 46 50 57;
+    --ring: 59 130 246;
 
-    /* Sidebar (dark mode) */
-    --sidebar-background: 9 9 11;
-    --sidebar-foreground: 250 250 250;
-    --sidebar-primary: 96 165 250;
-    --sidebar-primary-foreground: 9 9 11;
-    --sidebar-accent: 24 24 27;
-    --sidebar-accent-foreground: 250 250 250;
-    --sidebar-border: 39 39 42;
-    --sidebar-ring: 96 165 250;
+    /* Sidebar Dark Mode */
+    --sidebar-background: 15 17 21;
+    --sidebar-foreground: 248 250 252;
+    --sidebar-primary: 59 130 246;
+    --sidebar-primary-foreground: 15 17 21;
+    --sidebar-accent: 30 35 42;
+    --sidebar-accent-foreground: 248 250 252;
+    --sidebar-border: 71 85 105;
+    --sidebar-ring: 59 130 246;
   }
 }
 
