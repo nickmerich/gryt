@@ -1,0 +1,81 @@
+
+@layer base {
+  /* TYPOGRAPHY AND TEXT OVERRIDES */
+  
+  /* Basic HTML elements */
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000 !important;
+  }
+
+  p, span, div, li, td, th {
+    color: inherit;
+  }
+
+  /* Form elements */
+  label,
+  .form-label {
+    color: #000000 !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder,
+  select::placeholder {
+    color: #6b7280 !important; /* Keep placeholders slightly gray for usability */
+  }
+
+  /* Override any remaining computed yellow/white styles */
+  *[style*="color: yellow"],
+  *[style*="color: #ffff"],
+  *[style*="color: #fef08a"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: rgb(254, 240, 138)"],
+  *[style*="color: rgb(251, 191, 36)"] {
+    color: #000000 !important;
+  }
+
+  *[style*="color: white"],
+  *[style*="color: #fff"],
+  *[style*="color: #ffffff"],
+  *[style*="color: rgb(255, 255, 255)"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Override computed hex colors */
+  *[style*="color: #fde047"],
+  *[style*="color: #facc15"],
+  *[style*="color: #eab308"],
+  *[style*="color: #ca8a04"],
+  *[style*="color: #a16207"],
+  *[style*="color: #fbbf24"],
+  *[style*="color: #f59e0b"],
+  *[style*="color: #d97706"] {
+    color: #000000 !important;
+  }
+
+  /* Override any custom color variables that might be yellow or white */
+  [style*="color: var(--yellow"],
+  [style*="color: var(--amber"] {
+    color: #000000 !important;
+  }
+
+  [style*="color: var(--white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Ensure text inheritance works properly but override light colors */
+  * {
+    color: inherit;
+  }
+
+  /* Special handling for gradient text that might include light colors */
+  .bg-gradient-to-r.from-white,
+  .bg-gradient-to-l.from-white,
+  .bg-gradient-to-t.from-white,
+  .bg-gradient-to-b.from-white,
+  .bg-gradient-to-r.to-white,
+  .bg-gradient-to-l.to-white,
+  .bg-gradient-to-t.to-white,
+  .bg-gradient-to-b.to-white {
+    color: #8B5CF6 !important;
+  }
+}
