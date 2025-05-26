@@ -1,8 +1,8 @@
 
 @layer base {
-  /* COMPREHENSIVE YELLOW TO BLACK TEXT OVERRIDES */
+  /* COMPREHENSIVE LIGHT COLOR TO BLACK/PURPLE TEXT OVERRIDES */
   
-  /* Target all yellow text utilities */
+  /* Target all yellow and amber text utilities */
   .text-yellow-50,
   .text-yellow-100,
   .text-yellow-200,
@@ -26,7 +26,12 @@
     color: #000000 !important;
   }
 
-  /* Target all light colored text that might appear yellow */
+  /* Target all white text utilities */
+  .text-white {
+    color: #8B5CF6 !important; /* Purple for white text */
+  }
+
+  /* Target all light colored text that might appear yellow or too light */
   .text-gray-100,
   .text-gray-200,
   .text-gray-300,
@@ -42,7 +47,11 @@
   .text-neutral-100,
   .text-neutral-200,
   .text-neutral-300,
-  .text-neutral-400 {
+  .text-neutral-400,
+  .text-zinc-100,
+  .text-zinc-200,
+  .text-zinc-300,
+  .text-zinc-400 {
     color: #000000 !important;
   }
 
@@ -73,7 +82,7 @@
     color: #6b7280 !important; /* Keep placeholders slightly gray for usability */
   }
 
-  /* Dialog and modal content */
+  /* Dialog and modal content - convert white text to purple */
   [role="dialog"],
   [role="dialog"] *,
   [data-radix-portal],
@@ -102,10 +111,20 @@
     color: #000000 !important;
   }
 
+  /* Convert white text in dialogs to purple */
+  [role="dialog"] .text-white,
+  [data-radix-portal] .text-white {
+    color: #8B5CF6 !important;
+  }
+
   /* Badge components */
   .badge,
   .badge * {
     color: inherit;
+  }
+
+  .badge .text-white {
+    color: #8B5CF6 !important;
   }
 
   /* Card components */
@@ -126,18 +145,27 @@
     color: #000000 !important;
   }
 
+  .card .text-white {
+    color: #8B5CF6 !important;
+  }
+
   /* Specific component overrides */
   .ghibli-subtitle {
     color: #000000 !important;
   }
 
-  /* Button text should remain as designed, but ensure no yellow */
+  /* Button text overrides */
   .button [class*="yellow"],
   .button [class*="amber"] {
     color: #000000 !important;
   }
 
-  /* Override any remaining computed yellow styles */
+  .button .text-white,
+  button .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Override any remaining computed yellow/white styles */
   *[style*="color: yellow"],
   *[style*="color: #ffff"],
   *[style*="color: #fef08a"],
@@ -147,9 +175,19 @@
     color: #000000 !important;
   }
 
-  /* Catch-all for any class containing yellow or amber */
-  [class*="yellow"]:not([class*="bg-yellow"]):not([class*="border-yellow"]),
-  [class*="amber"]:not([class*="bg-amber"]):not([class*="border-amber"]) {
+  *[style*="color: white"],
+  *[style*="color: #fff"],
+  *[style*="color: #ffffff"],
+  *[style*="color: rgb(255, 255, 255)"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Catch-all for any class containing yellow, amber, or white */
+  [class*="yellow"]:not([class*="bg-yellow"]):not([class*="border-yellow"]):not([class*="ring-yellow"]):not([class*="shadow-yellow"]) {
+    color: #000000 !important;
+  }
+
+  [class*="amber"]:not([class*="bg-amber"]):not([class*="border-amber"]):not([class*="ring-amber"]):not([class*="shadow-amber"]) {
     color: #000000 !important;
   }
 
@@ -159,6 +197,11 @@
   [role="listbox"],
   [role="listbox"] * {
     color: #000000 !important;
+  }
+
+  [role="option"] .text-white,
+  [role="listbox"] .text-white {
+    color: #8B5CF6 !important;
   }
 
   /* Toast and notification text */
@@ -190,19 +233,27 @@
     color: #000000 !important;
   }
 
+  [role="status"] .text-white,
+  [role="alert"] .text-white {
+    color: #8B5CF6 !important;
+  }
+
   /* Ensure gryt-yellow color is overridden */
   .text-gryt-yellow {
     color: #000000 !important;
   }
 
-  /* Additional comprehensive overrides */
-  /* Target any custom color variables that might be yellow */
+  /* Override any custom color variables that might be yellow or white */
   [style*="color: var(--yellow"],
   [style*="color: var(--amber"] {
     color: #000000 !important;
   }
 
-  /* Override computed styles */
+  [style*="color: var(--white"] {
+    color: #8B5CF6 !important;
+  }
+
+  /* Override computed hex colors */
   *[style*="color: #fde047"],
   *[style*="color: #facc15"],
   *[style*="color: #eab308"],
@@ -214,23 +265,58 @@
     color: #000000 !important;
   }
 
-  /* Override any component library yellow text */
-  .lucide-react[style*="color: yellow"],
-  .lucide-react[style*="color: #"] {
-    color: currentColor !important;
+  /* Navigation and menu items */
+  nav .text-white,
+  .nav .text-white,
+  .navigation .text-white {
+    color: #8B5CF6 !important;
   }
 
-  /* Ensure text inheritance works properly */
+  /* Sidebar text */
+  .sidebar .text-white,
+  [data-sidebar] .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Progress components */
+  .progress .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Tab components */
+  .tabs .text-white,
+  [role="tab"] .text-white,
+  [role="tabpanel"] .text-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Ensure text inheritance works properly but override light colors */
   * {
     color: inherit;
   }
 
-  /* But override specifically for yellow */
-  *[class*="yellow"]:not([class*="bg-"]):not([class*="border-"]):not([class*="ring-"]):not([class*="shadow-"]) {
-    color: #000000 !important;
+  /* Final comprehensive override for light colors */
+  *[class*="white"]:not([class*="bg-"]):not([class*="border-"]):not([class*="ring-"]):not([class*="shadow-"]):not([class*="placeholder-"]) {
+    color: #8B5CF6 !important;
   }
 
-  *[class*="amber"]:not([class*="bg-"]):not([class*="border-"]):not([class*="ring-"]):not([class*="shadow-"]) {
-    color: #000000 !important;
+  /* Special handling for gradient text that might include light colors */
+  .bg-gradient-to-r.from-white,
+  .bg-gradient-to-l.from-white,
+  .bg-gradient-to-t.from-white,
+  .bg-gradient-to-b.from-white,
+  .bg-gradient-to-r.to-white,
+  .bg-gradient-to-l.to-white,
+  .bg-gradient-to-t.to-white,
+  .bg-gradient-to-b.to-white {
+    color: #8B5CF6 !important;
+  }
+
+  /* Override any remaining light text in specific UI components */
+  .dropdown-menu .text-white,
+  .popover .text-white,
+  .tooltip .text-white,
+  .modal .text-white {
+    color: #8B5CF6 !important;
   }
 }
