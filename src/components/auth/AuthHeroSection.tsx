@@ -24,10 +24,17 @@ const AuthHeroSection: React.FC = () => {
           </p>
         </div>
 
-        {/* CTA Button - Tactical Performance Style */}
+        {/* CTA Button - Dynamic and Exciting */}
         <div className="pt-4">
-          <button className="btn-tactical-secondary inline-flex items-center justify-center px-8 py-4 font-bold text-lg min-w-[280px] hover:scale-105 active:scale-95">
-            Try the Playground →
+          <button className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-lg min-w-[280px] text-white rounded-xl bg-gradient-to-r from-[#8aa4ff] to-[#b8c6ff] shadow-[0_4px_20px_rgba(138,164,255,0.3)] transition-all duration-300 ease-out hover:shadow-[0_6px_24px_rgba(138,164,255,0.5)] hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] animate-slide-up overflow-hidden">
+            {/* Subtle shimmer effect overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-out"></div>
+            
+            {/* Button content */}
+            <span className="relative z-10 tracking-wide">Try the Playground →</span>
+            
+            {/* Glow effect on hover */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#8aa4ff] to-[#b8c6ff] opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-md"></div>
           </button>
         </div>
 
