@@ -1,20 +1,30 @@
 
 @layer base {
-  /* TYPOGRAPHY AND TEXT OVERRIDES - LEGIBILITY FOCUSED */
+  /* TYPOGRAPHY AND TEXT OVERRIDES - GRADIENT BLUE THEME FOCUSED */
   
-  /* Core text color tokens for consistent legibility */
+  /* Core text color tokens for gradient blue system */
   :root {
-    --text-primary: #1C1C1E;
-    --text-secondary: #666666;
-    --text-muted: #A0A0A0;
+    --text-primary: #0B1120;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
     --text-inverse: #FFFFFF;
-    --text-placeholder: #9CA3AF;
+    --text-soft-blue: #B0C4FF;
+    --text-placeholder: #94A3B8;
   }
 
-  /* Basic HTML elements with high contrast */
+  /* Dark mode text adjustments */
+  .dark {
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0C4FF;
+    --text-muted: #94A3B8;
+    --text-placeholder: #64748B;
+  }
+
+  /* Basic HTML elements with high contrast for blue theme */
   h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary) !important;
     font-weight: 700;
+    letter-spacing: -0.025em;
   }
 
   p, span, div, li, td, th {
@@ -28,16 +38,16 @@
     font-weight: 600;
   }
 
-  /* Improved placeholder contrast */
+  /* Improved placeholder contrast for gradient inputs */
   input::placeholder,
   textarea::placeholder,
   select::placeholder {
     color: var(--text-placeholder) !important;
     font-weight: 400;
-    opacity: 0.8;
+    opacity: 0.7;
   }
 
-  /* Dark background text (for modals, dropdowns, etc.) */
+  /* Dark background text */
   [data-theme="dark"],
   [data-theme="dark"] *,
   .dark,
@@ -45,10 +55,10 @@
     color: var(--text-inverse);
   }
 
-  /* Input field focus states for better visibility */
+  /* Input field focus states for blue theme */
   input:focus::placeholder,
   textarea:focus::placeholder {
-    color: #D1D5DB !important;
+    color: var(--text-soft-blue) !important;
     opacity: 0.6;
   }
 
@@ -65,6 +75,7 @@
   .btn,
   [role="button"] {
     font-weight: 600;
+    letter-spacing: -0.025em;
   }
 
   /* Ensure disabled buttons still have readable text */
@@ -81,88 +92,52 @@
     opacity: 1 !important;
   }
 
-  /* Override any remaining computed yellow/white styles that hurt legibility */
-  *[style*="color: yellow"],
-  *[style*="color: #ffff"],
-  *[style*="color: #fef08a"],
-  *[style*="color: #fbbf24"],
-  *[style*="color: rgb(254, 240, 138)"],
-  *[style*="color: rgb(251, 191, 36)"] {
-    color: var(--text-primary) !important;
+  /* Blue theme specific text utilities */
+  .text-on-gradient {
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
-  /* White text should be used for dark backgrounds only */
-  *[style*="color: white"],
-  *[style*="color: #fff"],
-  *[style*="color: #ffffff"],
-  *[style*="color: rgb(255, 255, 255)"] {
-    color: var(--text-inverse) !important;
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #3A5AFF, #7EA4FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
   }
 
-  /* Override computed hex colors that are too light */
-  *[style*="color: #fde047"],
-  *[style*="color: #facc15"],
-  *[style*="color: #eab308"],
-  *[style*="color: #ca8a04"],
-  *[style*="color: #a16207"],
-  *[style*="color: #fbbf24"],
-  *[style*="color: #f59e0b"],
-  *[style*="color: #d97706"] {
-    color: var(--text-primary) !important;
+  /* Chat bubble specific improvements */
+  .chat-bubble-user {
+    background: linear-gradient(135deg, #3A5AFF, #7EA4FF) !important;
+    color: white !important;
   }
 
-  /* Override any custom color variables that might hurt legibility */
-  [style*="color: var(--yellow"],
-  [style*="color: var(--amber"] {
-    color: var(--text-primary) !important;
+  .chat-bubble-ai {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(234, 241, 255, 0.95)) !important;
+    color: #0B1120 !important;
+    border: 1px solid rgba(58, 90, 255, 0.15);
   }
 
-  [style*="color: var(--white"] {
-    color: var(--text-inverse) !important;
-  }
-
-  /* Ensure text inheritance works properly but with good contrast */
-  * {
-    color: inherit;
-  }
-
-  /* Special handling for gradient text to maintain readability */
-  .bg-gradient-to-r.from-white,
-  .bg-gradient-to-l.from-white,
-  .bg-gradient-to-t.from-white,
-  .bg-gradient-to-b.from-white,
-  .bg-gradient-to-r.to-white,
-  .bg-gradient-to-l.to-white,
-  .bg-gradient-to-t.to-white,
-  .bg-gradient-to-b.to-white {
-    color: var(--text-inverse) !important;
-  }
-
-  /* Toast and notification improvements */
-  [role="status"],
-  [role="alert"] {
-    color: var(--text-primary);
-  }
-
-  /* Modal and dialog improvements */
+  /* Modal and dialog improvements for blue theme */
   [role="dialog"],
   [data-radix-portal] {
     color: var(--text-primary);
   }
 
-  /* Ensure links are always visible */
+  /* Ensure links work with blue theme */
   a {
-    color: hsl(var(--primary));
+    color: #3A5AFF;
     text-decoration: none;
     font-weight: 500;
+    transition: color 0.2s ease;
   }
 
   a:hover {
-    color: hsl(var(--primary-hover));
+    color: #7EA4FF;
     text-decoration: underline;
   }
 
-  /* High contrast utility classes */
+  /* High contrast utility classes for blue theme */
   .text-high-contrast {
     color: var(--text-primary) !important;
     font-weight: 600;
@@ -171,5 +146,37 @@
   .text-inverse-high-contrast {
     color: var(--text-inverse) !important;
     font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Soft blue text for secondary information */
+  .text-soft-blue {
+    color: var(--text-soft-blue) !important;
+    font-weight: 500;
+  }
+
+  /* Override any remaining non-blue colors */
+  *[style*="color: yellow"],
+  *[style*="color: gold"],
+  *[style*="color: amber"],
+  *[style*="color: orange"],
+  *[style*="color: brown"] {
+    color: var(--text-primary) !important;
+  }
+
+  /* Gradient text effects */
+  .text-shimmer {
+    background: linear-gradient(90deg, #3A5AFF, #7EA4FF, #3A5AFF);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2s linear infinite;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
   }
 }

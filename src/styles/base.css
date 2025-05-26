@@ -4,130 +4,149 @@
 @tailwind utilities;
 
 @layer base {
-  /* BLUE + BLACK MASCULINE COLOR SYSTEM */
+  /* GRADIENT BLUE DESIGN SYSTEM */
   :root {
     /* == CORE BRAND COLORS == */
-    /* Primary - Deep Blue (Energy + Focus) */
-    --primary: 217 91 77; /* #1D4ED8 Strong Blue */
+    /* Primary - Electric Blue */
+    --primary: 58 90 255; /* #3A5AFF Electric Blue */
     --primary-foreground: 255 255 255; /* White */
-    --primary-hover: 30 58 138; /* #1E3A8A Deep Navy */
-    --primary-active: 30 64 175; /* Slightly lighter for active state */
+    --primary-hover: 45 75 230; /* Darker blue for hover */
+    --primary-active: 35 65 205; /* Active state */
     --primary-disabled: 71 85 105; /* Muted version */
 
-    /* Secondary - Electric Blue Accent */
-    --secondary: 59 130 246; /* #3B82F6 Electric Blue */
+    /* Primary variations */
+    --primary-dark: 13 27 62; /* #0D1B3E Deep Navy */
+    --primary-light: 234 241 255; /* #EAF1FF Soft Blue Tint */
+
+    /* Secondary - Soft Blue Accent */
+    --secondary: 126 164 255; /* #7EA4FF */
     --secondary-foreground: 255 255 255; /* White */
-    --secondary-hover: 96 165 250; /* #60A5FA Hover/glow variant */
-    --secondary-active: 37 99 235; /* Slightly darker for active */
+    --secondary-hover: 145 178 255; /* Lighter hover */
+    --secondary-active: 110 150 240; /* Active state */
     --secondary-disabled: 71 85 105; /* Muted version */
 
-    /* Accent - Royal Blue */
-    --accent: 96 165 250; /* #60A5FA */
-    --accent-foreground: 17 24 39; /* Dark text on light accent */
+    /* Accent - Link & Button Hover */
+    --accent: 126 164 255; /* #7EA4FF */
+    --accent-foreground: 11 17 32; /* Dark text on light accent */
 
     /* == BACKGROUNDS == */
-    /* Jet Black & Slate Hierarchy */
-    --background: 10 10 10; /* #0A0A0A App background */
-    --background-subtle: 17 24 39; /* #111827 Elevated sections */
-    --background-muted: 31 41 55; /* #1F2937 Lightened surfaces */
+    /* Light theme backgrounds */
+    --background: 255 255 255; /* #FFFFFF Pure White */
+    --background-subtle: 250 252 255; /* Very light blue tint */
+    --background-muted: 234 241 255; /* #EAF1FF Light blue */
+
+    /* Dark theme backgrounds */
+    --background-dark: 11 17 32; /* #0B1120 Midnight Blue */
+    --background-dark-subtle: 16 24 42; /* Slightly lighter */
+    --background-dark-muted: 21 31 52; /* Even lighter */
 
     /* Card system */
-    --card: 17 24 39; /* #111827 */
-    --card-foreground: 255 255 255; /* White */
-    --card-border: 55 65 81; /* #374151 Subtle border */
+    --card: 255 255 255; /* #FFFFFF */
+    --card-foreground: 11 17 32; /* #0B1120 */
+    --card-border: 229 235 250; /* Light blue border */
 
     /* == TEXT & GRAYSCALE == */
-    --foreground: 255 255 255; /* #FFFFFF Primary text */
-    --foreground-muted: 156 163 175; /* #9CA3AF */
+    --foreground: 11 17 32; /* #0B1120 Primary text for light mode */
+    --foreground-muted: 100 116 139; /* Muted text */
     
-    --muted: 31 41 55; /* #1F2937 */
-    --muted-foreground: 203 213 225; /* #CBD5E1 Muted/secondary */
+    --muted: 241 245 249; /* Light muted background */
+    --muted-foreground: 100 116 139; /* Muted text */
+
+    /* Text colors for gradient system */
+    --text-primary: 11 17 32; /* #0B1120 for light backgrounds */
+    --text-secondary: 176 196 255; /* #B0C4FF soft blue */
+    --text-inverse: 255 255 255; /* #FFFFFF for dark backgrounds */
 
     /* == SEMANTIC STATES == */
-    /* Success - Bold Green */
+    /* Success - Complementary Green */
     --success: 34 197 94; /* #22C55E */
     --success-foreground: 255 255 255;
     --success-hover: 22 163 74;
-    --success-background: 5 46 22; /* Dark green background */
+    --success-background: 240 253 244; /* Light green background */
 
-    /* Warning - Military Gold */
-    --warning: 234 179 8; /* #EAB308 */
-    --warning-foreground: 17 24 39; /* Dark text */
-    --warning-hover: 202 138 4;
-    --warning-background: 69 26 3; /* Dark amber background */
+    /* Warning - Complementary Amber */
+    --warning: 245 158 11; /* #F59E0B */
+    --warning-foreground: 11 17 32; /* Dark text */
+    --warning-hover: 217 119 6;
+    --warning-background: 255 251 235; /* Light amber background */
 
-    /* Error - Bold Crimson */
+    /* Error - Complementary Red */
     --error: 239 68 68; /* #EF4444 */
     --error-foreground: 255 255 255;
     --error-hover: 220 38 38;
-    --error-background: 69 10 10; /* Dark red background */
+    --error-background: 254 242 242; /* Light red background */
 
     /* == UI SYSTEM COLORS == */
-    --border: 55 65 81; /* #374151 Sharp, defined borders */
-    --border-subtle: 31 41 55; /* #1F2937 Subtle dividers */
-    --input: 31 41 55; /* #1F2937 Input backgrounds */
-    --ring: 59 130 246; /* #3B82F6 Focus rings */
+    --border: 229 235 250; /* Light blue border */
+    --border-subtle: 241 245 249; /* Very subtle border */
+    --input: 255 255 255; /* White input backgrounds */
+    --ring: 58 90 255; /* #3A5AFF Focus rings */
 
     /* Popover and overlay system */
-    --popover: 17 24 39; /* #111827 */
-    --popover-foreground: 255 255 255;
+    --popover: 255 255 255; /* White */
+    --popover-foreground: 11 17 32; /* Dark text */
 
     /* Sidebar system */
-    --sidebar-background: 10 10 10; /* #0A0A0A */
-    --sidebar-foreground: 255 255 255;
-    --sidebar-primary: 217 91 77; /* #1D4ED8 */
+    --sidebar-background: 11 17 32; /* #0B1120 Dark background */
+    --sidebar-foreground: 255 255 255; /* White text */
+    --sidebar-primary: 58 90 255; /* #3A5AFF */
     --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 31 41 55; /* #1F2937 */
-    --sidebar-accent-foreground: 203 213 225; /* #CBD5E1 */
-    --sidebar-border: 55 65 81; /* #374151 */
-    --sidebar-ring: 59 130 246; /* #3B82F6 */
+    --sidebar-accent: 21 31 52; /* Darker accent */
+    --sidebar-accent-foreground: 176 196 255; /* Soft blue text */
+    --sidebar-border: 31 41 55; /* Border */
+    --sidebar-ring: 58 90 255; /* Focus ring */
 
     /* == DESIGN SYSTEM VARIABLES == */
-    --radius: 0.25rem; /* Minimal rounding for sharp, tactical feel */
+    --radius: 0.5rem; /* Rounded corners for modern feel */
     
-    /* Performance shadows */
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
-    --shadow-performance: 0 8px 16px -4px rgba(29, 78, 216, 0.15), 0 4px 6px -2px rgba(29, 78, 216, 0.1);
+    /* Gradient shadows with blue tints */
+    --shadow: 0 1px 3px 0 rgba(58, 90, 255, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(58, 90, 255, 0.1), 0 2px 4px -1px rgba(58, 90, 255, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(58, 90, 255, 0.1), 0 4px 6px -2px rgba(58, 90, 255, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(58, 90, 255, 0.1), 0 10px 10px -5px rgba(58, 90, 255, 0.04);
+    --shadow-performance: 0 8px 16px -4px rgba(58, 90, 255, 0.25), 0 4px 6px -2px rgba(58, 90, 255, 0.15);
+
+    /* Gradient definitions */
+    --gradient-primary: linear-gradient(135deg, #3A5AFF, #0D1B3E);
+    --gradient-secondary: linear-gradient(135deg, #7EA4FF, #3A5AFF);
+    --gradient-accent: linear-gradient(135deg, #EAF1FF, #FFFFFF);
   }
 
-  /* == LIGHT MODE OVERRIDES == */
-  .light {
-    /* Swap to light backgrounds while keeping blue palette */
-    --background: 248 250 252; /* #F8FAFC Light background */
-    --background-subtle: 241 245 249; /* #F1F5F9 */
-    --background-muted: 226 232 240; /* #E2E8F0 */
+  /* == DARK MODE OVERRIDES == */
+  .dark {
+    /* Dark mode backgrounds */
+    --background: 11 17 32; /* #0B1120 Midnight Blue */
+    --background-subtle: 16 24 42; /* Slightly lighter */
+    --background-muted: 21 31 52; /* Even lighter */
 
-    /* Card system for light mode */
-    --card: 255 255 255; /* White cards */
-    --card-foreground: 15 23 42; /* #0F172A Dark text */
-    --card-border: 226 232 240; /* #E2E8F0 */
+    /* Card system for dark mode */
+    --card: 16 24 42; /* Dark cards */
+    --card-foreground: 255 255 255; /* White text */
+    --card-border: 31 41 55; /* Dark border */
 
-    /* Text adjustments for light mode */
-    --foreground: 15 23 42; /* #0F172A Primary dark text */
-    --foreground-muted: 100 116 139; /* #64748B */
-    --muted: 241 245 249; /* #F1F5F9 */
-    --muted-foreground: 100 116 139; /* #64748B */
+    /* Text adjustments for dark mode */
+    --foreground: 255 255 255; /* White primary text */
+    --foreground-muted: 176 196 255; /* Soft blue muted text */
+    --muted: 21 31 52; /* Dark muted background */
+    --muted-foreground: 176 196 255; /* Soft blue text */
 
-    /* UI adjustments */
-    --border: 226 232 240; /* #E2E8F0 */
-    --border-subtle: 241 245 249; /* #F1F5F9 */
-    --input: 255 255 255; /* White inputs */
+    /* Text colors for dark mode */
+    --text-primary: 255 255 255; /* White for dark backgrounds */
+    --text-secondary: 176 196 255; /* Soft blue */
 
-    /* Popover adjustments */
-    --popover: 255 255 255;
-    --popover-foreground: 15 23 42; /* #0F172A */
+    /* UI adjustments for dark mode */
+    --border: 31 41 55; /* Dark border */
+    --border-subtle: 21 31 52; /* Subtle dark border */
+    --input: 21 31 52; /* Dark inputs */
 
-    /* Keep primary blues consistent in light mode */
-    /* Primary, secondary, accent colors remain the same for brand consistency */
-    
-    /* Lighter shadows for light mode */
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* Popover adjustments for dark mode */
+    --popover: 16 24 42; /* Dark popover */
+    --popover-foreground: 255 255 255; /* White text */
+
+    /* Semantic state backgrounds for dark mode */
+    --success-background: 5 46 22; /* Dark green background */
+    --warning-background: 69 26 3; /* Dark amber background */
+    --error-background: 69 10 10; /* Dark red background */
   }
 
   /* == BASE ELEMENT STYLING == */
@@ -140,7 +159,7 @@
   }
 
   body {
-    background-color: hsl(var(--background));
+    background: hsl(var(--background));
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
@@ -148,7 +167,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography hierarchy for masculine design */
+  /* Typography hierarchy for gradient design */
   h1, h2, h3, h4, h5, h6 {
     color: hsl(var(--foreground));
     font-weight: 700;
@@ -170,19 +189,20 @@
     color: hsl(var(--muted-foreground));
   }
 
-  /* Focus ring system */
+  /* Focus ring system with blue glow */
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.1);
   }
 
-  /* Selection styling */
+  /* Selection styling with blue gradient */
   ::selection {
-    background-color: hsl(var(--primary) / 0.3);
-    color: hsl(var(--primary-foreground));
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary));
   }
 
-  /* Scrollbar styling for dark theme */
+  /* Scrollbar styling for gradient theme */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -193,11 +213,24 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 0.25rem;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    border-radius: 0.5rem;
   }
 
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary));
+  }
+
+  /* Gradient utility classes */
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+
+  .bg-gradient-accent {
+    background: var(--gradient-accent);
   }
 }
