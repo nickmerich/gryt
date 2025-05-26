@@ -85,34 +85,105 @@
     font-weight: 500;
   }
 
-  /* Button text should always be high contrast */
+  /* BUTTON TEXT - CRITICAL FOR LEGIBILITY */
   button,
   .btn,
-  [role="button"] {
-    font-weight: 700;
-    letter-spacing: -0.025em;
+  [role="button"],
+  .ui-button {
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Specific button text styling by variant */
+  button[data-variant="default"],
+  .btn-primary,
+  .button-primary {
+    color: white !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  button[data-variant="outline"],
+  .btn-outline,
+  .button-outline {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+  }
+
+  button[data-variant="ghost"],
+  .btn-ghost,
+  .button-ghost {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+  }
+
+  button[data-variant="secondary"],
+  .btn-secondary,
+  .button-secondary {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
   }
 
   /* Ensure disabled buttons still have readable text */
   button:disabled,
   .btn:disabled,
   [role="button"]:disabled {
-    opacity: 0.7;
+    opacity: 0.7 !important;
   }
 
   button:disabled *,
   .btn:disabled *,
   [role="button"]:disabled * {
-    color: inherit !important;
+    color: white !important;
     opacity: 1 !important;
-    font-weight: 600;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  /* Gradient button text - maximum legibility */
+  .bg-gradient-to-r,
+  .bg-gradient-to-br,
+  .bg-gradient-to-l,
+  .bg-gradient-to-t,
+  .bg-gradient-to-b,
+  .gradient-primary,
+  .gradient-secondary {
+    color: white !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    letter-spacing: 0.025em !important;
+  }
+
+  /* Button hover states - maintain legibility */
+  button:hover,
+  .btn:hover,
+  [role="button"]:hover {
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  button:hover[data-variant="outline"],
+  .btn-outline:hover {
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  button:hover[data-variant="ghost"],
+  .btn-ghost:hover {
+    color: var(--text-primary) !important;
+    text-shadow: none !important;
   }
 
   /* Blue theme specific text utilities */
   .text-on-gradient {
     color: white !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    font-weight: 700 !important;
   }
 
   .text-gradient-blue {
@@ -146,6 +217,20 @@
   [role="dialog"] *,
   [data-radix-portal] * {
     color: inherit !important;
+  }
+
+  /* Dialog button text specifically */
+  [role="dialog"] button,
+  [data-radix-portal] button {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  [role="dialog"] button[data-variant="outline"],
+  [data-radix-portal] button[data-variant="outline"] {
+    color: var(--text-primary) !important;
+    text-shadow: none !important;
   }
 
   /* Ensure links work with blue theme */
@@ -201,6 +286,43 @@
     font-weight: 500;
   }
 
+  .auth-form button,
+  .auth-container button {
+    color: white !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    letter-spacing: 0.025em !important;
+  }
+
+  /* Navigation button text */
+  nav button,
+  .nav button,
+  .navigation button {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+  }
+
+  nav button:hover,
+  .nav button:hover,
+  .navigation button:hover {
+    color: var(--text-soft-blue) !important;
+  }
+
+  /* Integration page button improvements */
+  .integration-card button,
+  .integrations-grid button {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .integration-card button[data-variant="outline"] {
+    color: var(--text-primary) !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+  }
+
   /* Override any remaining non-blue colors */
   *[style*="color: yellow"],
   *[style*="color: gold"],
@@ -223,6 +345,14 @@
     color: inherit !important;
   }
 
+  .card button,
+  .form-group button,
+  .input-group button {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  }
+
   /* Gradient text effects */
   .text-shimmer {
     background: linear-gradient(90deg, #3A5AFF, #7EA4FF, #3A5AFF);
@@ -238,5 +368,24 @@
     to {
       background-position: 200% center;
     }
+  }
+
+  /* Specific component button text overrides */
+  .ghibli-button,
+  .masculine-button,
+  .performance-button {
+    color: white !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+    letter-spacing: 0.025em !important;
+  }
+
+  /* Status button text visibility */
+  .status-success,
+  .status-warning,
+  .status-error {
+    color: white !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
   }
 }
