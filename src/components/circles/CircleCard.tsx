@@ -40,11 +40,23 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
   const getGradientClass = (category: string) => {
     switch (category) {
       case 'Health & Fitness':
-        return 'bg-gradient-to-br from-emerald-500 to-teal-600';
+        return 'bg-gradient-to-br from-success to-emerald-600';
       case 'Career':
-        return 'bg-gradient-to-br from-blue-600 to-purple-700';
+        return 'bg-gradient-to-br from-primary to-blue-600';
+      case 'Mindfulness':
+        return 'bg-gradient-to-br from-purple-600 to-indigo-700';
+      case 'Learning':
+        return 'bg-gradient-to-br from-amber-500 to-orange-600';
+      case 'Creativity':
+        return 'bg-gradient-to-br from-pink-500 to-rose-600';
+      case 'Finance':
+        return 'bg-gradient-to-br from-slate-600 to-gray-700';
+      case 'Social':
+        return 'bg-gradient-to-br from-cyan-500 to-blue-500';
+      case 'Adventure':
+        return 'bg-gradient-to-br from-lime-500 to-green-600';
       default:
-        return 'bg-gradient-to-br from-orange-500 to-red-600';
+        return 'bg-gradient-to-br from-secondary to-red-600';
     }
   };
 
