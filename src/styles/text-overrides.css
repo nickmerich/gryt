@@ -1,31 +1,31 @@
 
 @layer base {
-  /* CLEAN TEXT SYSTEM - NO SHADOWS, HIGH CONTRAST */
+  /* MONOCHROME TEXT SYSTEM - HIGH CONTRAST, NO SHADOWS */
   
-  /* Core text color tokens for clean design */
+  /* Core monochrome text color tokens */
   :root {
-    --text-primary: #0B1120;
-    --text-secondary: #374151;
-    --text-muted: #6B7280;
-    --text-inverse: #FFFFFF;
-    --text-accent: #3B82F6;
-    --text-placeholder: #9CA3AF;
+    --text-primary: 0 0 0; /* Pure Black */
+    --text-secondary: 115 115 115; /* Medium Gray */
+    --text-muted: 163 163 163; /* Light Gray */
+    --text-inverse: 255 255 255; /* Pure White */
   }
 
   /* Dark mode text adjustments */
   .dark {
-    --text-primary: #F9FAFB;
-    --text-secondary: #D1D5DB;
-    --text-muted: #9CA3AF;
-    --text-placeholder: #6B7280;
+    --text-primary: 255 255 255; /* Pure White */
+    --text-secondary: 212 212 212; /* Light Gray */
+    --text-muted: 163 163 163; /* Medium Gray */
+    --text-inverse: 0 0 0; /* Pure Black */
   }
 
-  /* Headers - Bold and distinct */
+  /* Headers - Bold and distinct monochrome */
   h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary) !important;
+    color: hsl(var(--text-primary)) !important;
     font-weight: 800 !important;
     letter-spacing: -0.025em;
     line-height: 1.2;
+    text-shadow: none !important;
+    opacity: 1 !important;
   }
 
   h1 {
@@ -43,61 +43,62 @@
     font-weight: 700 !important;
   }
 
-  /* Body text - Clean and readable */
+  /* Body text - Clean and readable monochrome */
   p, span, div, li, td, th {
-    color: var(--text-primary) !important;
+    color: hsl(var(--text-primary)) !important;
     font-weight: 500;
     line-height: 1.6;
     opacity: 1 !important;
+    text-shadow: none !important;
   }
 
-  /* Supporting text */
+  /* Supporting text - Gray tones */
   .text-muted,
   .text-secondary,
   .description,
   .help-text {
-    color: var(--text-secondary) !important;
+    color: hsl(var(--text-secondary)) !important;
     font-weight: 500;
     opacity: 1 !important;
   }
 
-  /* Form elements with crisp text */
+  /* Form elements with crisp monochrome text */
   label,
   .form-label {
-    color: var(--text-primary) !important;
+    color: hsl(var(--text-primary)) !important;
     font-weight: 700 !important;
     font-size: 0.875rem;
     letter-spacing: 0.025em;
     opacity: 1 !important;
   }
 
-  /* Input fields - Clean and readable */
+  /* Input fields - Clean monochrome */
   input,
   textarea,
   select {
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 500 !important;
     opacity: 1 !important;
     background-color: transparent;
   }
 
-  /* Placeholder text */
+  /* Placeholder text - Gray */
   input::placeholder,
   textarea::placeholder,
   select::placeholder {
-    color: var(--text-placeholder) !important;
-    font-weight: 500;
+    color: hsl(var(--text-muted)) !important;
+    font-weight: 400;
     opacity: 0.8 !important;
   }
 
-  /* BUTTON TEXT - MAXIMUM LEGIBILITY, NO SHADOWS */
+  /* MONOCHROME BUTTON TEXT - MAXIMUM LEGIBILITY */
   button,
   .btn,
   [role="button"],
   .ui-button,
   .button,
   .Button {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     font-weight: 700 !important;
     font-size: 0.875rem !important;
     letter-spacing: 0.025em !important;
@@ -105,27 +106,29 @@
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
     opacity: 1 !important;
+    text-shadow: none !important;
   }
 
-  /* Force white text on ALL button content */
+  /* Force correct text color on ALL button content */
   button *,
   .btn *,
   [role="button"] *,
   .ui-button *,
   .button *,
   .Button * {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     font-weight: 700 !important;
     opacity: 1 !important;
+    text-shadow: none !important;
   }
 
-  /* Button variants with clean styling */
+  /* Button variants with monochrome styling */
   button[data-variant="default"],
   button[data-variant="primary"],
   .btn-primary,
   .button-primary,
   .Button[data-variant="default"] {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     font-weight: 800 !important;
     letter-spacing: 0.05em !important;
   }
@@ -134,7 +137,15 @@
   .btn-outline,
   .button-outline,
   .Button[data-variant="outline"] {
-    color: var(--text-primary) !important;
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 700 !important;
+  }
+
+  button[data-variant="outline"] *,
+  .btn-outline *,
+  .button-outline *,
+  .Button[data-variant="outline"] * {
+    color: hsl(var(--text-primary)) !important;
     font-weight: 700 !important;
   }
 
@@ -142,7 +153,15 @@
   .btn-ghost,
   .button-ghost,
   .Button[data-variant="ghost"] {
-    color: var(--text-accent) !important;
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 600 !important;
+  }
+
+  button[data-variant="ghost"] *,
+  .btn-ghost *,
+  .button-ghost *,
+  .Button[data-variant="ghost"] * {
+    color: hsl(var(--text-primary)) !important;
     font-weight: 600 !important;
   }
 
@@ -150,7 +169,7 @@
   .btn-secondary,
   .button-secondary,
   .Button[data-variant="secondary"] {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     font-weight: 700 !important;
   }
 
@@ -159,7 +178,7 @@
   .btn:disabled,
   [role="button"]:disabled,
   .Button:disabled {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     opacity: 0.6 !important;
     font-weight: 700 !important;
   }
@@ -168,7 +187,7 @@
   .btn:disabled *,
   [role="button"]:disabled *,
   .Button:disabled * {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     opacity: 1 !important;
     font-weight: 700 !important;
   }
@@ -178,7 +197,7 @@
   .btn:hover,
   [role="button"]:hover,
   .Button:hover {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     font-weight: 800 !important;
   }
 
@@ -186,113 +205,51 @@
   .btn:hover *,
   [role="button"]:hover *,
   .Button:hover * {
-    color: #FFFFFF !important;
+    color: hsl(var(--text-inverse)) !important;
     font-weight: 800 !important;
   }
 
-  /* Links with clean styling */
+  /* Links with monochrome styling */
   a {
-    color: var(--text-accent) !important;
-    text-decoration: none;
+    color: hsl(var(--text-primary)) !important;
+    text-decoration: underline;
     font-weight: 600;
     opacity: 1 !important;
     transition: color 0.2s ease;
   }
 
   a:hover {
-    color: #2563EB !important;
+    color: hsl(var(--text-secondary)) !important;
     text-decoration: underline;
   }
 
-  /* Navigation text */
-  nav,
-  .nav,
-  .navigation {
-    color: var(--text-primary) !important;
-  }
-
-  nav *,
-  .nav *,
-  .navigation * {
-    color: inherit !important;
-    opacity: 1 !important;
-  }
-
-  /* Modal and dialog text */
-  [role="dialog"],
-  [data-radix-portal] {
-    color: var(--text-primary) !important;
-  }
-
-  [role="dialog"] *,
-  [data-radix-portal] * {
-    color: inherit !important;
-    opacity: 1 !important;
-  }
-
-  /* Dialog buttons */
-  [role="dialog"] button,
-  [data-radix-portal] button,
-  [role="dialog"] .Button,
-  [data-radix-portal] .Button {
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-  }
-
-  /* Card text */
-  .card,
-  .card-gradient {
-    color: var(--text-primary) !important;
-  }
-
-  .card *,
-  .card-gradient * {
-    color: inherit !important;
-    opacity: 1 !important;
-  }
-
-  .card button,
-  .card .Button {
-    color: #FFFFFF !important;
-    font-weight: 700 !important;
-  }
-
-  /* Badge text */
-  .badge {
-    font-weight: 600 !important;
-    font-size: 0.75rem !important;
-    letter-spacing: 0.05em !important;
-    opacity: 1 !important;
-  }
-
-  /* Toast and notification text */
-  [role="status"],
-  [role="alert"] {
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
-    opacity: 1 !important;
-  }
-
-  /* High contrast utility classes */
-  .text-high-contrast {
-    color: var(--text-primary) !important;
-    font-weight: 700 !important;
-    opacity: 1 !important;
-  }
-
-  .text-inverse-high-contrast {
-    color: var(--text-inverse) !important;
-    font-weight: 700 !important;
-    opacity: 1 !important;
-  }
-
-  /* Remove any text shadows globally */
+  /* Remove all text shadows globally */
   * {
     text-shadow: none !important;
   }
 
   /* Ensure all text is fully opaque */
   h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, label, input, textarea, select, button, a {
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+
+  /* High contrast utility classes */
+  .text-high-contrast {
+    color: hsl(var(--text-primary)) !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+  }
+
+  .text-inverse-high-contrast {
+    color: hsl(var(--text-inverse)) !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+  }
+
+  .text-monochrome-muted {
+    color: hsl(var(--text-muted)) !important;
+    font-weight: 500 !important;
     opacity: 1 !important;
   }
 }
