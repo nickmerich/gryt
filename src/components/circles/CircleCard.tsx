@@ -36,22 +36,21 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
     }
   };
 
-  // Determine gradient based on category
-  const getGradient = (category: string) => {
+  // Determine gradient CSS class based on category
+  const getGradientClass = (category: string) => {
     switch (category) {
       case 'Health & Fitness':
-        return 'green-teal';
+        return 'bg-gradient-to-br from-emerald-500 to-teal-600';
       case 'Career':
-        return 'blue-purple';
+        return 'bg-gradient-to-br from-blue-600 to-purple-700';
       default:
-        return 'coral-orange';
+        return 'bg-gradient-to-br from-orange-500 to-red-600';
     }
   };
 
   return (
     <Card 
-      gradient={getGradient(circle.category)} 
-      className="overflow-hidden transition-all hover:shadow-lg hover:translate-y-[-4px] duration-300"
+      className={`overflow-hidden transition-all hover:shadow-lg hover:translate-y-[-4px] duration-300 ${getGradientClass(circle.category)}`}
     >
       <CardHeader>
         <div className="flex items-center justify-between">
@@ -69,14 +68,14 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
               </Avatar>
             ))}
             {circle.memberCount > 3 && (
-              <div className="flex items-center justify-center h-7 w-7 rounded-full bg-white text-gryt-blue text-xs font-bold border-2 border-white">
+              <div className="flex items-center justify-center h-7 w-7 rounded-full bg-white text-primary text-xs font-bold border-2 border-white">
                 +{circle.memberCount - 3}
               </div>
             )}
           </div>
         </div>
-        <CardTitle className="text-xl mt-2 text-black">{circle.name}</CardTitle>
-        <CardDescription className="text-blue-50">{circle.memberCount} members</CardDescription>
+        <CardTitle className="text-xl mt-2 text-white">{circle.name}</CardTitle>
+        <CardDescription className="text-white/80">{circle.memberCount} members</CardDescription>
       </CardHeader>
       <CardContent className="pt-0">
         <p className="text-white/90 mb-4">{circle.description}</p>
@@ -90,7 +89,7 @@ const CircleCard = ({ circle, onJoin }: CircleCardProps) => {
             </Link>
           </Button>
         ) : (
-          <Button onClick={handleJoin} className="bg-white hover:bg-white/90 text-gryt-blue">
+          <Button onClick={handleJoin} className="bg-white hover:bg-white/90 text-primary">
             <Users className="mr-2 h-4 w-4" />
             Join Circle
           </Button>
