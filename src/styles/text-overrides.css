@@ -1,46 +1,105 @@
 
 @layer base {
-  /* TYPOGRAPHY AND TEXT OVERRIDES */
+  /* TYPOGRAPHY AND TEXT OVERRIDES - LEGIBILITY FOCUSED */
   
-  /* Basic HTML elements */
+  /* Core text color tokens for consistent legibility */
+  :root {
+    --text-primary: #1C1C1E;
+    --text-secondary: #666666;
+    --text-muted: #A0A0A0;
+    --text-inverse: #FFFFFF;
+    --text-placeholder: #9CA3AF;
+  }
+
+  /* Basic HTML elements with high contrast */
   h1, h2, h3, h4, h5, h6 {
-    color: #000000 !important;
+    color: var(--text-primary) !important;
+    font-weight: 700;
   }
 
   p, span, div, li, td, th {
-    color: inherit;
+    color: var(--text-primary);
   }
 
-  /* Form elements */
+  /* Form elements with improved visibility */
   label,
   .form-label {
-    color: #000000 !important;
+    color: var(--text-primary) !important;
+    font-weight: 600;
   }
 
+  /* Improved placeholder contrast */
   input::placeholder,
   textarea::placeholder,
   select::placeholder {
-    color: #6b7280 !important; /* Keep placeholders slightly gray for usability */
+    color: var(--text-placeholder) !important;
+    font-weight: 400;
+    opacity: 0.8;
   }
 
-  /* Override any remaining computed yellow/white styles */
+  /* Dark background text (for modals, dropdowns, etc.) */
+  [data-theme="dark"],
+  [data-theme="dark"] *,
+  .dark,
+  .dark * {
+    color: var(--text-inverse);
+  }
+
+  /* Input field focus states for better visibility */
+  input:focus::placeholder,
+  textarea:focus::placeholder {
+    color: #D1D5DB !important;
+    opacity: 0.6;
+  }
+
+  /* Secondary text with adequate contrast */
+  .text-muted,
+  .text-secondary,
+  .help-text,
+  .description {
+    color: var(--text-secondary) !important;
+  }
+
+  /* Button text should always be high contrast */
+  button,
+  .btn,
+  [role="button"] {
+    font-weight: 600;
+  }
+
+  /* Ensure disabled buttons still have readable text */
+  button:disabled,
+  .btn:disabled,
+  [role="button"]:disabled {
+    opacity: 0.6;
+  }
+
+  button:disabled *,
+  .btn:disabled *,
+  [role="button"]:disabled * {
+    color: inherit !important;
+    opacity: 1 !important;
+  }
+
+  /* Override any remaining computed yellow/white styles that hurt legibility */
   *[style*="color: yellow"],
   *[style*="color: #ffff"],
   *[style*="color: #fef08a"],
   *[style*="color: #fbbf24"],
   *[style*="color: rgb(254, 240, 138)"],
   *[style*="color: rgb(251, 191, 36)"] {
-    color: #000000 !important;
+    color: var(--text-primary) !important;
   }
 
+  /* White text should be used for dark backgrounds only */
   *[style*="color: white"],
   *[style*="color: #fff"],
   *[style*="color: #ffffff"],
   *[style*="color: rgb(255, 255, 255)"] {
-    color: #8B5CF6 !important;
+    color: var(--text-inverse) !important;
   }
 
-  /* Override computed hex colors */
+  /* Override computed hex colors that are too light */
   *[style*="color: #fde047"],
   *[style*="color: #facc15"],
   *[style*="color: #eab308"],
@@ -49,25 +108,25 @@
   *[style*="color: #fbbf24"],
   *[style*="color: #f59e0b"],
   *[style*="color: #d97706"] {
-    color: #000000 !important;
+    color: var(--text-primary) !important;
   }
 
-  /* Override any custom color variables that might be yellow or white */
+  /* Override any custom color variables that might hurt legibility */
   [style*="color: var(--yellow"],
   [style*="color: var(--amber"] {
-    color: #000000 !important;
+    color: var(--text-primary) !important;
   }
 
   [style*="color: var(--white"] {
-    color: #8B5CF6 !important;
+    color: var(--text-inverse) !important;
   }
 
-  /* Ensure text inheritance works properly but override light colors */
+  /* Ensure text inheritance works properly but with good contrast */
   * {
     color: inherit;
   }
 
-  /* Special handling for gradient text that might include light colors */
+  /* Special handling for gradient text to maintain readability */
   .bg-gradient-to-r.from-white,
   .bg-gradient-to-l.from-white,
   .bg-gradient-to-t.from-white,
@@ -76,6 +135,41 @@
   .bg-gradient-to-l.to-white,
   .bg-gradient-to-t.to-white,
   .bg-gradient-to-b.to-white {
-    color: #8B5CF6 !important;
+    color: var(--text-inverse) !important;
+  }
+
+  /* Toast and notification improvements */
+  [role="status"],
+  [role="alert"] {
+    color: var(--text-primary);
+  }
+
+  /* Modal and dialog improvements */
+  [role="dialog"],
+  [data-radix-portal] {
+    color: var(--text-primary);
+  }
+
+  /* Ensure links are always visible */
+  a {
+    color: hsl(var(--primary));
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  a:hover {
+    color: hsl(var(--primary-hover));
+    text-decoration: underline;
+  }
+
+  /* High contrast utility classes */
+  .text-high-contrast {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+  }
+
+  .text-inverse-high-contrast {
+    color: var(--text-inverse) !important;
+    font-weight: 600;
   }
 }
