@@ -85,64 +85,160 @@
     font-weight: 500;
   }
 
-  /* BUTTON TEXT - CRITICAL FOR LEGIBILITY */
+  /* MAXIMUM LEGIBILITY BUTTON TEXT - CRITICAL FOR ALL BUTTONS */
   button,
   .btn,
   [role="button"],
-  .ui-button {
-    font-weight: 700 !important;
-    letter-spacing: -0.025em !important;
-    color: white !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  .ui-button,
+  .button,
+  .Button {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    letter-spacing: 0.025em !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
 
-  /* Specific button text styling by variant */
-  button[data-variant="default"],
-  .btn-primary,
-  .button-primary {
-    color: white !important;
+  /* Force white text on ALL button variants */
+  button *,
+  .btn *,
+  [role="button"] *,
+  .ui-button *,
+  .button *,
+  .Button * {
+    color: #FFFFFF !important;
     font-weight: 800 !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Specific button styling by data attributes and classes */
+  button[data-variant="default"],
+  button[data-variant="primary"],
+  .btn-primary,
+  .button-primary,
+  .Button[data-variant="default"] {
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+    letter-spacing: 0.05em !important;
   }
 
   button[data-variant="outline"],
   .btn-outline,
-  .button-outline {
-    color: var(--text-primary) !important;
-    font-weight: 700 !important;
-    text-shadow: none !important;
+  .button-outline,
+  .Button[data-variant="outline"] {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
   }
 
   button[data-variant="ghost"],
   .btn-ghost,
-  .button-ghost {
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
-    text-shadow: none !important;
+  .button-ghost,
+  .Button[data-variant="ghost"] {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
   }
 
   button[data-variant="secondary"],
   .btn-secondary,
-  .button-secondary {
-    color: white !important;
-    font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  .button-secondary,
+  .Button[data-variant="secondary"] {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  button[data-variant="success"],
+  .btn-success,
+  .button-success,
+  .Button[data-variant="success"] {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  button[data-variant="warning"],
+  .btn-warning,
+  .button-warning,
+  .Button[data-variant="warning"] {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  button[data-variant="destructive"],
+  .btn-destructive,
+  .button-destructive,
+  .Button[data-variant="destructive"] {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* Ensure disabled buttons still have readable text */
   button:disabled,
   .btn:disabled,
-  [role="button"]:disabled {
+  [role="button"]:disabled,
+  .Button:disabled {
+    color: #FFFFFF !important;
     opacity: 0.7 !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
   button:disabled *,
   .btn:disabled *,
-  [role="button"]:disabled * {
-    color: white !important;
+  [role="button"]:disabled *,
+  .Button:disabled * {
+    color: #FFFFFF !important;
     opacity: 1 !important;
-    font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Auth page specific button improvements */
+  .auth-form button,
+  .auth-container button,
+  .auth-form .Button,
+  .auth-container .Button {
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6) !important;
+    letter-spacing: 0.075em !important;
+  }
+
+  /* Integration page button improvements */
+  .integration-card button,
+  .integrations-grid button,
+  .integration-card .Button,
+  .integrations-grid .Button {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Goals page button improvements */
+  .goal-card button,
+  .goals-list button,
+  .goal-detail button,
+  .goal-card .Button,
+  .goals-list .Button,
+  .goal-detail .Button {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Dashboard button improvements */
+  .dashboard button,
+  .dashboard .Button {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* Gradient button text - maximum legibility */
@@ -153,37 +249,48 @@
   .bg-gradient-to-b,
   .gradient-primary,
   .gradient-secondary {
-    color: white !important;
-    font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-    letter-spacing: 0.025em !important;
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5) !important;
+    letter-spacing: 0.05em !important;
   }
 
-  /* Button hover states - maintain legibility */
+  /* Button hover states - maintain maximum legibility */
   button:hover,
   .btn:hover,
-  [role="button"]:hover {
-    color: white !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  [role="button"]:hover,
+  .Button:hover {
+    color: #FFFFFF !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6) !important;
+    font-weight: 900 !important;
   }
 
-  button:hover[data-variant="outline"],
-  .btn-outline:hover {
-    color: white !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  button:hover *,
+  .btn:hover *,
+  [role="button"]:hover *,
+  .Button:hover * {
+    color: #FFFFFF !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.6) !important;
+    font-weight: 900 !important;
   }
 
-  button:hover[data-variant="ghost"],
-  .btn-ghost:hover {
-    color: var(--text-primary) !important;
-    text-shadow: none !important;
+  /* Navigation button text */
+  nav button,
+  .nav button,
+  .navigation button,
+  nav .Button,
+  .nav .Button,
+  .navigation .Button {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
   }
 
   /* Blue theme specific text utilities */
   .text-on-gradient {
-    color: white !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    font-weight: 800 !important;
   }
 
   .text-gradient-blue {
@@ -197,7 +304,7 @@
   /* Chat bubble specific improvements */
   .chat-bubble-user {
     background: linear-gradient(135deg, #3A5AFF, #7EA4FF) !important;
-    color: white !important;
+    color: #FFFFFF !important;
     font-weight: 600;
   }
 
@@ -221,16 +328,12 @@
 
   /* Dialog button text specifically */
   [role="dialog"] button,
-  [data-radix-portal] button {
-    color: white !important;
-    font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-  }
-
-  [role="dialog"] button[data-variant="outline"],
-  [data-radix-portal] button[data-variant="outline"] {
-    color: var(--text-primary) !important;
-    text-shadow: none !important;
+  [data-radix-portal] button,
+  [role="dialog"] .Button,
+  [data-radix-portal] .Button {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* Ensure links work with blue theme */
@@ -264,65 +367,6 @@
     font-weight: 600;
   }
 
-  /* Auth page specific improvements */
-  .auth-form,
-  .auth-form *,
-  .auth-container,
-  .auth-container * {
-    color: var(--text-primary) !important;
-  }
-
-  .auth-form input,
-  .auth-container input {
-    color: var(--text-primary) !important;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.95) !important;
-  }
-
-  .auth-form input::placeholder,
-  .auth-container input::placeholder {
-    color: var(--text-placeholder) !important;
-    opacity: 0.8;
-    font-weight: 500;
-  }
-
-  .auth-form button,
-  .auth-container button {
-    color: white !important;
-    font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-    letter-spacing: 0.025em !important;
-  }
-
-  /* Navigation button text */
-  nav button,
-  .nav button,
-  .navigation button {
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
-    text-shadow: none !important;
-  }
-
-  nav button:hover,
-  .nav button:hover,
-  .navigation button:hover {
-    color: var(--text-soft-blue) !important;
-  }
-
-  /* Integration page button improvements */
-  .integration-card button,
-  .integrations-grid button {
-    color: white !important;
-    font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
-  }
-
-  .integration-card button[data-variant="outline"] {
-    color: var(--text-primary) !important;
-    text-shadow: none !important;
-    font-weight: 600 !important;
-  }
-
   /* Override any remaining non-blue colors */
   *[style*="color: yellow"],
   *[style*="color: gold"],
@@ -347,10 +391,13 @@
 
   .card button,
   .form-group button,
-  .input-group button {
-    color: white !important;
-    font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  .input-group button,
+  .card .Button,
+  .form-group .Button,
+  .input-group .Button {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* Gradient text effects */
@@ -374,18 +421,39 @@
   .ghibli-button,
   .masculine-button,
   .performance-button {
-    color: white !important;
-    font-weight: 800 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25) !important;
-    letter-spacing: 0.025em !important;
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5) !important;
+    letter-spacing: 0.05em !important;
   }
 
   /* Status button text visibility */
   .status-success,
   .status-warning,
   .status-error {
-    color: white !important;
-    font-weight: 700 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Force white text on all Tailwind button classes */
+  .bg-primary,
+  .bg-secondary,
+  .bg-success,
+  .bg-warning,
+  .bg-destructive,
+  .bg-error {
+    color: #FFFFFF !important;
+  }
+
+  .bg-primary *,
+  .bg-secondary *,
+  .bg-success *,
+  .bg-warning *,
+  .bg-destructive *,
+  .bg-error * {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 }
