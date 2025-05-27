@@ -28,6 +28,7 @@ export default {
 				medium: '500',
 				semibold: '600',
 				bold: '700',
+				black: '900',
 			},
 			fontSize: {
 				'xs': ['0.75rem', { lineHeight: '1.4' }],
@@ -66,24 +67,24 @@ export default {
 				'loose': '2',
 			},
 			colors: {
-				// Core monochrome system - NO COLORS ALLOWED
+				// Core Gryt brand colors - Deep red and pure white
 				border: 'hsl(220 13% 91%)',
 				'border-subtle': 'hsl(220 13% 95%)',
 				input: 'hsl(220 13% 95%)',
-				ring: 'hsl(0 0% 0%)',
-				background: 'hsl(0 0% 100%)',
+				ring: 'hsl(0 84% 60%)', // Deep red
+				background: 'hsl(0 0% 100%)', // Pure white
 				'background-subtle': 'hsl(220 13% 98%)',
 				'background-muted': 'hsl(220 13% 95%)',
 				foreground: 'hsl(0 0% 0%)',
 				'foreground-muted': 'hsl(0 0% 40%)',
 				
-				// Everything is monochrome now
+				// Primary brand color - Deep vibrant red
 				primary: {
-					DEFAULT: 'hsl(0 0% 0%)',
+					DEFAULT: 'hsl(0 84% 60%)', // Deep red
 					foreground: 'hsl(0 0% 100%)',
-					hover: 'hsl(0 0% 20%)',
-					active: 'hsl(0 0% 10%)',
-					disabled: 'hsl(0 0% 60%)',
+					hover: 'hsl(0 84% 55%)',
+					active: 'hsl(0 84% 50%)',
+					disabled: 'hsl(0 84% 70%)',
 				},
 				
 				secondary: {
@@ -94,34 +95,34 @@ export default {
 					disabled: 'hsl(0 0% 70%)',
 				},
 				
-				// All status indicators use monochrome
+				// Red-themed status indicators
 				destructive: {
-					DEFAULT: 'hsl(0 0% 0%)',
+					DEFAULT: 'hsl(0 84% 60%)',
 					foreground: 'hsl(0 0% 100%)',
-					hover: 'hsl(0 0% 20%)',
-					background: 'hsl(0 0% 95%)',
+					hover: 'hsl(0 84% 55%)',
+					background: 'hsl(0 84% 95%)',
 				},
 				success: {
-					DEFAULT: 'hsl(0 0% 20%)',
+					DEFAULT: 'hsl(0 84% 60%)',
 					foreground: 'hsl(0 0% 100%)',
-					hover: 'hsl(0 0% 30%)',
-					background: 'hsl(0 0% 95%)',
+					hover: 'hsl(0 84% 55%)',
+					background: 'hsl(0 84% 95%)',
 				},
 				warning: {
-					DEFAULT: 'hsl(0 0% 30%)',
+					DEFAULT: 'hsl(0 84% 60%)',
 					foreground: 'hsl(0 0% 100%)',
-					hover: 'hsl(0 0% 40%)',
-					background: 'hsl(0 0% 95%)',
+					hover: 'hsl(0 84% 55%)',
+					background: 'hsl(0 84% 95%)',
 				},
 				
-				// Pure gray system
+				// Clean gray system for supporting elements
 				muted: {
 					DEFAULT: 'hsl(0 0% 95%)',
 					foreground: 'hsl(0 0% 40%)'
 				},
 				accent: {
-					DEFAULT: 'hsl(0 0% 90%)',
-					foreground: 'hsl(0 0% 0%)'
+					DEFAULT: 'hsl(0 84% 95%)', // Light red accent
+					foreground: 'hsl(0 84% 60%)'
 				},
 				popover: {
 					DEFAULT: 'hsl(0 0% 100%)',
@@ -135,12 +136,12 @@ export default {
 				sidebar: {
 					DEFAULT: 'hsl(0 0% 98%)',
 					foreground: 'hsl(0 0% 0%)',
-					primary: 'hsl(0 0% 0%)',
+					primary: 'hsl(0 84% 60%)',
 					'primary-foreground': 'hsl(0 0% 100%)',
-					accent: 'hsl(0 0% 90%)',
-					'accent-foreground': 'hsl(0 0% 0%)',
+					accent: 'hsl(0 84% 95%)',
+					'accent-foreground': 'hsl(0 84% 60%)',
 					border: 'hsl(220 13% 91%)',
-					ring: 'hsl(0 0% 0%)'
+					ring: 'hsl(0 84% 60%)'
 				}
 			},
 			boxShadow: {
@@ -149,6 +150,7 @@ export default {
 				'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
 				'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
 				'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+				'red': '0 4px 14px 0 rgba(220, 38, 38, 0.2)',
 			},
 			borderRadius: {
 				lg: '0.5rem',

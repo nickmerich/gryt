@@ -23,6 +23,8 @@ import WeeklyReview from '@/components/dashboard/WeeklyReview';
 import GoalsList from '@/components/dashboard/GoalsList';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import IntegrationsModule from '@/components/dashboard/IntegrationsModule';
+import MissionStatement from '@/components/dashboard/MissionStatement';
+import GoalDiscoveryPrompt from '@/components/dashboard/GoalDiscoveryPrompt';
 
 const Index = () => {
   const { user } = useAuth();
@@ -57,7 +59,7 @@ const Index = () => {
   const addIdentityGoal = (goalData: any) => {
     createGoal.mutate(goalData);
     setShowIdentityCreation(false);
-    toast.success("Your transformation journey begins! 🌟");
+    toast.success("Your transformation journey begins! 🔥");
   };
 
   const handleUpdateProgress = (goalId: string, newProgress: number) => {
@@ -110,6 +112,12 @@ const Index = () => {
           onOpenCreateDialog={() => setShowIdentityCreation(true)}
           subtitle={getCoachInsight()}
         />
+
+        {/* Mission Statement & Core Problem */}
+        <MissionStatement />
+
+        {/* Goal Discovery Framework */}
+        <GoalDiscoveryPrompt onCreateGoal={addIdentityGoal} />
 
         {/* Identity Transformation Section */}
         {goals && goals.length > 0 && (
@@ -184,7 +192,6 @@ const Index = () => {
           />
         )}
         
-        {/* Personal Coach */}
         {coachState.showCoach && (
           <PersonalCoach
             goals={goals || []}
@@ -196,7 +203,6 @@ const Index = () => {
           />
         )}
         
-        {/* GrytGPT Chat Modal */}
         <ChatModal goals={goals || []} />
       </div>
     </GhibliLayout>
