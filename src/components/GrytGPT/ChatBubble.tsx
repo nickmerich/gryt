@@ -18,27 +18,27 @@ const ChatBubble = ({ message, isUser, timestamp }: ChatBubbleProps) => {
       <Avatar className={cn(
         "w-8 h-8 border flex-shrink-0",
         isUser 
-          ? "bg-gradient-to-r from-primary to-secondary border-primary/30" 
-          : "bg-gradient-to-r from-primary-light to-background border-primary/30"
+          ? "bg-foreground border-foreground" 
+          : "bg-muted border-border"
       )}>
         <div className={cn(
           "text-sm font-semibold",
-          isUser ? "text-white" : "text-primary"
+          isUser ? "text-background" : "text-foreground"
         )}>
           {isUser ? "You" : "🤖"}
         </div>
       </Avatar>
       
       <div className={cn(
-        "max-w-[80%] rounded-lg px-4 py-2 text-sm backdrop-blur-sm",
+        "max-w-[80%] rounded-lg px-4 py-2 text-sm",
         isUser 
-          ? "bg-gradient-to-r from-primary to-secondary text-white font-semibold shadow-lg" 
-          : "bg-gradient-to-br from-background/95 to-primary-light/50 text-foreground border border-primary/15 font-medium shadow-sm"
+          ? "bg-foreground text-background font-semibold" 
+          : "bg-background text-foreground border border-border font-medium"
       )}>
         <div className="whitespace-pre-wrap leading-relaxed">{message}</div>
         <div className={cn(
           "text-xs mt-1 font-normal opacity-80",
-          isUser ? "text-white/90" : "text-muted-foreground"
+          isUser ? "text-background/90" : "text-muted-foreground"
         )}>
           {timestamp}
         </div>

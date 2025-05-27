@@ -66,7 +66,7 @@ export default {
 				'loose': '2',
 			},
 			colors: {
-				// Core monochrome system
+				// Core monochrome system - NO COLORS ALLOWED
 				border: 'hsl(220 13% 91%)',
 				'border-subtle': 'hsl(220 13% 95%)',
 				input: 'hsl(220 13% 95%)',
@@ -77,7 +77,7 @@ export default {
 				foreground: 'hsl(0 0% 0%)',
 				'foreground-muted': 'hsl(0 0% 40%)',
 				
-				// Primary is black
+				// Everything is monochrome now
 				primary: {
 					DEFAULT: 'hsl(0 0% 0%)',
 					foreground: 'hsl(0 0% 100%)',
@@ -86,7 +86,6 @@ export default {
 					disabled: 'hsl(0 0% 60%)',
 				},
 				
-				// Secondary is dark gray
 				secondary: {
 					DEFAULT: 'hsl(0 0% 40%)',
 					foreground: 'hsl(0 0% 100%)',
@@ -95,7 +94,7 @@ export default {
 					disabled: 'hsl(0 0% 70%)',
 				},
 				
-				// All status colors are now monochrome
+				// All status indicators use monochrome
 				destructive: {
 					DEFAULT: 'hsl(0 0% 0%)',
 					foreground: 'hsl(0 0% 100%)',
@@ -115,7 +114,7 @@ export default {
 					background: 'hsl(0 0% 95%)',
 				},
 				
-				// Muted grays
+				// Pure gray system
 				muted: {
 					DEFAULT: 'hsl(0 0% 95%)',
 					foreground: 'hsl(0 0% 40%)'

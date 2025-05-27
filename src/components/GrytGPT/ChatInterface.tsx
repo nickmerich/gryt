@@ -133,21 +133,21 @@ const ChatInterface = ({ goals }: ChatInterfaceProps) => {
           {isLoading && (
             <div className="flex items-center justify-center py-2">
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
               </div>
             </div>
           )}
         </div>
       </ScrollArea>
       
-      <div className="px-4 py-2 bg-gray-50">
+      <div className="px-4 py-2 bg-muted">
         <div className="flex flex-wrap gap-2 mb-2">
           <Button 
             variant="outline" 
             size="sm" 
-            className="text-xs bg-white"
+            className="text-xs bg-background"
             onClick={() => getSuggestion('motivation')}
           >
             <Sparkles className="w-3 h-3 mr-1" />
@@ -156,7 +156,7 @@ const ChatInterface = ({ goals }: ChatInterfaceProps) => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="text-xs bg-white"
+            className="text-xs bg-background"
             onClick={() => getSuggestion('journal')}
           >
             <Sparkles className="w-3 h-3 mr-1" />
@@ -165,7 +165,7 @@ const ChatInterface = ({ goals }: ChatInterfaceProps) => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="text-xs bg-white"
+            className="text-xs bg-background"
             onClick={() => getSuggestion('reflection')}
           >
             <Sparkles className="w-3 h-3 mr-1" />
@@ -179,11 +179,11 @@ const ChatInterface = ({ goals }: ChatInterfaceProps) => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 min-h-[60px] resize-none border-gray-300 focus:border-blue-500"
+            className="flex-1 min-h-[60px] resize-none border-border focus:border-foreground"
             rows={2}
           />
           <Button 
-            className="self-end bg-blue-600 hover:bg-blue-700 min-w-[40px]"
+            className="self-end bg-foreground hover:bg-muted-foreground min-w-[40px]"
             onClick={handleSendMessage}
             disabled={isLoading || inputValue.trim() === ''}
           >

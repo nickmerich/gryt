@@ -22,9 +22,9 @@ const CircleLeaderboard: React.FC<CircleLeaderboardProps> = ({
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-background rounded-lg border border-border p-6">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-medium text-gray-900">Leaderboard</h3>
+        <h3 className="font-medium text-foreground">Leaderboard</h3>
         <div className="flex items-center gap-2">
           <Button 
             variant={sortBy === 'streak' ? 'default' : 'outline'} 
@@ -49,7 +49,7 @@ const CircleLeaderboard: React.FC<CircleLeaderboardProps> = ({
         {sortedMembers.slice(0, 5).map((member, index) => (
           <div key={member.id} className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-500 w-5">{index + 1}</span>
+              <span className="text-sm font-medium text-muted-foreground w-5">{index + 1}</span>
               <Avatar className="h-8 w-8">
                 {member.avatar ? (
                   <AvatarImage src={member.avatar} alt={member.name} />
@@ -61,9 +61,9 @@ const CircleLeaderboard: React.FC<CircleLeaderboardProps> = ({
             </div>
             <div className="text-sm font-medium">
               {sortBy === 'streak' ? (
-                <span className="text-gryt-red">{member.streak} days</span>
+                <span className="text-foreground">{member.streak} days</span>
               ) : (
-                <span className="text-gryt-blue">{member.progress}%</span>
+                <span className="text-foreground">{member.progress}%</span>
               )}
             </div>
           </div>

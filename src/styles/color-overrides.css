@@ -1,10 +1,75 @@
 
 @layer base {
-  /* MONOCHROME DESIGN SYSTEM - NO COLORS, NO SHADOWS */
+  /* COMPLETE MONOCHROME SYSTEM - ELIMINATE ALL COLORS */
   
-  /* Remove all box shadows globally */
+  /* Global color removal */
   * {
     box-shadow: none !important;
+  }
+
+  /* Force all yellow, blue, green, red elements to black/white/gray */
+  *[class*="yellow"],
+  *[class*="blue"], 
+  *[class*="green"],
+  *[class*="red"],
+  *[class*="purple"],
+  *[class*="orange"],
+  *[class*="pink"],
+  *[class*="indigo"],
+  *[class*="cyan"],
+  *[class*="teal"],
+  *[style*="yellow"],
+  *[style*="blue"],
+  *[style*="green"],
+  *[style*="red"],
+  *[style*="purple"],
+  *[style*="orange"],
+  *[style*="pink"],
+  *[style*="indigo"],
+  *[style*="cyan"],
+  *[style*="teal"] {
+    color: hsl(var(--foreground)) !important;
+    background-color: hsl(var(--background)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Legacy color class overrides */
+  .text-gryt-blue,
+  .text-blue-500,
+  .text-blue-600,
+  .text-yellow-500,
+  .text-yellow-600 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .bg-gryt-blue,
+  .bg-blue-500,
+  .bg-blue-600,
+  .bg-yellow-500,
+  .bg-yellow-600,
+  .bg-purple-500,
+  .bg-green-400 {
+    background-color: hsl(var(--foreground)) !important;
+    color: hsl(var(--background)) !important;
+  }
+
+  .bg-gryt-light,
+  .bg-blue-100,
+  .bg-yellow-100,
+  .bg-purple-100 {
+    background-color: hsl(var(--muted)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .border-gryt-blue,
+  .border-blue-500,
+  .border-yellow-500 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .ring-green-400,
+  .ring-blue-500 {
+    --tw-ring-color: hsl(var(--foreground)) !important;
   }
 
   /* Clean monochrome borders for separation */
@@ -20,7 +85,7 @@
     border: 2px solid hsl(var(--foreground));
   }
 
-  /* Monochrome background fills for element separation */
+  /* Monochrome background fills */
   .clean-bg-white {
     background-color: hsl(var(--background));
   }
@@ -135,5 +200,15 @@
     background: hsl(var(--foreground));
     color: hsl(var(--background));
     border: 2px solid hsl(var(--foreground));
+  }
+
+  /* Force dropdown menus to have proper background */
+  [role="menu"],
+  [role="menuitem"],
+  [data-radix-portal] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    z-index: 9999 !important;
   }
 }

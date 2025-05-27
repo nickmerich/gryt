@@ -48,7 +48,7 @@ const ProfileMenu = () => {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src="" alt={user.email || "User"} />
-            <AvatarFallback className="bg-blue-500 text-white">
+            <AvatarFallback className="bg-foreground text-background">
               {getInitials(user.email || "User")}
             </AvatarFallback>
           </Avatar>

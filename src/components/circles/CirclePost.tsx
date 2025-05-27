@@ -38,19 +38,6 @@ interface CirclePostProps {
   };
 }
 
-const getCategoryColor = (category: Post['category']) => {
-  switch (category) {
-    case 'celebration':
-      return 'bg-green-100 text-green-800';
-    case 'progress':
-      return 'bg-blue-100 text-blue-800';
-    case 'challenge':
-      return 'bg-orange-100 text-orange-800';
-    default:
-      return 'bg-gray-100 text-gray-800';
-  }
-};
-
 const getCategoryLabel = (category: Post['category']) => {
   switch (category) {
     case 'celebration':
@@ -95,17 +82,17 @@ const CirclePost = ({ post, onLike, onComment, currentUser }: CirclePostProps) =
               )}
             </Avatar>
             <div>
-              <h3 className="font-medium text-gray-900">{post.author.name}</h3>
-              <p className="text-xs text-gray-500">{post.timestamp}</p>
+              <h3 className="font-medium text-foreground">{post.author.name}</h3>
+              <p className="text-xs text-muted-foreground">{post.timestamp}</p>
             </div>
           </div>
-          <Badge className={getCategoryColor(post.category)}>
+          <Badge variant="outline">
             {getCategoryLabel(post.category)}
           </Badge>
         </div>
         {post.goalTitle && (
           <div className="mt-2">
-            <Badge variant="outline" className="bg-gray-50">
+            <Badge variant="outline" className="bg-muted">
               Goal: {post.goalTitle}
             </Badge>
           </div>
@@ -117,21 +104,21 @@ const CirclePost = ({ post, onLike, onComment, currentUser }: CirclePostProps) =
       <CardFooter className="border-t pt-2 flex flex-col">
         <div className="flex justify-between w-full">
           <div className="flex space-x-4">
-            <Button onClick={handleLike} variant="ghost" size="sm" className="flex items-center gap-1 text-gray-500 hover:text-red-500">
+            <Button onClick={handleLike} variant="ghost" size="sm" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
               <Heart className="w-4 h-4" />
               <span>{post.likes}</span>
             </Button>
             <Button 
               variant="ghost" 
               size="sm" 
-              className="flex items-center gap-1 text-gray-500"
+              className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
               onClick={() => hasCommentsOrCanComment && setIsCommentsOpen(!isCommentsOpen)}
             >
               <MessageCircle className="w-4 h-4" />
               <span>{post.comments}</span>
             </Button>
           </div>
-          <Button variant="ghost" size="sm" className="text-gray-500">
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
             <Share2 className="w-4 h-4 mr-1" /> Share
           </Button>
         </div>
@@ -143,7 +130,7 @@ const CirclePost = ({ post, onLike, onComment, currentUser }: CirclePostProps) =
             className="w-full mt-2"
           >
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm" className="w-full flex items-center justify-center text-xs text-gray-500">
+              <Button variant="ghost" size="sm" className="w-full flex items-center justify-center text-xs text-muted-foreground">
                 {isCommentsOpen ? (
                   <>Hide comments <ChevronUp className="h-3 w-3 ml-1" /></>
                 ) : (

@@ -11,13 +11,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-foreground text-background border-2 border-foreground hover:bg-foreground/90 hover:border-foreground/90 transform hover:scale-[1.02] active:scale-[0.98]",
-        destructive: "bg-error text-error-foreground border-2 border-error hover:bg-error-hover hover:border-error-hover transform hover:scale-[1.02] active:scale-[0.98]",
+        destructive: "bg-foreground text-background border-2 border-foreground hover:bg-muted-foreground hover:border-muted-foreground transform hover:scale-[1.02] active:scale-[0.98]",
         outline: "border-2 border-border bg-background hover:bg-muted hover:text-foreground hover:border-muted-foreground transform hover:scale-[1.01] font-bold",
         secondary: "bg-muted-foreground text-background border-2 border-muted-foreground hover:bg-muted-foreground/90 hover:border-muted-foreground/90 transform hover:scale-[1.02] active:scale-[0.98]",
         ghost: "hover:bg-muted hover:text-foreground font-bold border-2 border-transparent",
         link: "text-foreground underline-offset-4 hover:underline font-bold border-2 border-transparent",
-        success: "bg-success text-success-foreground border-2 border-success hover:bg-success-hover hover:border-success-hover transform hover:scale-[1.02] active:scale-[0.98]",
-        warning: "bg-warning text-warning-foreground border-2 border-warning hover:bg-warning-hover hover:border-warning-hover transform hover:scale-[1.02] active:scale-[0.98]",
+        success: "bg-foreground text-background border-2 border-foreground hover:bg-muted-foreground hover:border-muted-foreground transform hover:scale-[1.02] active:scale-[0.98]",
+        warning: "bg-muted-foreground text-background border-2 border-muted-foreground hover:bg-muted-foreground/90 hover:border-muted-foreground/90 transform hover:scale-[1.02] active:scale-[0.98]",
       },
       size: {
         default: "h-12 px-6 py-3 rounded-md",

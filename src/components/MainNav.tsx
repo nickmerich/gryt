@@ -25,7 +25,7 @@ const MainNav = () => {
           <SheetContent side="left">
             <div className="flex items-center justify-between mb-6">
               <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-                <span className="text-xl font-bold text-gryt-blue">Gryt</span>
+                <span className="text-xl font-bold text-foreground">Gryt</span>
               </Link>
               <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)}>
                 <X className="h-5 w-5" />
@@ -35,21 +35,21 @@ const MainNav = () => {
             <div className="flex flex-col gap-1">
               <Link
                 to="/"
-                className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
+                className="flex items-center gap-3 py-3 px-4 rounded-lg text-foreground hover:bg-muted hover:text-foreground transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 <span>Goals</span>
               </Link>
               <Link
                 to="/circles"
-                className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
+                className="flex items-center gap-3 py-3 px-4 rounded-lg text-foreground hover:bg-muted hover:text-foreground transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 <span>Community</span>
               </Link>
               <Link
                 to="/integrations"
-                className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-700 hover:bg-gryt-light/50 hover:text-gryt-blue transition-colors"
+                className="flex items-center gap-3 py-3 px-4 rounded-lg text-foreground hover:bg-muted hover:text-foreground transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 <span>Sync</span>

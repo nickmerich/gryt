@@ -22,7 +22,7 @@ const CircleMembers: React.FC<CircleMembersProps> = ({
     <GhibliCard>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
-          <Users className="w-5 h-5 text-blue-500" />
+          <Users className="w-5 h-5 text-foreground" />
           Circle Members
         </CardTitle>
       </CardHeader>
@@ -30,7 +30,7 @@ const CircleMembers: React.FC<CircleMembersProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex -space-x-2">
             {users.map((user) => (
-              <Avatar key={user.id} className={`border-2 border-white ${user.online ? 'ring-2 ring-green-400' : ''}`}>
+              <Avatar key={user.id} className={`border-2 border-background ${user.online ? 'ring-2 ring-foreground' : ''}`}>
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback>{user.name.substring(0, 1)}</AvatarFallback>
               </Avatar>
@@ -44,7 +44,7 @@ const CircleMembers: React.FC<CircleMembersProps> = ({
           >
             {invitingUser ? (
               <>
-                <div className="animate-spin h-4 w-4 border-2 border-blue-400 border-t-blue-600 rounded-full mr-2" />
+                <div className="animate-spin h-4 w-4 border-2 border-muted-foreground border-t-foreground rounded-full mr-2" />
                 Inviting...
               </>
             ) : (
